@@ -1,0 +1,269 @@
+.windex {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+@media (min-width: 1100px) {
+  .windex--withpreview {
+    grid-template-columns: minmax(0, 1fr) clamp(15rem, 22vw, 21rem);
+    align-items: start;
+  }
+}
+
+.windex__rows {
+  border-top: 1px solid var(--rule);
+}
+
+/* --- Row --- */
+
+.windexrow {
+  border-bottom: 1px solid var(--rule);
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.windexrow__h {
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
+.windexrow__trigger {
+  display: grid;
+  width: 100%;
+  grid-template-columns: clamp(6rem, 9vw, 8.5rem) minmax(0, 1fr) auto auto auto;
+  align-items: baseline;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  padding-block: clamp(1.25rem, 2.4vw, 1.9rem);
+  text-align: left;
+  color: var(--text);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.windexrow__year {
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.windexrow--hover .windexrow__year,
+.windexrow--open .windexrow__year {
+  color: var(--accent);
+}
+
+.windexrow__title {
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  transition: transform var(--dur) var(--ease-out);
+  display: inline-block;
+}
+
+.windexrow--hover .windexrow__title {
+  transform: translateX(0.5rem);
+}
+
+.windexrow__title-alt {
+  font-weight: 400;
+  color: var(--text-tertiary);
+  text-transform: none;
+}
+
+.windexrow__role {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.windexrow__tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.windexrow__tag {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  /* Visible at rest — hover raises emphasis, it doesn't reveal content. */
+  opacity: 0.55;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.windexrow--hover .windexrow__tag,
+.windexrow--open .windexrow__tag {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* --- The +/- toggle --- */
+
+.windexrow__toggle {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  align-self: center;
+  flex: none;
+}
+
+.windexrow__toggle::before,
+.windexrow__toggle::after {
+  content: '';
+  position: absolute;
+  background: var(--text-tertiary);
+  transition:
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.windexrow__toggle::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.windexrow__toggle::after {
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  transform: translateX(-50%) scaleY(1);
+}
+
+.windexrow--open .windexrow__toggle::after {
+  transform: translateX(-50%) scaleY(0);
+}
+
+.windexrow--hover .windexrow__toggle::before,
+.windexrow--hover .windexrow__toggle::after,
+.windexrow--open .windexrow__toggle::before {
+  background: var(--accent);
+}
+
+/* --- Collapsed one-liner --- */
+
+.windexrow__short {
+  padding-left: calc(clamp(6rem, 9vw, 8.5rem) + clamp(1rem, 2.5vw, 2.5rem));
+  padding-bottom: clamp(1.25rem, 2.4vw, 1.9rem);
+  margin-top: -0.5rem;
+  max-width: 62ch;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--text-tertiary);
+}
+
+/* --- Expanded panel --- */
+
+.windexrow__panel {
+  padding-left: calc(clamp(6rem, 9vw, 8.5rem) + clamp(1rem, 2.5vw, 2.5rem));
+}
+
+.windexrow__collapse {
+  display: inline-flex;
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--accent);
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.windexrow__collapse:hover {
+  opacity: 0.65;
+}
+
+/* --- Sticky preview region --- */
+
+.windex__preview {
+  position: sticky;
+  top: calc(var(--nav-h) + 3rem);
+}
+
+.windex__preview-inner {
+  min-height: 14rem;
+}
+
+.windex__preview-name {
+  margin-top: 0.7rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   RESPONSIVE — the row re-flows rather than shrinking.
+   ============================================================ */
+
+@media (max-width: 1099px) {
+  .windexrow__trigger {
+    grid-template-columns: clamp(5.5rem, 12vw, 8rem) minmax(0, 1fr) auto;
+    grid-template-areas:
+      'year title toggle'
+      'year role  toggle';
+    row-gap: 0.4rem;
+  }
+
+  .windexrow__year {
+    grid-area: year;
+  }
+
+  .windexrow__title {
+    grid-area: title;
+  }
+
+  .windexrow__role {
+    grid-area: role;
+  }
+
+  .windexrow__toggle {
+    grid-area: toggle;
+  }
+
+  .windexrow__tags {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .windexrow__trigger {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'year toggle'
+      'title title'
+      'role role';
+    row-gap: 0.45rem;
+    padding-block: 1.5rem;
+    align-items: center;
+  }
+
+  .windexrow__title {
+    font-size: clamp(1.5rem, 7.5vw, 2.25rem);
+  }
+
+  .windexrow--hover .windexrow__title {
+    transform: none;
+  }
+
+  .windexrow__short,
+  .windexrow__panel {
+    padding-left: 0;
+  }
+
+  .windexrow__short {
+    margin-top: 0;
+    padding-bottom: 1.5rem;
+    font-size: var(--t-xs);
+  }
+}

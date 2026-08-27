@@ -1,0 +1,53 @@
+/* ============================================================
+   REVEAL PRIMITIVES
+   The in-view flag is a class; the movement is a CSS transition.
+   ============================================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 24px));
+  transition:
+    opacity 0.75s var(--ease-out) var(--reveal-delay, 0s),
+    transform 0.75s var(--ease-out) var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* --- Mask --- */
+
+.maskreveal {
+  display: block;
+  overflow: hidden;
+}
+
+.maskreveal__inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.95s var(--ease-out) var(--reveal-delay, 0s);
+  will-change: transform;
+}
+
+.maskreveal.is-in .maskreveal__inner {
+  transform: none;
+  will-change: auto;
+}
+
+/* Reduced motion: no clipping, no transform, nothing to wait for. */
+.maskreveal--static {
+  display: block;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .maskreveal__inner {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

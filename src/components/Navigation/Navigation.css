@@ -1,0 +1,347 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  pointer-events: none;
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+/* A paper wash once scrolled. It holds full opacity behind the bar and
+   only fades below it, so passing content never collides with the links. */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(100% + 2.5rem);
+  opacity: 0;
+  /* --nav-ground is sampled from whatever section is under the bar, so the
+     wash matches paper, stone and ink without being told about them. */
+  background: linear-gradient(
+    to bottom,
+    var(--nav-ground, var(--paper)) 0%,
+    var(--nav-ground, var(--paper)) 62%,
+    color-mix(in srgb, var(--nav-ground, var(--paper)) 70%, transparent) 82%,
+    color-mix(in srgb, var(--nav-ground, var(--paper)) 0%, transparent) 100%
+  );
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.nav--scrolled::before {
+  opacity: 1;
+}
+
+.nav__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 2.5vw, 1.9rem) var(--gutter);
+}
+
+.nav__inner > * {
+  pointer-events: auto;
+}
+
+/* --- Name mark --- */
+
+.nav__name {
+  font-size: var(--t-sm);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  transition: color var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.nav__name:hover {
+  color: var(--accent);
+}
+
+.nav__name-short {
+  display: none;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+/* --- Desktop links --- */
+
+.nav__links {
+  display: block;
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.1rem, 2.2vw, 2.1rem);
+}
+
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-size: var(--t-sm);
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.nav__link:hover {
+  color: var(--text);
+}
+
+.nav__link--active {
+  color: var(--text);
+}
+
+/* The cobalt current-page indicator. */
+.nav__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.nav__link--active .nav__dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- Work sub-navigation --- */
+
+.nav__sub {
+  position: relative;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: 0 var(--gutter) 0.9rem;
+  pointer-events: auto;
+}
+
+.nav__sub-list {
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.nav__sub-link {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid transparent;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.nav__sub-link:hover {
+  color: var(--text);
+}
+
+.nav__sub-link--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* --- Mobile toggle --- */
+
+.nav__toggle {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--t-sm);
+  color: var(--text);
+  padding: 0.25rem 0;
+}
+
+.nav__toggle-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+}
+
+.nav__toggle-glyph {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 10px;
+}
+
+.nav__toggle-glyph span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--text);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.nav__toggle-glyph span:first-child {
+  top: 1px;
+}
+
+.nav__toggle-glyph span:last-child {
+  bottom: 1px;
+}
+
+.nav__toggle-glyph.is-open span:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.nav__toggle-glyph.is-open span:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+/* --- Mobile panel --- */
+
+.navmenu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  /* .nav is pointer-events: none so the bar never blocks the page; the
+     menu panel has to opt back in or none of its links are clickable. */
+  pointer-events: auto;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--nav-h) + 2.5rem) var(--gutter) calc(var(--gutter) + 1rem);
+  background: var(--paper);
+}
+
+.navmenu--open {
+  display: flex;
+  animation: menu-in var(--dur) var(--ease-out);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.navmenu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.navmenu__link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  font-size: clamp(2.25rem, 11vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: var(--tr-display);
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.navmenu__num {
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  color: var(--cobalt);
+}
+
+.navmenu__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--ink-16);
+  font-size: var(--t-sm);
+}
+
+/* ============================================================
+   BREAKPOINTS
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .nav__list {
+    gap: 1rem;
+  }
+
+  .nav__name-full {
+    display: none;
+  }
+
+  .nav__name-short {
+    display: inline;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav__links {
+    display: none;
+  }
+
+  .nav__toggle {
+    display: inline-flex;
+  }
+
+  .nav__name-full {
+    display: inline;
+  }
+
+  .nav__name-short {
+    display: none;
+  }
+
+  .nav__sub {
+    padding-bottom: 0.75rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav__sub::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ============================================================
+   DARK GROUND — the bar inverts over ink sections.
+   ============================================================ */
+
+.nav--ondark .nav__name,
+.nav--ondark .nav__link--active,
+.nav--ondark .nav__link:hover,
+.nav--ondark .nav__toggle {
+  color: var(--white);
+}
+
+.nav--ondark .nav__link,
+.nav--ondark .nav__sub-link {
+  color: var(--white-70);
+}
+
+.nav--ondark .nav__toggle-glyph span {
+  background: var(--white);
+}
+
+.nav--ondark .nav__dot,
+.nav--ondark .nav__sub-link--active {
+  /* Cobalt lifted so it still reads against ink. */
+  color: #7b95ee;
+}
+
+.nav--ondark .nav__dot {
+  background: #7b95ee;
+}

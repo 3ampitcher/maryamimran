@@ -1,0 +1,193 @@
+/* One 12-column ground truth; modules span different amounts of it. */
+.techgrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 3.5rem) clamp(0.6rem, 1vw, 1.15rem);
+}
+
+.techmod {
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Lead modules take two thirds. Consecutive leads alternate which edge
+   they hang from, so the whitespace reads as composition rather than as a
+   gap nobody filled. */
+.techmod--lead {
+  grid-column: 1 / span 8;
+}
+
+.techmod--lead ~ .techmod--lead {
+  grid-column: 5 / span 8;
+}
+
+.techmod--standard {
+  grid-column: span 6;
+}
+
+.techmod--quiet {
+  grid-column: span 4;
+}
+
+/* Vertical offsets break the rows without breaking the grid. */
+.techmod--1 {
+  margin-top: clamp(0rem, 4vw, 4.5rem);
+}
+
+.techmod--2 {
+  margin-top: clamp(0rem, 2vw, 2rem);
+}
+
+/* An open module claims the full width so its record can breathe. */
+.techmod--open {
+  grid-column: span 12;
+  margin-top: 0;
+}
+
+.techmod__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 1.8vw, 1.4rem);
+}
+
+/* --- Media --- */
+
+.techmod__media {
+  position: relative;
+}
+
+/* A wide module at a 4:3 ratio produces a very tall block; cap it so no
+   single image (or placeholder) swallows the viewport. */
+.techmod__media .figure__frame {
+  max-height: min(52vh, 30rem);
+}
+
+/* The result is typography, not a badge: no trophy, no fill, no confetti. */
+.techmod__result {
+  font-size: clamp(1.6rem, 3.4vw, 3rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* --- Body --- */
+
+.techmod__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: flex-start;
+}
+
+.techmod__meta {
+  display: flex;
+  gap: 0.55rem;
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.techmod__meta-sep {
+  color: var(--accent);
+}
+
+.techmod__title {
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+}
+
+.techmod--quiet .techmod__title {
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+}
+
+.techmod__org {
+  font-size: var(--t-xs);
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+.techmod__desc {
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 46ch;
+}
+
+.techmod__tags {
+  margin-top: 0.2rem;
+}
+
+.techmod__toggle {
+  margin-top: 0.5rem;
+  padding: 0.35rem 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.techmod__toggle:hover {
+  opacity: 0.6;
+}
+
+.techmod__panel {
+  border-top: 1px solid var(--rule);
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+/* ============================================================
+   RESPONSIVE — an asymmetric vertical feed on mobile, never a
+   miniature version of the desktop map.
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  .techmod--lead {
+    grid-column: span 12;
+  }
+
+  .techmod--standard {
+    grid-column: span 7;
+  }
+
+  .techmod--quiet {
+    grid-column: span 5;
+  }
+}
+
+@media (max-width: 767px) {
+  .techgrid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(2.5rem, 8vw, 3.5rem);
+    column-gap: 0;
+  }
+
+  .techmod,
+  .techmod--lead,
+  .techmod--standard,
+  .techmod--quiet {
+    grid-column: 1 / -1;
+  }
+
+  /* Asymmetry survives at mobile as inset width, not as columns. */
+  .techmod--1 {
+    margin-top: 0;
+    padding-left: clamp(1rem, 8vw, 3rem);
+  }
+
+  .techmod--2 {
+    margin-top: 0;
+    padding-right: clamp(1rem, 8vw, 3rem);
+  }
+
+  .techmod--open {
+    padding-inline: 0;
+  }
+
+  .techmod__desc {
+    max-width: none;
+  }
+}

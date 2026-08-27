@@ -1,0 +1,41 @@
+.pagehead {
+  padding-block: calc(var(--nav-h) + clamp(3rem, 9vh, 7rem)) clamp(2.5rem, 6vw, 5rem);
+  background: var(--paper);
+}
+
+.pagehead__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.pagehead__title {
+  font-size: var(--t-display);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  margin-left: -0.04em;
+}
+
+.pagehead__disciplines {
+  margin-top: clamp(0.75rem, 1.5vw, 1.25rem);
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.pagehead__sep {
+  color: var(--accent);
+}
+
+.pagehead__blurb {
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  max-width: 48ch;
+}

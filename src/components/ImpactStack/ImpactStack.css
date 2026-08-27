@@ -1,0 +1,227 @@
+.istack {
+  position: relative;
+}
+
+/* --- Chapter --- */
+
+.ichapter {
+  position: relative;
+}
+
+.ichapter__panel {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: clamp(4rem, 10vh, 8rem);
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+}
+
+/* Sticky stacking: each panel pins, the next one rises over it. */
+.istack--sticky .ichapter {
+  position: sticky;
+  top: 0;
+}
+
+.istack--sticky .ichapter__panel {
+  /* A shadow at the top edge so the overlap reads as depth. */
+  box-shadow: 0 -24px 60px -40px rgba(24, 26, 29, 0.5);
+}
+
+/* Alternating grounds so consecutive panels are distinguishable.
+   .ground-stone (set by parity in the component) supplies the colour
+   and the deepened accent together. */
+.ichapter.ground-stone {
+  background: transparent;
+}
+
+.ichapter.ground-stone .ichapter__panel {
+  background: var(--stone);
+}
+
+.ichapter__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .ichapter__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+}
+
+/* --- Lead column --- */
+
+.ichapter__lead {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+  align-items: flex-start;
+}
+
+.ichapter__num {
+  gap: 0.75em;
+}
+
+.ichapter__title {
+  font-size: clamp(2.25rem, 5.5vw, 4.75rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  max-width: 14ch;
+}
+
+.ichapter__org {
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.ichapter__prose {
+  font-size: var(--t-sm);
+  max-width: 54ch;
+}
+
+.ichapter__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 54ch;
+}
+
+.ichapter__list-item {
+  display: flex;
+  gap: 0.85rem;
+  font-size: var(--t-xs);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.ichapter__list-num {
+  flex: none;
+  color: var(--accent);
+  font-size: var(--t-label);
+  padding-top: 0.15em;
+}
+
+.ichapter__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  padding-top: 0.5rem;
+}
+
+.ichapter__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ichapter__metric-value {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--tr-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.ichapter__tags {
+  margin-top: 0.35rem;
+}
+
+/* --- Visual column --- */
+
+.ichapter__visual {
+  display: grid;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+.ichapter__figure:nth-child(2) {
+  width: 62%;
+  justify-self: end;
+}
+
+/* --- Data panel --- */
+
+.dpanel {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.dpanel__doc {
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+}
+
+.dpanel__doc-head {
+  margin-bottom: 1rem;
+}
+
+.dpanel__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.dpanel__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 3.5rem;
+  align-items: center;
+  gap: 0.9rem;
+  padding-block: 0.7rem;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: var(--t-xs);
+}
+
+.dpanel__row:last-child {
+  border-bottom: 0;
+}
+
+.dpanel__row-num {
+  font-size: var(--t-label);
+  color: var(--text-tertiary);
+}
+
+.dpanel__row-name {
+  color: var(--text);
+}
+
+/* A quiet progress rule — structure, not a fake chart. */
+.dpanel__row-rule {
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.35;
+}
+
+.dpanel__figure {
+  width: 70%;
+  justify-self: end;
+}
+
+/* ============================================================
+   MOBILE — sticking is off; chapters become strong sequential
+   sections with a full-bleed rule between them.
+   ============================================================ */
+
+@media (max-width: 899px) {
+  .ichapter__panel {
+    min-height: 0;
+    padding-block: clamp(3.5rem, 12vh, 6rem);
+  }
+
+  .ichapter__figure:nth-child(2),
+  .dpanel__figure {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .ichapter__title {
+    max-width: none;
+  }
+}

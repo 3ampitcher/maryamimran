@@ -1,0 +1,57 @@
+.aquote {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: calc(var(--nav-h) + 3rem) 4rem;
+  overflow: hidden;
+}
+
+.aquote__inner {
+  width: 100%;
+}
+
+.aquote__block {
+  max-width: 100%;
+}
+
+.aquote__text {
+  font-size: clamp(2.25rem, 7.5vw, 8rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: var(--tr-display);
+  color: var(--text);
+  text-wrap: balance;
+  /* Measure lives on the text, where 1ch is a character of *this* size. */
+  max-width: 15ch;
+}
+
+/* Cobalt's first appearance on the page. */
+.aquote__emphasis {
+  color: var(--accent);
+}
+
+.aquote__attribution {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.aquote__sep {
+  color: var(--accent);
+}
+
+@media (max-width: 767px) {
+  .aquote {
+    min-height: 90svh;
+  }
+
+  .aquote__text {
+    max-width: none;
+  }
+}

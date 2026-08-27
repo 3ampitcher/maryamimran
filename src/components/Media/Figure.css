@@ -1,0 +1,108 @@
+.figure {
+  margin: 0;
+  width: 100%;
+}
+
+.figure__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--figure-ratio, 3 / 2);
+  overflow: hidden;
+  background: var(--stone);
+  border-radius: 2px;
+}
+
+.figure__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Motion vocabulary #2: image settles from 1.04 to 1.00. */
+  transform: scale(1.04);
+  opacity: 0;
+  transition:
+    transform 1.2s var(--ease-out),
+    opacity 0.7s var(--ease-out);
+  will-change: transform;
+}
+
+.figure--loaded .figure__img {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.figure--noscale .figure__img {
+  transform: none;
+}
+
+.figure__caption {
+  margin-top: 0.7rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* ------------------------------------------------------------
+   PLACEHOLDER
+   ------------------------------------------------------------ */
+
+.figph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: clamp(0.9rem, 2vw, 1.5rem);
+  background: var(--stone);
+  border: 1px solid var(--ink-08);
+  overflow: hidden;
+}
+
+.figph__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--ink-08) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ink-08) 1px, transparent 1px);
+  background-size: 25% 25%;
+  opacity: 0.5;
+}
+
+.figph__mark {
+  position: absolute;
+  top: clamp(0.9rem, 2vw, 1.5rem);
+  left: clamp(0.9rem, 2vw, 1.5rem);
+  color: var(--text-tertiary);
+  opacity: 0.7;
+}
+
+.figph__label {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+  max-width: 90%;
+}
+
+/* On ink surfaces the placeholder inverts. */
+.surface-dark .figure__frame,
+.surface-dark .figph {
+  background: var(--ink-soft);
+  border-color: var(--white-16);
+}
+
+.surface-dark .figph__grid {
+  background-image:
+    linear-gradient(to right, rgba(247, 247, 244, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(247, 247, 244, 0.07) 1px, transparent 1px);
+}
+
+.surface-dark .figph__label,
+.surface-dark .figph__mark {
+  color: var(--white-45);
+}

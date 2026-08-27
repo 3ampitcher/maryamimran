@@ -1,0 +1,89 @@
+.speaking {
+  background: var(--paper);
+}
+
+.speaking__headline {
+  max-width: 16ch;
+}
+
+/* --- Horizontal rail --- */
+
+.speaking__rail {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-16) transparent;
+  /* Bleeds to the viewport edge, but starts on the grid. */
+  padding-inline: var(--gutter);
+  padding-bottom: 1.5rem;
+  max-width: var(--maxw);
+  margin-inline: auto;
+}
+
+.speaking__rail::-webkit-scrollbar {
+  height: 3px;
+}
+
+.speaking__rail::-webkit-scrollbar-thumb {
+  background: var(--ink-16);
+}
+
+.speaking__rail::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scard {
+  flex: 0 0 clamp(15rem, 26vw, 24rem);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.scard__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.scard__meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.scard__meta-sep {
+  color: var(--accent);
+}
+
+.scard__title {
+  font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+}
+
+.scard__org {
+  font-size: var(--t-xs);
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+.scard__desc {
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 767px) {
+  .scard {
+    flex-basis: 78vw;
+  }
+}

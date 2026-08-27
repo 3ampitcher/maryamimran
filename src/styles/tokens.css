@@ -1,0 +1,119 @@
+/* ============================================================
+   STONE / INK / COBALT
+   Design tokens — the single source of visual truth.
+   ============================================================ */
+
+:root {
+  /* --- Core palette --- */
+  --stone: #d7d9d6;
+  --paper: #f4f2ed;
+  --ink: #181a1d;
+  --white: #f7f7f4;
+  --cobalt: #3155d9;
+  --muted: #8b8f8c;
+
+  /* --- Derived neutrals (mixes of the six, never new hues) --- */
+  --stone-deep: #c4c7c3;
+  --ink-soft: #2a2d31;
+  --ink-70: rgba(24, 26, 29, 0.7);
+  --ink-45: rgba(24, 26, 29, 0.45);
+  --ink-16: rgba(24, 26, 29, 0.16);
+  --ink-08: rgba(24, 26, 29, 0.08);
+  --white-70: rgba(247, 247, 244, 0.7);
+  --white-55: rgba(247, 247, 244, 0.55);
+  --white-16: rgba(247, 247, 244, 0.16);
+  --cobalt-16: rgba(49, 85, 217, 0.16);
+  --cobalt-08: rgba(49, 85, 217, 0.08);
+
+  /* --- Semantic surface roles (flipped inside .surface-dark) --- */
+  --surface: var(--paper);
+  --surface-alt: var(--stone);
+  --text: var(--ink);
+  --text-secondary: var(--ink-70);
+  /* --muted is a palette colour, not a text colour: at 11px it measures
+     2.9:1 on paper and 2.3:1 on stone. Small type gets this darker step,
+     which clears 4.5:1 on both grounds. Hierarchy is carried by size,
+     case and typeface instead of by lightness. */
+  --text-tertiary: #5a5e5b;
+  --rule: var(--ink-16);
+  --rule-soft: var(--ink-08);
+  --accent: var(--cobalt);
+
+  /* --- Type --- */
+  --font-sans: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-serif: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Fluid scale — clamp(min, preferred, max) */
+  --t-mega: clamp(4.5rem, 19vw, 22rem);      /* MARYAM IMRAN */
+  --t-display: clamp(3rem, 11vw, 11rem);     /* section titles, hub rows */
+  --t-xxl: clamp(2.5rem, 7vw, 6rem);
+  --t-xl: clamp(2rem, 4.6vw, 3.6rem);
+  --t-lg: clamp(1.5rem, 2.8vw, 2.25rem);
+  --t-md: clamp(1.125rem, 1.6vw, 1.4rem);
+  --t-body: clamp(1rem, 1.15vw, 1.125rem);
+  --t-sm: 0.9375rem;
+  --t-xs: 0.8125rem;
+  --t-label: 0.6875rem;                       /* editorial micro-labels */
+
+  --lh-tight: 0.86;
+  --lh-snug: 1.06;
+  --lh-heading: 1.14;
+  --lh-body: 1.6;
+  --lh-loose: 1.72;
+
+  --tr-mega: -0.045em;
+  --tr-display: -0.035em;
+  --tr-heading: -0.02em;
+  --tr-label: 0.16em;
+
+  /* --- Space --- */
+  --gutter: clamp(1.25rem, 4.5vw, 5rem);
+  --section-y: clamp(6rem, 14vh, 12rem);
+  --section-y-lg: clamp(8rem, 20vh, 18rem);
+  --stack-sm: 0.75rem;
+  --stack: 1.5rem;
+  --stack-lg: 3rem;
+  --maxw: 1680px;
+  --maxw-text: 62ch;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 240ms;
+  --dur: 520ms;
+  --dur-slow: 900ms;
+
+  --nav-h: 4.5rem;
+  --z-nav: 100;
+  --z-menu: 200;
+}
+
+/* ------------------------------------------------------------
+   GROUND SCOPES
+   Sections declare the surface they sit on so nested components
+   inherit the right accent and rules. Cobalt at #3155D9 measures
+   4.31:1 on stone, so stone grounds deepen it a step.
+   ------------------------------------------------------------ */
+
+.ground-stone {
+  --surface: var(--stone);
+  --surface-alt: var(--stone-deep);
+  --accent: #2e4fcc;
+  background-color: var(--surface);
+}
+
+/* Dark editorial passages (Contact, Footer, Impact chapters). */
+.surface-dark {
+  --surface: var(--ink);
+  --surface-alt: var(--ink-soft);
+  --text: var(--white);
+  --text-secondary: var(--white-70);
+  --text-tertiary: var(--white-55);
+  --rule: var(--white-16);
+  --rule-soft: rgba(247, 247, 244, 0.08);
+  --accent: #7b95ee; /* cobalt lifted for AA contrast on ink */
+  color: var(--text);
+  background-color: var(--surface);
+}
