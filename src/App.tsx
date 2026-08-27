@@ -19,7 +19,20 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 export function App() {
   return (
     <>
-      <a className="skip-link" href="#main">
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(e) => {
+          // Move focus as well as scroll — and keep the link working under
+          // HashRouter, where a bare "#main" would be read as a route.
+          e.preventDefault();
+          const main = document.getElementById('main');
+          if (!main) return;
+          main.setAttribute('tabindex', '-1');
+          main.focus({ preventScroll: true });
+          main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }}
+      >
         Skip to content
       </a>
       <ScrollToTop />

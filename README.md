@@ -14,7 +14,15 @@ npm run dev        # http://localhost:5173
 npm run build      # static output in /dist
 npm run preview    # serve the built site locally
 npm run typecheck  # TypeScript only
+
+npm run build:standalone   # -> standalone/maryam-imran.html
 ```
+
+`build:standalone` packs the whole site into **one self-contained .html file** —
+JS, CSS and fonts all inlined. Double-click it and it opens; no server, no
+network, no other files needed. Handy for sending someone a preview or keeping
+a snapshot. It routes on the URL hash (`#/business`) since there's no server to
+rewrite paths; the real deployment still uses `npm run build`.
 
 Deploying: `npm run build` and publish `/dist`. SPA rewrites are already
 configured for Vercel (`vercel.json`) and Netlify (`public/_redirects`).
