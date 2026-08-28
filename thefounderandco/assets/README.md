@@ -2,13 +2,11 @@
 
 ## Portrait
 
-Drop a photo of Imran here named exactly:
-
-    imran-yousuf.jpg
-
-Portrait crop, 4:5 ratio, at least 800 x 1000px. The page picks it up
-automatically. Until the file exists, section 05 shows a designed
-placeholder instead — nothing breaks.
+`imran-yousuf.jpg` — 512 x 640, already cropped 4:5 for the frame in
+section 05. If you have a higher-resolution original, drop it in under the
+same name: at 1024 x 1280 it would stay sharp on retina screens. The page
+falls back to a designed placeholder if the file is ever missing, so
+nothing breaks while you swap it.
 
 ## Logos
 

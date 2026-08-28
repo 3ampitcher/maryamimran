@@ -90,50 +90,44 @@
   .wb:hover .wb-num{color:var(--lime-deep)}
 
   /* ---------- 02 services ---------- */
-  .svc-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:26px}
-  .rail-legend{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:420px;margin-left:auto;margin-right:22px;width:100%}
-  .rail-legend span{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#A9ACB2;text-align:center}
+  .svc-lead{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:end;margin-bottom:62px}
+  .svc-lead .lead{font-size:16.5px}
 
-  .group{margin-top:52px}
-  .g-title{
-    display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;
-    padding-bottom:16px;border-bottom:1.5px solid var(--ink);
+  .gcols{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+  .gcol{border-top:2px solid var(--ink);padding-top:24px}
+  .gcol h3{font-size:25px;font-weight:700;letter-spacing:-.028em;line-height:1.1}
+  .gcol-intro{
+    font-size:15px;line-height:1.62;color:var(--muted);font-weight:500;
+    margin-top:12px;padding-bottom:26px;border-bottom:1px solid var(--line);
   }
-  .g-title h3{font-size:26px;font-weight:700;letter-spacing:-.025em}
-  .g-title p{font-size:14.5px;color:var(--muted);font-weight:500}
-  .g-title .g-count{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#A9ACB2}
 
-  .svc{
-    display:grid;grid-template-columns:1fr 1fr 420px;gap:34px;align-items:center;
-    padding:26px 22px;border-bottom:1px solid var(--line);border-radius:16px;
-    transition:background .35s var(--ease),transform .35s var(--ease),box-shadow .35s var(--ease);
-    cursor:default;
+  .gsvc{
+    padding:26px 0;border-bottom:1px solid var(--line);position:relative;
+    transition:padding-left .4s var(--ease);
   }
-  .svc:hover{background:var(--card);transform:translateY(-2px);box-shadow:0 14px 40px rgba(14,16,21,.07)}
-  .svc .n{display:flex;align-items:baseline;gap:14px}
-  .svc .n em{font-style:normal;font-size:11px;font-weight:700;color:#C0C3C7;letter-spacing:.1em}
-  .svc .name{font-size:22px;font-weight:700;letter-spacing:-.025em}
-  .svc .desc{font-size:15px;line-height:1.6;color:var(--muted);font-weight:500}
-  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:center}
-  .cell{height:5px;border-radius:3px;background:#E4E4DE;transition:background .35s,transform .35s var(--ease)}
+  .gsvc:last-child{border-bottom:none}
+  .gsvc::before{
+    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;
+    background:var(--lime);transform:scaleY(0);transform-origin:50% 0;
+    transition:transform .4s var(--ease);
+  }
+  .gsvc:hover{padding-left:18px}
+  .gsvc:hover::before{transform:scaleY(1)}
+  .gsvc h4{font-size:19.5px;font-weight:700;letter-spacing:-.022em}
+  .gsvc .def{font-size:15px;font-weight:600;line-height:1.5;margin-top:9px}
+  .gsvc .body{font-size:14.5px;line-height:1.7;color:var(--muted);font-weight:500;margin-top:13px}
+  .gsvc .when{display:flex;align-items:center;gap:14px;margin-top:20px}
+  .gsvc .when .rail{flex:1 1 auto}
+  .gsvc .when em{
+    font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--muted);white-space:nowrap;flex:0 0 auto;
+  }
+  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;align-items:center}
+  .cell{height:5px;border-radius:3px;background:#E1E1DB;transition:background .35s}
   .cell.on{background:var(--lime-soft)}
   .cell.on.start{background:var(--lime)}
-  .svc:hover .cell.on{background:var(--lime)}
-  .svc:hover .cell.on.start{background:var(--lime-deep)}
-
-  .modes{
-    margin-top:60px;padding:38px 34px;background:var(--card);border-radius:var(--r-lg);
-    display:grid;grid-template-columns:1fr 1.25fr;gap:44px;align-items:center;
-  }
-  .modes p{font-size:15.5px;line-height:1.65;color:var(--muted);font-weight:500;margin-top:14px}
-  .chips{display:flex;flex-wrap:wrap;gap:10px}
-  .chip{
-    border:1.5px solid var(--line);border-radius:999px;padding:10px 18px;
-    font-size:14px;font-weight:600;color:var(--muted);
-    transition:border-color .3s,color .3s,background .3s,transform .3s var(--ease);
-  }
-  .chip:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px)}
-  .chip.lead-chip{background:var(--ink);border-color:var(--ink);color:#fff}
+  .gsvc:hover .cell.on{background:var(--lime)}
+  .gsvc:hover .cell.on.start{background:var(--lime-deep)}
 
   /* ---------- 03 stage map (dark band) ---------- */
   .band{background:var(--ink);color:#fff;padding:110px 0}
@@ -331,19 +325,18 @@
 
   /* ---------- responsive ---------- */
   @media(max-width:1080px){
-    .svc{grid-template-columns:1fr 1fr;gap:22px}
-    .svc .rail{grid-column:1 / -1}
+    .gcols{gap:26px}
     .founder{grid-template-columns:300px 1fr;gap:44px}
+  }
+  @media(max-width:1000px){
+    .gcols{grid-template-columns:1fr;gap:44px}
+    .svc-lead{grid-template-columns:1fr;gap:24px}
   }
   @media(max-width:900px){
     .sec{padding:76px 20px}
     .band{padding:76px 0}
     .why-grid{grid-template-columns:1fr;gap:40px}
     .why-left{position:static}
-    .svc-intro{grid-template-columns:1fr;gap:22px}
-    .rail-legend{margin-left:0}
-    .svc{grid-template-columns:1fr;gap:14px;padding:22px 16px}
-    .modes{grid-template-columns:1fr;gap:26px;padding:30px 24px}
     .stage-body{grid-template-columns:1fr}
     .stage-left{padding:32px 24px}
     .stage-right{border-left:none;border-top:1px solid var(--line-dark);padding:28px}
@@ -432,94 +425,84 @@
 
 <!-- ============ 02 SERVICES ============ -->
 <section class="sec sec-tight" id="services">
-  <div class="svc-intro">
+  <div class="svc-lead">
     <div>
-      <div class="eyebrow rv">02 &nbsp;/&nbsp; What we do</div>
-      <h2 class="disp rv" style="--d:.08s;margin-top:22px">Three groups.<br><span class="soft">Seven services.</span></h2>
+      <div class="eyebrow rv">02 &nbsp;/&nbsp; Services</div>
+      <h2 class="disp lines rv" style="--d:.06s;margin-top:22px"><span class="ln"><span>Build founders.</span></span><span class="ln"><span>Build leaders.</span></span><span class="ln"><span>Build capability.</span></span></h2>
     </div>
     <div class="rv" style="--d:.16s">
-      <p class="lead" style="font-size:16px;margin-bottom:22px">Every service is plotted on the same line, from the first co-founder conversation to the board table. Read across to see when each one starts earning its keep.</p>
-      <div class="rail-legend">
-        <span>Pre-Seed</span><span>Seed</span><span>Series A</span><span>Series B</span><span>Series C+</span>
-      </div>
+      <p class="lead">Three things a company needs from its people, in the order it usually needs them. Under each one sits the same thread: your stage decides which capability you need next, and how you should access it. The bar under every service shows where it starts earning its keep, from the first co-founder conversation to the board table.</p>
     </div>
   </div>
 
-  <div class="group rv">
-    <div class="g-title">
+  <div class="gcols">
+
+    <article class="gcol rv">
       <h3>Build founders</h3>
-      <p>Form the founding team. Know it, match it, build with it.</p>
-      <span class="g-count">Three services</span>
-    </div>
-    <div class="svc">
-      <div class="n"><em>01</em><span class="name">Founder Hunter</span></div>
-      <div class="desc">Co-founder and founding team matchmaking. The most important hire is the one before employee number one.</div>
-      <div class="rail" data-from="0" data-to="1"></div>
-    </div>
-    <div class="svc">
-      <div class="n"><em>02</em><span class="name">Founder Quotient</span></div>
-      <div class="desc">Structured assessment of founders and leadership teams. Decode the combination before you bet the company on it.</div>
-      <div class="rail" data-from="0" data-to="4"></div>
-    </div>
-    <div class="svc">
-      <div class="n"><em>03</em><span class="name">Founder Inner Circle</span></div>
-      <div class="desc">A capped, confidential circle of founders and CEOs. Candid conversation, trusted introductions, relationships that compound.</div>
-      <div class="rail" data-from="0" data-to="4"></div>
-    </div>
-  </div>
+      <p class="gcol-intro">Form the founding team, then keep reading it honestly as the company changes shape. The people decisions you make before employee number one set the ceiling on everything after.</p>
 
-  <div class="group rv">
-    <div class="g-title">
+      <div class="gsvc">
+        <h4>Founder Hunter</h4>
+        <p class="def">Co-founder and founding team matchmaking.</p>
+        <p class="body">We run co-founder search the way we run executive search: a mapped market, structured outreach to people who are not looking, and assessment against the specific gap in the founding combination rather than a generic ideal. We test for complementarity, equity mindset, appetite for the stage you are actually at, and how each of you behaves when things go badly &mdash; because that is when founding teams break, not when they are winning. You choose with evidence, not chemistry alone.</p>
+        <div class="when"><div class="rail" data-from="0" data-to="1"></div><em>Pre-seed &rarr; Seed</em></div>
+      </div>
+
+      <div class="gsvc">
+        <h4>Founder Quotient</h4>
+        <p class="def">Structured assessment of founders and leadership teams.</p>
+        <p class="body">A BPS-certified read on the people, not the pitch: track record, drive, coachability, judgement under pressure, and how strength and blind spots are distributed across the team. Investors use it before a term sheet. Boards use it before a promotion. Founders use it on themselves, before they scale a company around habits that will not survive the next stage. You get a written assessment and a working conversation, not a score in a portal.</p>
+        <div class="when"><div class="rail" data-from="0" data-to="4"></div><em>Every stage</em></div>
+      </div>
+
+      <div class="gsvc">
+        <h4>Founder Inner Circle</h4>
+        <p class="def">A capped, confidential circle of founders and CEOs.</p>
+        <p class="body">The higher you go, the less honest the feedback gets. A deliberately small group of founders and CEOs roughly one stage apart, meeting under Chatham House rules, where the questions you cannot put to your board or your team get asked properly. Introductions are made because they should be, not because someone is selling. No stage, no sponsors, no content calendar &mdash; the value is that the room stays small.</p>
+        <div class="when"><div class="rail" data-from="0" data-to="4"></div><em>Every stage</em></div>
+      </div>
+    </article>
+
+    <article class="gcol rv" style="--d:.1s">
       <h3>Build leaders</h3>
-      <p>Staff the C-suite, permanently or on demand.</p>
-      <span class="g-count">Two services</span>
-    </div>
-    <div class="svc">
-      <div class="n"><em>04</em><span class="name">Executive Search</span></div>
-      <div class="desc">Permanent C-suite and senior leadership search, built for tech startups and scale-ups, not corporates.</div>
-      <div class="rail" data-from="2" data-to="4"></div>
-    </div>
-    <div class="svc">
-      <div class="n"><em>05</em><span class="name">On-Demand CxO</span></div>
-      <div class="desc">Outcome-based fractional and interim executives. Senior leadership without the full-time commitment.</div>
-      <div class="rail" data-from="1" data-to="4"></div>
-    </div>
-  </div>
+      <p class="gcol-intro">Staff the C-suite, permanently or on demand. The same market map sits underneath both; what changes is the commitment your stage can carry.</p>
 
-  <div class="group rv">
-    <div class="g-title">
+      <div class="gsvc">
+        <h4>Executive Search</h4>
+        <p class="def">Permanent C-suite and senior leadership search.</p>
+        <p class="body">Retained search built for startups rather than corporates. We map the market, approach leaders who are not applying anywhere, and assess for founder fit and stage fit as hard as for functional skill &mdash; because the CFO who is right for Series A is often wrong at Series C, and the reverse is just as true. We build the compensation case including equity, which is where most regional processes come apart, run it to a signed offer, and stay involved through the first ninety days. Twenty years of GCC search sits behind it.</p>
+        <div class="when"><div class="rail" data-from="2" data-to="4"></div><em>Series A onward</em></div>
+      </div>
+
+      <div class="gsvc">
+        <h4>On-Demand CxO</h4>
+        <p class="def">Fractional and interim executives, scoped to outcomes.</p>
+        <p class="body">Senior capability without the full-time cost, commitment or risk. Fractional for the leader you need two days a week and cannot yet justify five. Interim for a gap you need covered now &mdash; a departure, a transformation, a fundraise. Scoped around what the company actually needs this quarter, with an agreed definition of done and a clean path to convert to permanent or to exit. Frequently the right answer for someone who arrived certain they wanted a full-time hire.</p>
+        <div class="when"><div class="rail" data-from="1" data-to="4"></div><em>Seed onward</em></div>
+      </div>
+    </article>
+
+    <article class="gcol rv" style="--d:.2s">
       <h3>Build capability</h3>
-      <p>The tech and hiring engine under the hood.</p>
-      <span class="g-count">Two services</span>
-    </div>
-    <div class="svc">
-      <div class="n"><em>06</em><span class="name">Tech Grid</span></div>
-      <div class="desc">Technology capability from full time to offshore, plus tech as a service and specialist solution partners.</div>
-      <div class="rail" data-from="0" data-to="3"></div>
-    </div>
-    <div class="svc">
-      <div class="n"><em>07</em><span class="name">TA Powerhouse</span></div>
-      <div class="desc">Talent acquisition as a service. Embedded hiring capacity that flexes up and down with your hiring curve.</div>
-      <div class="rail" data-from="1" data-to="4"></div>
-    </div>
+      <p class="gcol-intro">The hiring and technology engine under the hood. Capacity you can turn up and down with the curve, instead of carrying it permanently and hoping the curve agrees.</p>
+
+      <div class="gsvc">
+        <h4>Tech Grid</h4>
+        <p class="def">Technology capability, from full time to offshore.</p>
+        <p class="body">Product, engineering and AI capability accessed in whatever shape the stage can carry: full-time hires, offshore squads, technology as a service, or specialist solution partners for a defined build. Early on it means shipping without standing up a department you cannot yet feed. Later it means adding a capability the internal team does not have, without waiting out a twelve-month hiring cycle. We assemble it and stay accountable for it.</p>
+        <div class="when"><div class="rail" data-from="0" data-to="3"></div><em>Pre-seed &rarr; Series B</em></div>
+      </div>
+
+      <div class="gsvc">
+        <h4>TA Powerhouse</h4>
+        <p class="def">Talent acquisition as a service.</p>
+        <p class="body">Embedded hiring capacity that flexes with your hiring curve instead of against it: a dedicated recruiter or pod working inside your business, on your tools and your cadence, managed by us. It comes with the parts most startups never get round to building &mdash; a process that actually closes, structured interviews, calibrated scorecards, compensation benchmarks and an employer story people respond to. It typically pays for itself against agency fees after roughly three hires, and the process stays behind when you scale it back.</p>
+        <div class="when"><div class="rail" data-from="1" data-to="4"></div><em>Seed onward</em></div>
+      </div>
+    </article>
+
   </div>
 
-  <div class="modes rv">
-    <div>
-      <div class="eyebrow">How you access it</div>
-      <p>Your company needs the capability of a CFO. It rarely needs the department. Pick the access mode your stage can carry, then change it when the company outgrows it.</p>
-    </div>
-    <div class="chips">
-      <span class="chip lead-chip">Full time</span>
-      <span class="chip">Fractional</span>
-      <span class="chip">Interim</span>
-      <span class="chip">Embedded</span>
-      <span class="chip">Outsourced</span>
-      <span class="chip">Offshore</span>
-      <span class="chip">AI assisted</span>
-      <span class="chip">Blended</span>
-    </div>
-  </div>
 </section>
 
 <!-- ============ 03 THE STAGE MAP ============ -->
