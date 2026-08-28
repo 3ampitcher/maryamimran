@@ -10,7 +10,7 @@ const SITE = {
   whatsapp:     '966541234567',          // digits only, country code first
   website:      'thefounderandco.com',
   linkedin:     '',                       // paste the profile URL and it appears everywhere
-  location:     'Jeddah, Saudi Arabia'
+  location:     'GCC · MENA'
 };
 
 /* ---------- footer contact block ---------- */
