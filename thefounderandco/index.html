@@ -337,7 +337,7 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <span>&copy; <span id="yr"></span> TheFounder&amp;Co.</span>
+      <span>&copy; <span id="yr"></span> TheFounder&amp;Co. &middot; <a href="privacy.html" style="text-decoration:underline;text-underline-offset:3px">Privacy</a></span>
       <span>GCC &middot; MENA</span>
     </div>
   </div>
@@ -956,7 +956,7 @@ function solve(t){
         <input type="email" id="capEmail" name="email" placeholder="you@company.com" autocomplete="email" aria-label="Your email address" required>
         <button type="submit" class="btn btn-dark">Send it to me <span class="ar">&rarr;</span></button>
       </form>
-      <p class="cap-note" id="capNote">Used to send this one breakdown and to follow up once. Nothing else, no list.</p>
+      <p class="cap-note" id="capNote">Used to send this one breakdown and to follow up once. Nothing else, no list. <a href="privacy.html">How we handle it</a>.</p>
     </div>
   `;
   document.getElementById('result').classList.add('show');
@@ -984,6 +984,28 @@ function captureSummary(){
   ].join('\n');
 }
 
+/* One payload shape that the common form services all accept. Web3Forms
+   needs its access key and a subject line; everything else ignores them. */
+function capturePayload(email, summary){
+  const p = {
+    email,
+    service: lastResult.svc.name,
+    group:   lastResult.svc.group,
+    ask:     askLine(lastResult.state, lastResult.terminal),
+    profile: dossierParts(lastResult.state).join(' / '),
+    answers: lastResult.state,
+    message: summary,
+    summary,
+    source:  'solver'
+  };
+  if(SITE.formKey){
+    p.access_key = SITE.formKey;
+    p.subject    = `Solver: ${lastResult.svc.name} — ${p.profile}`;
+    p.from_name  = 'TheFounder&Co. solver';
+  }
+  return p;
+}
+
 async function onCapture(ev){
   ev.preventDefault();
   const input = document.getElementById('capEmail');
@@ -1006,16 +1028,7 @@ async function onCapture(ev){
       const res = await fetch(SITE.formEndpoint, {
         method:'POST',
         headers:{'Content-Type':'application/json', 'Accept':'application/json'},
-        body: JSON.stringify({
-          email,
-          service: lastResult.svc.name,
-          group:   lastResult.svc.group,
-          ask:     askLine(lastResult.state, lastResult.terminal),
-          profile: dossierParts(lastResult.state).join(' / '),
-          answers: lastResult.state,
-          summary,
-          source:  'solver'
-        })
+        body: JSON.stringify(capturePayload(email, summary))
       });
       if(!res.ok) throw new Error(res.status);
       captureDone(email);

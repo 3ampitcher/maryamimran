@@ -9,6 +9,7 @@ dependencies — open the files or drop the folder on any static host.
     company.html    the long-scroll site: why we exist, the services, the
                     stage map, the routing tree, who is behind it, proof,
                     contact.
+    privacy.html    what the site collects and what it doesn't
     404.html        not-found page
     sitemap.xml     two URLs
     robots.txt      allows everything, points at the sitemap
@@ -39,10 +40,10 @@ script. Change a name in both constants and the two pages stay in step.
 **Contact details** — `assets/site.js`, the `SITE` object at the top.
 Every contact link on every page is generated from it.
 
-**Where the solver emails go** — `SITE.formEndpoint`. Paste a Formspree,
-Getform or Basin endpoint and submissions post straight to your inbox with
-the visitor's full selection attached. Leave it empty and the form opens a
-prefilled email instead, so it works either way.
+**Where the solver emails go** — `SITE.formEndpoint` (and `SITE.formKey`
+for Web3Forms). The comment above them in `assets/site.js` has the exact
+steps. Until one is set the form opens a prefilled email instead, so it
+works either way, but nothing reaches you unless the visitor sends it.
 
 **Brand colour / type** — `assets/brand.css`, the `:root` block. The three
 greys (`--muted`, `--faint`, `--soft`) are set at the lightest values that
@@ -61,8 +62,10 @@ following question or `{terminal:'...'}` to finish.
 - Point `thefounderandco.com` at the host. The canonical URLs, sitemap and
   social cards already assume that domain.
 - Set `SITE.formEndpoint` so the solver captures rather than discards.
-- Add a privacy note. The solver now collects an email address, which means
-  you need one.
+- Name the form processor in `privacy.html`, under "Who else is involved".
+  It is the one placeholder on that page.
+- Have a lawyer read `privacy.html`. It is accurate about what the site
+  actually does, but it is not legal advice.
 
 ## Deploying
 

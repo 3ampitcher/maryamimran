@@ -13,11 +13,25 @@ const SITE = {
   location:     'GCC · MENA',
   domain:       'https://thefounderandco.com',
 
-  // Where the solver's email capture posts. Paste a Formspree / Getform /
-  // Basin endpoint here and submissions go straight to your inbox with the
-  // visitor's full selection attached. Leave it empty and the form falls
-  // back to opening a prefilled email instead, so it still works today.
-  formEndpoint: ''
+  // ---------------------------------------------------------------
+  // WHERE SOLVER SUBMISSIONS GO.  Two minutes, once, then the solver
+  // stops throwing away the answers people give it.
+  //
+  //   Web3Forms  (fastest -- no account)
+  //     1. https://web3forms.com -> enter imran@rethinkhrs.com
+  //     2. they email you an access key
+  //     3. formEndpoint = 'https://api.web3forms.com/submit'
+  //        formKey      = the key they sent
+  //
+  //   Formspree / Getform / Basin  (account, more features)
+  //     create a form, paste its POST URL into formEndpoint,
+  //     leave formKey empty.
+  //
+  // Leave both empty and the form still works -- it opens a prefilled
+  // email instead -- but nothing reaches you unless the visitor sends it.
+  // ---------------------------------------------------------------
+  formEndpoint: '',
+  formKey:      ''
 };
 
 /* ---------- footer contact block ---------- */
