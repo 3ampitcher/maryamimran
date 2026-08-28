@@ -327,19 +327,29 @@
   }
   .portrait .ph b{font-size:62px;font-weight:700;color:var(--lime);letter-spacing:-.04em}
   .portrait .ph span{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
-  .p-cap{margin-top:16px}
-  .p-cap b{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em}
-  .p-cap span{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .p-cap span em{font-style:normal;color:var(--lime-deep)}
-  .p-li{
-    display:inline-flex;align-items:center;gap:8px;margin-top:18px;
-    font-size:14.5px;font-weight:700;color:var(--ink);text-decoration:none;
-    border-bottom:1.5px solid var(--line);padding-bottom:4px;
-    transition:border-color .3s,gap .3s var(--ease);
+  .p-cap{
+    margin-top:20px;display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding-top:18px;border-top:1px solid var(--line);
   }
-  .p-li:hover{border-color:var(--lime-deep);gap:13px}
-  .p-li .ar{font-size:13px;transition:transform .3s var(--ease)}
-  .p-li:hover .ar{transform:translate(2px,-2px)}
+  .p-who b{display:block;font-size:21px;font-weight:700;letter-spacing:-.025em;line-height:1.1}
+  .p-who span{
+    display:block;margin-top:5px;font-size:12.5px;font-weight:700;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .p-who span em{font-style:normal;color:var(--lime-deep)}
+
+  .p-li{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;
+    padding:10px 16px 10px 13px;border-radius:999px;
+    border:1.5px solid var(--line);background:var(--card);
+    color:var(--muted);text-decoration:none;
+    font-size:13.5px;font-weight:700;letter-spacing:-.01em;
+    transition:color .28s,border-color .28s,background .28s,transform .28s var(--ease);
+  }
+  .p-li svg{width:16px;height:16px;flex:0 0 auto}
+  .p-li:hover{
+    color:#fff;background:var(--ink);border-color:var(--ink);transform:translateY(-2px);
+  }
 
   .facts{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:44px;border-top:1px solid var(--line)}
   .fact{
@@ -436,7 +446,7 @@
     .svc-col{position:static}
     .tree.hover .need,.tree.hover .svc-pill{opacity:1}
     .founder{grid-template-columns:1fr;gap:32px}
-    .portrait{position:static;max-width:320px}
+    .portrait{position:relative;top:auto;max-width:320px}
     .facts{grid-template-columns:1fr}
     .creed{grid-template-columns:1fr;gap:28px;padding:40px 28px}
     .contact-card{grid-template-columns:1fr;gap:34px;padding:40px 28px}
@@ -506,7 +516,7 @@
       </div>
       <div class="wb rv" style="--d:.2s">
         <div class="wb-num">03</div>
-        <h3>Every stage runs a different code.</h3>
+        <h3>Every stage changes the equation.</h3>
         <p>What won you seed will quietly break your Series B. The expensive mistake is rarely the wrong person; it is running the last stage's playbook one stage too long.</p>
       </div>
     </div>
@@ -655,9 +665,15 @@
         <div class="ph"><b>IY</b><span>Add portrait</span></div>
       </div>
       <div class="p-cap">
-        <b>Imran Yousuf</b>
-        <span>Founder <em>&amp;</em> CEO</span>
-        <a class="p-li" data-site-link="linkedin" target="_blank" rel="noopener">Connect on LinkedIn <span class="ar">&nearr;</span></a>
+        <div class="p-who">
+          <b>Imran Yousuf</b>
+          <span>Founder <em>&amp;</em> CEO</span>
+        </div>
+        <a class="p-li" data-site-link="linkedin" target="_blank" rel="noopener"
+           aria-label="Imran Yousuf on LinkedIn" title="Imran Yousuf on LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+          <span>LinkedIn</span>
+        </a>
       </div>
     </div>
 
@@ -777,7 +793,7 @@ const SERVICES = [
 
 const STAGES = [
   {
-    key:'Pre-Seed', code:'the founding team.',
+    key:'Pre-Seed', kicker:'the equation starts with', code:'the founding team.',
     breaks:[
       'Finding a co-founder who covers what you do not',
       'Not knowing your own blind spots yet',
@@ -936,7 +952,7 @@ function paintStage(i){
   current = i;
 
   leftEl.innerHTML = `
-    <p class="stage-kicker">At ${st.key === 'Every stage' ? 'every stage' : st.key}, the code is</p>
+    <p class="stage-kicker">At ${st.key === 'Every stage' ? 'every stage' : st.key}, ${st.kicker || 'the equation turns on'}</p>
     <p class="stage-code">${st.code}</p>
     <div class="stage-cols">
       <div>
