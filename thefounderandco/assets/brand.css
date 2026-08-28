@@ -115,7 +115,7 @@ a{color:inherit}
 .nav-cta .ar{transition:transform .25s var(--ease)}
 .nav-cta:hover .ar{transform:translateX(3px)}
 
-@media(min-width:1200px){.brand-tag{display:block}}
+@media(min-width:1320px){.brand-tag{display:block}}
 @media(max-width:720px){
   .nav-outer{padding:10px 12px 0}
   .nav-outer > nav{padding:10px 10px 10px 18px}
