@@ -331,6 +331,15 @@
   .p-cap b{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em}
   .p-cap span{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .p-cap span em{font-style:normal;color:var(--lime-deep)}
+  .p-li{
+    display:inline-flex;align-items:center;gap:8px;margin-top:18px;
+    font-size:14.5px;font-weight:700;color:var(--ink);text-decoration:none;
+    border-bottom:1.5px solid var(--line);padding-bottom:4px;
+    transition:border-color .3s,gap .3s var(--ease);
+  }
+  .p-li:hover{border-color:var(--lime-deep);gap:13px}
+  .p-li .ar{font-size:13px;transition:transform .3s var(--ease)}
+  .p-li:hover .ar{transform:translate(2px,-2px)}
 
   .facts{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:44px;border-top:1px solid var(--line)}
   .fact{
@@ -369,12 +378,25 @@
   .track.rev{animation-direction:reverse;animation-duration:56s}
   .marquee:hover .track{animation-play-state:paused}
   @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* one pill, whether it holds a logo file or falls back to the wordmark */
   .logo{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+    height:64px;min-width:158px;padding:0 30px;
     border:1px solid var(--line);background:var(--card);border-radius:999px;
-    padding:16px 30px;font-size:17px;font-weight:700;letter-spacing:-.02em;
-    color:var(--faint);white-space:nowrap;transition:color .3s,border-color .3s,background .3s;
+    transition:border-color .3s,transform .3s var(--ease),box-shadow .3s var(--ease);
   }
-  .logo:hover{color:var(--ink);border-color:var(--ink)}
+  .logo:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 26px rgba(14,16,21,.06)}
+  /* logos arrive in every colour and weight; flatten them at rest so the
+     wall reads as one row, and give the real artwork back on hover */
+  .logo img{
+    height:28px;width:auto;max-width:150px;object-fit:contain;
+    filter:grayscale(1) opacity(.6);
+    transition:filter .35s var(--ease);
+  }
+  .logo:hover img{filter:grayscale(0) opacity(1)}
+  .logo .wm{font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--faint);white-space:nowrap;transition:color .3s}
+  .logo:hover .wm{color:var(--ink)}
 
   /* ---------- 07 contact ---------- */
   .contact-card{
@@ -635,6 +657,7 @@
       <div class="p-cap">
         <b>Imran Yousuf</b>
         <span>Founder <em>&amp;</em> CEO</span>
+        <a class="p-li" data-site-link="linkedin" target="_blank" rel="noopener">Connect on LinkedIn <span class="ar">&nearr;</span></a>
       </div>
     </div>
 
@@ -834,8 +857,28 @@ const NEEDS = [
   ]},
 ];
 
-const LOGOS_A = ['Sanabil Venture Studio','Raed VC','Impact46','Stryber','Mozn','Foodics','Jahez'];
-const LOGOS_B = ['Nana','Mrsool','D360 Bank','Floward','Resal','WalaPlus','Syarah'];
+/* Drop a file into assets/logos/ named exactly as `file` below and it
+   replaces the wordmark automatically. SVG is tried first, then PNG; if
+   neither is there the company name is set as a wordmark instead, so the
+   wall is never broken and can be filled in one logo at a time. */
+const LOGOS_A = [
+  {name:'Sanabil Venture Studio', file:'sanabil-venture-studio'},
+  {name:'Raed VC',                file:'raed-vc'},
+  {name:'Impact46',               file:'impact46'},
+  {name:'Stryber',                file:'stryber'},
+  {name:'Mozn',                   file:'mozn'},
+  {name:'Foodics',                file:'foodics'},
+  {name:'Jahez',                  file:'jahez'},
+];
+const LOGOS_B = [
+  {name:'Nana',                   file:'nana'},
+  {name:'Mrsool',                 file:'mrsool'},
+  {name:'D360 Bank',              file:'d360-bank'},
+  {name:'Floward',                file:'floward'},
+  {name:'Resal',                  file:'resal'},
+  {name:'WalaPlus',               file:'walaplus'},
+  {name:'Syarah',                 file:'syarah'},
+];
 
 const nameOf = id => (SERVICES.find(s=>s.id===id)||{}).name || id;
 
@@ -1030,9 +1073,34 @@ setTimeout(drawWires, 400);
 /* =====================================================================
    06 — logo marquees (duplicated once so the loop is seamless)
 ===================================================================== */
+function wordmark(name){
+  const t = document.createElement('span');
+  t.className = 'wm';
+  t.textContent = name;
+  return t;
+}
+
+function logoPill(c){
+  const pill = document.createElement('span');
+  pill.className = 'logo';
+  const img = document.createElement('img');
+  img.alt = c.name;
+  img.loading = 'lazy';
+  let tried = 0;
+  const exts = ['svg','png'];
+  img.addEventListener('error', ()=>{
+    tried++;
+    if(tried < exts.length){ img.src = `assets/logos/${c.file}.${exts[tried]}`; }
+    else { pill.replaceChild(wordmark(c.name), img); }
+  });
+  img.src = `assets/logos/${c.file}.${exts[0]}`;
+  pill.appendChild(img);
+  return pill;
+}
+
 const fill = (el, list)=>{
-  el.innerHTML = [...list, ...list]
-    .map(n=>`<span class="logo">${n}</span>`).join('');
+  el.innerHTML = '';
+  [...list, ...list].forEach(c=> el.appendChild(logoPill(c)));
 };
 fill(document.getElementById('track1'), LOGOS_A);
 fill(document.getElementById('track2'), LOGOS_B);

@@ -37,15 +37,14 @@ const SITE = {
 /* ---------- footer contact block ---------- */
 function renderContact(el){
   if(!el) return;
-  const rows = [
+  // No site URL -- you are already on it. No LinkedIn -- it is Imran's
+  // personal profile, so it belongs next to him, not in the company footer.
+  el.innerHTML = [
     `<a href="mailto:${SITE.email}">${SITE.email}</a>`,
     `<a href="tel:+${SITE.whatsapp}">${SITE.phoneDisplay}</a>`,
     `<a href="https://wa.me/${SITE.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>`,
-    `<a href="https://${SITE.website}">${SITE.website}</a>`
-  ];
-  if(SITE.linkedin) rows.push(`<a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`);
-  rows.push(`<span>${SITE.location}</span>`);
-  el.innerHTML = rows.join('');
+    `<span>${SITE.location}</span>`
+  ].join('');
 }
 
 /* ---------- scroll progress ---------- */
@@ -83,7 +82,17 @@ function initReveal(root){
   targets.forEach(t=>io.observe(t));
 }
 
+/* <a data-site-link="linkedin"> picks up its href from SITE, and hides
+   itself if that link is not set. */
+function wireSiteLinks(){
+  document.querySelectorAll('[data-site-link]').forEach(el=>{
+    const url = SITE[el.dataset.siteLink];
+    if(url) el.href = url; else el.remove();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', ()=>{
+  wireSiteLinks();
   renderContact(document.getElementById('footContact'));
   renderContact(document.getElementById('contactList'));
   const yr = document.getElementById('yr');
