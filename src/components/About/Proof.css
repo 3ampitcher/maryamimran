@@ -1,0 +1,100 @@
+.proof {
+  padding-block: clamp(4rem, 9vw, 7rem);
+}
+
+.proof__meta {
+  border-bottom-color: var(--ink-16);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* --- The proof moments --- */
+
+.proof__figures {
+  display: grid;
+  /* Packed left with a sane column width: two verified figures shouldn't
+     stretch across the full measure, and more will slot in as they're
+     confirmed without the layout changing shape. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 18rem));
+  justify-content: start;
+  gap: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 5vw, 4.5rem);
+}
+
+.pfig {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-start;
+}
+
+.pfig__value {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 500;
+  line-height: 0.82;
+  letter-spacing: var(--tr-mega);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.5rem;
+}
+
+.pfig__title {
+  font-size: var(--t-md);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: var(--tr-heading);
+  color: var(--text);
+  max-width: 18ch;
+}
+
+.pfig__org {
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  max-width: 24ch;
+}
+
+.pfig__year {
+  margin-top: 0.35rem;
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  color: var(--text-tertiary);
+}
+
+/* --- Recognition without a figure: listed, not inflated --- */
+
+.proof__rest {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: clamp(1.25rem, 2.5vw, 2rem);
+  border-top: 1px solid var(--ink-16);
+}
+
+.prest {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.35rem 1.5rem;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--ink-08);
+}
+
+.prest__title {
+  font-size: var(--t-sm);
+  font-weight: 500;
+  letter-spacing: var(--tr-heading);
+  color: var(--text);
+}
+
+.prest__org {
+  grid-column: 1;
+  font-size: var(--t-xs);
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+.prest__year {
+  grid-row: 1;
+  grid-column: 2;
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}

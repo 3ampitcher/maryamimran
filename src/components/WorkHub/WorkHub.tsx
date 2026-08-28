@@ -125,6 +125,17 @@ export function WorkHub() {
           );
         })}
       </div>
+
+      {/* Quiet by design: the archive is available, but it must not compete
+          with the three categories above it. */}
+      <div className="shell">
+        <Link to="/index" className="hub__index">
+          <span className="hub__index-label">View complete index</span>
+          <span className="hub__index-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </Link>
+      </div>
     </section>
   );
 }

@@ -5,32 +5,37 @@ import './Portrait.css';
 /* ============================================================
    PORTRAIT
    ------------------------------------------------------------
-   The reusable portrait component. The hero and the About page
-   both use it; About can be swapped to a second image by
-   changing `src` alone.
+   Two treatments, both designed to sit *in* the page rather than
+   on top of it:
 
-   Source file:  public/assets/portrait/maryam-portrait.jpg
-   Second image: public/assets/portrait/maryam-about.jpg
+   A. cutout (preferred) — a transparent PNG of Maryam placed
+      directly on the stone. No frame, no ground, no edge. The
+      person and the typography share one surface.
 
-   The source portrait is square. Rather than forcing an ugly
-   crop, the frame takes a ratio and `objectPosition` keeps the
-   face in the upper third as the frame gets taller.
+   B. frame (fallback)   — a normal rectangular photograph, with
+      its lower edge dissolved into the ground by a mask so it
+      never reads as a pasted-on photo card.
+
+   Which one is used is set once, in site.ts → portrait.cutout.
+
+   Files:
+     public/assets/portrait/maryam-portrait.jpg   (or .png cutout)
+     public/assets/portrait/maryam-about.jpg
    ============================================================ */
 
-export const PORTRAIT_SRC = '/assets/portrait/maryam-portrait.jpg';
-export const PORTRAIT_ABOUT_SRC = '/assets/portrait/maryam-about.jpg';
+export const PORTRAIT_SRC = site.portrait.src;
+export const PORTRAIT_ABOUT_SRC = site.portrait.aboutSrc;
 
 interface PortraitProps {
   src?: string;
   alt?: string;
-  /** CSS aspect-ratio for the frame. */
   ratio?: string;
-  /** Keeps the face placed as the frame changes shape. */
   objectPosition?: string;
   className?: string;
   priority?: boolean;
   sizes?: string;
-  /** Caption shown under the placeholder only, guiding the file drop. */
+  /** Transparent PNG placed straight on the ground — no frame at all. */
+  cutout?: boolean;
   placeholderNote?: string;
 }
 
@@ -38,17 +43,18 @@ export function Portrait({
   src = PORTRAIT_SRC,
   alt = `${site.name} — portrait`,
   ratio = '1 / 1',
-  objectPosition = 'center 28%',
+  objectPosition = 'center 24%',
   className = '',
   priority = false,
   sizes,
+  cutout = false,
   placeholderNote,
 }: PortraitProps) {
   const [status, setStatus] = useState<'loading' | 'loaded' | 'missing'>('loading');
 
   return (
     <div
-      className={`portrait portrait--${status} ${className}`}
+      className={`portrait portrait--${cutout ? 'cutout' : 'frame'} portrait--${status} ${className}`}
       style={{ ['--portrait-ratio' as string]: ratio }}
     >
       {status !== 'missing' && (
@@ -69,12 +75,11 @@ export function Portrait({
 
       {status === 'missing' && (
         <div className="portrait__ph" role="img" aria-label={alt}>
-          <span className="portrait__ph-grid" aria-hidden="true" />
           <span className="portrait__ph-mono" aria-hidden="true">
             {site.initials}
           </span>
           <span className="portrait__ph-note mono">
-            {placeholderNote ?? `Portrait → ${src.replace('/assets/portrait/', '')}`}
+            {placeholderNote ?? src.replace('/assets/portrait/', '')}
           </span>
         </div>
       )}

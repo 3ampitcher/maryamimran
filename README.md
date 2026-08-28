@@ -109,8 +109,8 @@ before anything reaches the page.
 | Programs and what you did there | `src/data/programs.ts` |
 | Education, awards, grades | `src/data/recognition.ts` |
 | Email, LinkedIn, Substack | `src/data/site.ts` → `site.links` |
-| The **Now** section | `src/data/site.ts` → `now` |
-| The "At LEAP? Say hi." line | `src/data/site.ts` → `leapMode` (set `false` after LEAP) |
+| The LEAP line in Contact | `src/data/site.ts` → `leapMode` (set `false` after LEAP) and `leapLine` |
+| Hero portrait treatment | `src/data/site.ts` → `portrait.cutout` |
 | Page titles and meta descriptions | each file in `src/pages/` |
 
 ## Replacing images
@@ -120,7 +120,15 @@ Drop files into `public/assets/<category>/` at the paths listed in
 the project's real name renders instead — no stock photography, ever.
 
 The two portraits go in `public/assets/portrait/`:
-`maryam-portrait.jpg` (hero) and `maryam-about.jpg` (About).
+`maryam-portrait.png` (hero) and `maryam-about.jpg` (About).
+
+The hero supports two treatments, switched by `portrait.cutout` in `site.ts`:
+
+- **`cutout: true`** (current) — a transparent PNG with the background removed,
+  placed straight onto the stone so the figure overlaps the giant name. This is
+  the integrated composition.
+- **`cutout: false`** — a normal rectangular photo. Its lower edge is masked so
+  it dissolves into the ground rather than reading as a photo card.
 
 ## Adding the resume
 
@@ -163,6 +171,24 @@ Each category deliberately has its own interaction model:
 | **Business** | interactive index — rows expand in place, hover raises a preview |
 | **Technology** | irregular grid on a 12-column ground — a lab, not a card wall |
 | **Impact** | sticky chapters that stack as you scroll |
+
+## Page structure
+
+The homepage is deliberately short: **hero → intro → business / technology /
+impact → speaking → contact**. Everything else is still on the site, one level
+in:
+
+| Content | Lives on |
+|---|---|
+| Writing | `/writing` |
+| Education, recognition, programs, resume | `/about` |
+| The full archive | `/index` |
+
+`/index` opens on a table of contents — seven groups with counts — and renders
+records grouped under their own headings rather than as one flat list. Speaking
+is a lens rather than a partition: a talk is still Technology work and appears
+in both places, so the row total (51) is higher than the distinct record count
+(44), which is the number the page reports.
 
 ---
 

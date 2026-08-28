@@ -1,87 +1,69 @@
 .programs {
   background: var(--paper);
+  padding-block: clamp(4rem, 9vw, 7rem);
 }
 
-.programs__headline {
-  max-width: 14ch;
+.programs__meta {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
-.programs__list {
+/* A grid rather than a full-width list: eight programmes as rows would
+   read as a certificate wall, which is exactly what this is not. */
+.programs__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 0 clamp(1.5rem, 4vw, 3.5rem);
   border-top: 1px solid var(--rule);
 }
 
-.prow {
+.pcell {
   border-bottom: 1px solid var(--rule);
 }
 
-.prow__trigger {
+.pcell__trigger {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: clamp(1rem, 3vw, 3rem);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
   width: 100%;
-  padding-block: clamp(1rem, 2.2vw, 1.6rem);
+  padding-block: clamp(1rem, 2vw, 1.4rem);
   text-align: left;
   color: var(--text);
 }
 
-.prow__name {
-  font-size: clamp(1.35rem, 3vw, 2.4rem);
+.pcell__name {
+  font-size: clamp(1.15rem, 1.9vw, 1.5rem);
   font-weight: 500;
-  line-height: 1.06;
-  letter-spacing: var(--tr-display);
-  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: var(--tr-heading);
   transition:
     color var(--dur-fast) var(--ease-out),
     transform var(--dur) var(--ease-out);
 }
 
-.prow--open .prow__name {
+.pcell--open .pcell__name {
   color: var(--accent);
-  transform: translateX(0.4rem);
+  transform: translateX(0.3rem);
 }
 
-.prow__aside {
+.pcell__aside {
   display: flex;
-  align-items: baseline;
-  gap: clamp(0.75rem, 2vw, 1.75rem);
-  flex: none;
-}
-
-.prow__location,
-.prow__year {
-  font-family: var(--font-mono);
+  gap: 0.8rem;
   font-size: var(--t-label);
   letter-spacing: var(--tr-label);
   text-transform: uppercase;
   color: var(--text-tertiary);
-  white-space: nowrap;
 }
 
-.prow__what-text {
-  max-width: 62ch;
-  padding-bottom: clamp(1rem, 2.2vw, 1.6rem);
-  font-size: var(--t-sm);
+.pcell__what-text {
+  padding-bottom: clamp(1rem, 2vw, 1.4rem);
+  font-size: var(--t-xs);
   line-height: 1.6;
   color: var(--text-secondary);
 }
 
 @media (max-width: 640px) {
-  .prow__trigger {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
-  }
-
-  .prow__name {
-    font-size: clamp(1.25rem, 6vw, 1.75rem);
-  }
-
-  .prow--open .prow__name {
+  .pcell--open .pcell__name {
     transform: none;
-  }
-
-  .prow__what-text {
-    font-size: var(--t-xs);
   }
 }

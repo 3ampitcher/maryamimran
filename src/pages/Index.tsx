@@ -1,7 +1,7 @@
 import { PageHeader } from '../components/PageHeader/PageHeader';
 import { CompleteIndex } from '../components/CompleteIndex/CompleteIndex';
 import { Contact } from '../components/Contact/Contact';
-import { indexWork } from '../data/work';
+import { distinctEntryCount } from '../data/indexEntries';
 import { usePageMeta } from '../hooks/usePageMeta';
 
 /* The permanent archive. */
@@ -20,7 +20,7 @@ export default function IndexPage() {
         kicker="Index"
         title="Everything."
         blurb="Projects, roles, programs, talks, writing, competitions and things I’ve worked on."
-        count={indexWork.length}
+        count={distinctEntryCount}
       />
 
       <section className="section section--flush-top" aria-label="Complete index">

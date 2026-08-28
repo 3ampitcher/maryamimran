@@ -27,6 +27,18 @@ export const site = {
     substack: '', // TODO(maryam): add your Substack URL to show the link.
   },
 
+  /* --- Portrait -------------------------------------------------------
+     cutout: true expects a transparent PNG (background removed) placed
+     straight onto the stone hero — person and typography on one surface.
+     cutout: false uses a normal rectangular photo whose lower edge is
+     dissolved into the ground, so it still never reads as a photo card.
+     Either file works; only this flag changes the treatment. */
+  portrait: {
+    src: '/assets/portrait/maryam-portrait.png',
+    aboutSrc: '/assets/portrait/maryam-about.jpg',
+    cutout: true,
+  },
+
   /* --- Resume ----------------------------------------------------------
      Drop the PDF at public/resume/Maryam-Imran-Resume.pdf and it goes live
      everywhere. Until the file exists the UI degrades gracefully. */
@@ -41,39 +53,9 @@ export const site = {
 } as const;
 
 /* ============================================================
-   NOW — time-sensitive. Edit freely; nothing structural reads it.
+   LEAP — the only time-sensitive thing on the site.
+   Adds one line to Contact. Set to false the day after LEAP and
+   it disappears; nothing else depends on it.
    ============================================================ */
-
-export const now = {
-  /** Shown as the "as of" stamp. */
-  updated: 'August 2026',
-  items: [
-    {
-      label: 'Studying',
-      text: 'Business Analytics & Information Systems at UBT, Jeddah.',
-    },
-    {
-      label: 'Building',
-      text: 'Tiin — financial clarity for Saudi SMEs, currently through the accelerator and Demo Day.',
-    },
-    {
-      label: 'Leading',
-      text: 'Sustainability work at UBT — club, institutional reporting and campus programming.',
-    },
-    {
-      label: 'Exploring',
-      text: 'Agentic AI: where agents genuinely help, and where a plain script would do.',
-    },
-    {
-      label: 'Writing',
-      text: 'Short pieces on ambition, building things early, and being wrong quickly.',
-    },
-    {
-      label: 'Next',
-      text: 'LEAP 2026 in Riyadh.',
-    },
-  ],
-} as const;
-
-/* Temporary contact variation — set to false after LEAP. */
 export const leapMode = true;
+export const leapLine = 'At LEAP? Say hi.';

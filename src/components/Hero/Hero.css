@@ -67,6 +67,7 @@
 
 .hero__stage {
   position: relative;
+  z-index: 2;
   flex: 1;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -99,30 +100,18 @@
 
 .hero__portrait {
   position: relative;
+  z-index: 2;
   width: clamp(13rem, min(28vw, 40vh), 26rem);
   will-change: transform;
 }
 
-/* A cobalt hairline anchoring the portrait to the grid. */
-.hero__portrait::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: var(--cobalt);
-  transform-origin: left;
-  animation: portrait-rule 1.1s var(--ease-out) 0.6s both;
-}
-
-@keyframes portrait-rule {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
+/* The overlap is applied to the inner element, not to .hero__portrait,
+   for two reasons: framer-motion owns the transform on the parent, and a
+   transform costs no layout height — a negative margin here would simply
+   be reabsorbed by the flex:1 stage above. This is what puts the figure
+   in front of the letterforms instead of stacked above them. */
+.hero__portrait .portrait {
+  transform: translateY(clamp(1.5rem, 13vh, 8.5rem));
 }
 
 .hero__context {
@@ -145,8 +134,12 @@
 
 .hero__nameband {
   position: relative;
+  z-index: 1;
   width: 100vw;
   margin-left: calc(50% - 50vw);
+  /* Pulled up so the portrait overlaps the type — this overlap is what
+     makes the hero read as one composition instead of two stacked blocks. */
+  margin-top: clamp(-9rem, -9vh, -2.5rem);
   padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
   pointer-events: none;
 }
@@ -211,9 +204,6 @@
     transform: scaleX(1);
   }
 
-  .hero__portrait::after {
-    animation: none;
-  }
 }
 
 /* ============================================================
@@ -275,6 +265,20 @@
   .hero__name {
     /* Still large, still bleeds — but controlled. */
     font-size: clamp(3.25rem, 21vw, 7rem);
+  }
+
+  /* The portrait/type overlap is a desktop composition device. Stacked on a
+     phone there is no room for it, and it collides with the context lines. */
+  .hero__portrait .portrait {
+    transform: none;
+  }
+
+  .hero__nameband {
+    margin-top: 0;
+  }
+
+  .hero__context {
+    padding-bottom: 0.75rem;
   }
 
   .hero__cue {

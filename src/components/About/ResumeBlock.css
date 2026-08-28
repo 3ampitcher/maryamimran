@@ -1,0 +1,41 @@
+.resumeblock {
+  background: var(--paper);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+
+.resumeblock__inner {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--rule);
+}
+
+.resumeblock__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: clamp(1.5rem, 3.5vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  color: var(--text);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.resumeblock__link:hover,
+.resumeblock__link:focus-visible {
+  color: var(--accent);
+}
+
+.resumeblock__arrow {
+  font-size: 0.5em;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.resumeblock__link:hover .resumeblock__arrow {
+  transform: translate(0.25rem, -0.25rem);
+}

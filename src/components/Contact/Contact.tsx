@@ -1,4 +1,4 @@
-import { leapMode, site } from '../../data/site';
+import { leapLine, leapMode, site } from '../../data/site';
 import { MaskReveal } from '../Motion/Reveal';
 import './Contact.css';
 
@@ -15,10 +15,8 @@ export function Contact() {
     <section id="contact" className="section section--tall surface-dark contact" aria-labelledby="contact-heading">
       <div className="shell contact__inner">
         <div className="section-head__meta contact__meta">
-          <p className="label">
-            <span className="label__index">12</span> Contact
-          </p>
-          {leapMode && <p className="label label--accent">At LEAP? Say hi.</p>}
+          <p className="label">Contact</p>
+          {leapMode && <p className="label label--accent">{leapLine}</p>}
         </div>
 
         <h2 id="contact-heading" className="contact__headline">

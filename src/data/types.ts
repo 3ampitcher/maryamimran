@@ -132,10 +132,20 @@ export interface RecognitionItem {
   order: number;
 }
 
+export interface EducationResult {
+  label: string;
+  value: string;
+}
+
 export interface EducationItem {
   id: string;
   institution: string;
+  /** Display name for the large editorial block, e.g. "UBT". */
+  short?: string;
   qualification: string;
+  /** Grades and figures, set as their own stack on the About page. */
+  results?: EducationResult[];
+  /** Secondary context, joined with middots under the block. */
   detail?: string[];
   year: string;
   order: number;

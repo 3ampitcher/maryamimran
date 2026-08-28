@@ -25,7 +25,7 @@ export function Speaking() {
         <div className="section-head">
           <div className="section-head__meta">
             <p className="label">
-              <span className="label__index">07</span> Speaking
+              <span className="label__index">03</span> Speaking
             </p>
             <p className="label" aria-hidden="true">
               Swipe / scroll →

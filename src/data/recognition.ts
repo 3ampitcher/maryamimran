@@ -12,7 +12,9 @@ export const education: EducationItem[] = [
   {
     id: 'ubt-bais',
     institution: 'University of Business & Technology',
+    short: 'UBT',
     qualification: 'Business Analytics & Information Systems',
+    results: [{ label: 'CGPA', value: '5.0 / 5.0' }],
     detail: ['Jeddah, Saudi Arabia', 'College of Business Administration'],
     year: '2023—NOW',
     order: 1,
@@ -20,8 +22,13 @@ export const education: EducationItem[] = [
   {
     id: 'cambridge',
     institution: 'Cambridge International',
+    short: 'Cambridge',
     qualification: 'A Levels',
-    detail: ['Economics A*', 'Business A*', 'Mathematics A'],
+    results: [
+      { label: 'Economics', value: 'A*' },
+      { label: 'Business', value: 'A*' },
+      { label: 'Mathematics', value: 'A' },
+    ],
     year: '2023',
     order: 2,
   },

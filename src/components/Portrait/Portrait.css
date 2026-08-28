@@ -1,10 +1,13 @@
+/* ============================================================
+   PORTRAIT
+   No box, no border, no rule. The portrait is part of the
+   composition, not an object placed on it.
+   ============================================================ */
+
 .portrait {
   position: relative;
   width: 100%;
   aspect-ratio: var(--portrait-ratio, 1 / 1);
-  overflow: hidden;
-  background: var(--stone);
-  border-radius: 2px;
 }
 
 .portrait__img {
@@ -12,10 +15,10 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: scale(1.03);
+  transform: scale(1.02);
   transition:
-    opacity 0.9s var(--ease-out),
-    transform 1.4s var(--ease-out);
+    opacity 1s var(--ease-out),
+    transform 1.5s var(--ease-out);
   will-change: transform;
 }
 
@@ -24,49 +27,98 @@
   transform: scale(1);
 }
 
+/* --- A. Cutout: a transparent PNG straight on the ground. ---
+   Nothing to contain it — the silhouette *is* the edge. A soft
+   contact shadow keeps it from floating off the stone. */
+
+.portrait--cutout .portrait__img {
+  object-fit: contain;
+  object-position: center bottom !important;
+  filter: drop-shadow(0 24px 40px rgba(24, 26, 29, 0.18));
+}
+
+/* --- B. Frame: a rectangular photo whose lower edge dissolves.
+   This is what stops it reading as a photo card. --- */
+
+.portrait--frame .portrait__img {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.55) 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.55) 88%,
+    transparent 100%
+  );
+}
+
 /* ------------------------------------------------------------
-   PLACEHOLDER — an editorial monogram frame, not a broken image.
+   PLACEHOLDER
+   Reads as space held for a person, not as a broken image and
+   not as a card: no border, no grid, no hard bottom edge.
    ------------------------------------------------------------ */
 
 .portrait__ph {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(160deg, var(--stone) 0%, var(--stone-deep) 100%);
-  border: 1px solid var(--ink-08);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
-.portrait__ph-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, var(--ink-08) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--ink-08) 1px, transparent 1px);
-  background-size: 12.5% 12.5%;
-  opacity: 0.55;
+/* Frame stand-in: a soft column that dissolves downward, matching how the
+   real rectangular photo will be masked. */
+.portrait--frame .portrait__ph {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--stone-deep) 62%, transparent) 0%,
+    color-mix(in srgb, var(--stone-deep) 40%, transparent) 62%,
+    transparent 100%
+  );
+}
+
+/* Cutout stand-in: no edges at all, because the real asset has none.
+   A soft feathered field that reads as space held for a person. */
+.portrait--cutout .portrait__ph {
+  background: radial-gradient(
+    62% 52% at 50% 42%,
+    color-mix(in srgb, var(--stone-deep) 78%, transparent) 0%,
+    color-mix(in srgb, var(--stone-deep) 40%, transparent) 55%,
+    transparent 78%
+  );
 }
 
 .portrait__ph-mono {
-  position: relative;
-  font-size: clamp(4rem, 14vw, 11rem);
+  font-size: clamp(3.5rem, 12vw, 9rem);
   font-weight: 500;
   letter-spacing: -0.05em;
   line-height: 1;
   color: var(--ink);
-  opacity: 0.14;
+  opacity: 0.1;
   user-select: none;
 }
 
 .portrait__ph-note {
-  position: absolute;
-  left: clamp(0.9rem, 2.5vw, 1.75rem);
-  bottom: clamp(0.9rem, 2.5vw, 1.75rem);
-  right: clamp(0.9rem, 2.5vw, 1.75rem);
   font-size: var(--t-label);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-tertiary);
-  line-height: 1.4;
+  opacity: 0.7;
+  text-align: center;
+  max-width: 90%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait__img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

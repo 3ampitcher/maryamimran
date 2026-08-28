@@ -6,11 +6,14 @@ import { useHasHover } from '../../hooks/useMediaQuery';
 import './Programs.css';
 
 /* ============================================================
-   PLACES I'VE LEARNED
+   PROGRAMS
    ------------------------------------------------------------
-   Not "Certificates". A typographic list where the interesting
-   half — what actually happened there — is what gets revealed.
-   Attendance on its own carries no visual weight.
+   A restrained editorial grid. Each entry names the place and,
+   on open, what actually happened there — attendance on its own
+   carries no weight and gets no visual reward.
+
+   Smaller certificates and one-off learning live in the Index
+   rather than being listed here, which keeps About readable.
    ============================================================ */
 
 export function Programs() {
@@ -21,39 +24,34 @@ export function Programs() {
   return (
     <section className="section programs" aria-labelledby="programs-heading">
       <div className="shell">
-        <div className="section-head">
-          <div className="section-head__meta">
-            <p className="label">
-              <span className="label__index">09</span> Learning
-            </p>
-            <p className="label">{programsSorted.length} places</p>
-          </div>
-          <h2 id="programs-heading" className="headline programs__headline">
-            Places I’ve learned.
+        <div className="section-head__meta programs__meta">
+          <h2 id="programs-heading" className="label">
+            Programs
           </h2>
+          <p className="label">{programsSorted.length}</p>
         </div>
 
-        <ul className="programs__list">
+        <ul className="programs__grid">
           {programsSorted.map((p) => {
             const isOpen = open === p.id;
             return (
               <li
                 key={p.id}
-                className={`prow ${isOpen ? 'prow--open' : ''}`}
+                className={`pcell ${isOpen ? 'pcell--open' : ''}`}
                 onMouseEnter={() => hasHover && setOpen(p.id)}
                 onMouseLeave={() => hasHover && setOpen(null)}
               >
                 <button
                   type="button"
-                  className="prow__trigger"
+                  className="pcell__trigger"
                   aria-expanded={isOpen}
                   aria-controls={`program-${p.id}`}
                   onClick={() => setOpen(isOpen ? null : p.id)}
                 >
-                  <span className="prow__name">{p.name}</span>
-                  <span className="prow__aside">
-                    {p.location && <span className="prow__location">{p.location}</span>}
-                    <span className="prow__year mono">{p.year}</span>
+                  <span className="pcell__name">{p.name}</span>
+                  <span className="pcell__aside mono">
+                    {p.location && <span>{p.location}</span>}
+                    <span>{p.year}</span>
                   </span>
                 </button>
 
@@ -61,14 +59,14 @@ export function Programs() {
                   {isOpen && (
                     <motion.div
                       id={`program-${p.id}`}
-                      className="prow__what"
+                      className="pcell__what"
                       initial={reduced ? false : { height: 0, opacity: 0 }}
                       animate={reduced ? {} : { height: 'auto', opacity: 1 }}
                       exit={reduced ? {} : { height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                       style={{ overflow: 'hidden' }}
                     >
-                      <p className="prow__what-text">{p.what}</p>
+                      <p className="pcell__what-text">{p.what}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

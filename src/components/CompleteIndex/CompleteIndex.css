@@ -1,4 +1,156 @@
 /* ============================================================
+   TABLE OF CONTENTS
+   ------------------------------------------------------------
+   The first thing the archive shows. Seven large editorial rows
+   with counts, so the shape of the body of work is legible
+   before a single record is read.
+   ============================================================ */
+
+.toc {
+  margin-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.toc__label {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+  width: 100%;
+}
+
+.tocrow {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding-block: clamp(0.75rem, 1.8vw, 1.25rem);
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  color: var(--text);
+}
+
+.tocrow__title {
+  display: block;
+  font-size: clamp(1.75rem, 4.6vw, 3.75rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+.tocrow:hover .tocrow__title,
+.tocrow:focus-visible .tocrow__title {
+  transform: translateX(clamp(0.3rem, 1vw, 0.9rem));
+}
+
+.tocrow--on .tocrow__title {
+  color: var(--accent);
+  transform: translateX(clamp(0.3rem, 1vw, 0.9rem));
+}
+
+.tocrow__blurb {
+  /* Right-aligned so the descriptions form a clean column against the
+     counts, instead of stepping off the ragged right edge of each title. */
+  justify-self: end;
+  text-align: right;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--text-tertiary);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.tocrow:hover .tocrow__blurb {
+  color: var(--text-secondary);
+}
+
+.tocrow__count {
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.tocrow--on .tocrow__count,
+.tocrow:hover .tocrow__count {
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .tocrow__blurb {
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 767px) {
+  .tocrow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'title count'
+      'blurb blurb';
+    row-gap: 0.3rem;
+    align-items: center;
+  }
+
+  .tocrow__title {
+    grid-area: title;
+  }
+  .tocrow__blurb {
+    grid-area: blurb;
+  }
+  .tocrow__count {
+    grid-area: count;
+  }
+
+  .tocrow:hover .tocrow__title,
+  .tocrow--on .tocrow__title {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   GROUPED RESULTS
+   Records are never presented as one flat chronological list —
+   each group keeps its own heading and count.
+   ============================================================ */
+
+.cindex__groups {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.cgroup__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--text);
+}
+
+.cgroup__title {
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.cgroup__count {
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  color: var(--text-tertiary);
+}
+
+.cgroup .cindex__rows {
+  border-top: 0;
+}
+
+/* ============================================================
    FILTER CONTROLS
    ============================================================ */
 
@@ -156,7 +308,7 @@
 .crow__trigger {
   display: grid;
   width: 100%;
-  grid-template-columns: clamp(5.5rem, 8vw, 7.5rem) minmax(0, 1fr) 7rem 9rem 1rem;
+  grid-template-columns: clamp(5.5rem, 8vw, 7.5rem) minmax(0, 1fr) 11rem 1rem;
   align-items: baseline;
   gap: clamp(0.75rem, 2vw, 2rem);
   padding-block: clamp(0.9rem, 1.8vw, 1.3rem);
@@ -195,22 +347,49 @@
   color: var(--text-tertiary);
 }
 
-.crow__category {
-  font-size: var(--t-label);
-  letter-spacing: var(--tr-label);
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-.crow--hover .crow__category,
-.crow--open .crow__category {
-  color: var(--accent);
-}
-
-.crow__role {
+.crow__meta {
   font-size: var(--t-xs);
   color: var(--text-tertiary);
   line-height: 1.35;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.crow--hover .crow__meta,
+.crow--open .crow__meta {
+  color: var(--text-secondary);
+}
+
+/* Rows that link out get an arrow where expandable rows get a toggle. */
+.crow__link-arrow {
+  justify-self: end;
+  align-self: center;
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.crow--hover .crow__link-arrow {
+  color: var(--accent);
+  transform: translate(0.15rem, -0.15rem);
+}
+
+.crow__h {
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
+.crow__detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-block: clamp(1rem, 2vw, 1.5rem);
+  font-size: var(--t-sm);
 }
 
 .crow__toggle {
@@ -313,10 +492,10 @@
 
 @media (max-width: 1099px) {
   .crow__trigger {
-    grid-template-columns: clamp(5rem, 11vw, 7rem) minmax(0, 1fr) auto 1rem;
+    grid-template-columns: clamp(5rem, 11vw, 7rem) minmax(0, 1fr) 1rem;
     grid-template-areas:
-      'year title    category toggle'
-      'year role     role     toggle';
+      'year title toggle'
+      'year meta  toggle';
     row-gap: 0.3rem;
   }
 
@@ -326,13 +505,11 @@
   .crow__title {
     grid-area: title;
   }
-  .crow__category {
-    grid-area: category;
+  .crow__meta {
+    grid-area: meta;
   }
-  .crow__role {
-    grid-area: role;
-  }
-  .crow__toggle {
+  .crow__toggle,
+  .crow__link-arrow {
     grid-area: toggle;
   }
 }
@@ -341,9 +518,9 @@
   .crow__trigger {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
-      'year     toggle'
-      'title    title'
-      'role     category';
+      'year  toggle'
+      'title title'
+      'meta  meta';
     row-gap: 0.4rem;
     padding-block: 1.1rem;
     align-items: center;
@@ -351,10 +528,6 @@
 
   .crow--hover .crow__title {
     transform: none;
-  }
-
-  .crow__category {
-    justify-self: end;
   }
 
   .crow__panel {

@@ -9,16 +9,13 @@ import './Hero.css';
 /* ============================================================
    HERO — SECTION 01
    ------------------------------------------------------------
-   Face first. The hero is about Maryam, not about the work.
-   Composition: the portrait holds the centre, the name sits
-   enormous across the bottom and deliberately runs past the
-   viewport edges, and the positioning line reads beside it.
+   Face first. Person + typography + page as one composition,
+   not a page with a photo card on it.
 
-   Scroll choreography (motion vocabulary #7):
-     stone -> paper, the name travels horizontally, the portrait
-     settles and lifts, and cobalt appears for the first time.
-   All of it collapses to a static composition under
-   prefers-reduced-motion.
+   Scroll choreography is deliberately quiet: the name lifts a
+   little, softens, and settles back a fraction of a percent in
+   scale. No horizontal travel — the name is a fixed part of the
+   composition, and the motion is a second-order detail.
    ============================================================ */
 
 export function Hero() {
@@ -30,28 +27,24 @@ export function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  /* The giant name drifts left; the portrait lifts and eases back. */
-  const nameX = useTransform(scrollYProgress, [0, 1], ['0%', '-14%']);
-  const nameOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
-  const portraitY = useTransform(scrollYProgress, [0, 1], ['0%', '-16%']);
-  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
+  /* The name: a small lift, a gentle fade, a touch of scale.
+     Nothing travels sideways. */
+  const nameY = useTransform(scrollYProgress, [0, 1], ['0%', '-9%']);
+  const nameOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.32]);
+  const nameScale = useTransform(scrollYProgress, [0, 1], [1, 0.985]);
+
+  /* The portrait rises very slightly faster, which is what makes
+     the two feel like one composition rather than two layers. */
+  const portraitY = useTransform(scrollYProgress, [0, 1], ['0%', '-13%']);
   const metaOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   return (
-    <section
-      ref={ref}
-      className="hero"
-      aria-label="Introduction"
-    >
-      {/* Stone ground that wakes into paper as the hero leaves. */}
+    <section ref={ref} className="hero" aria-label="Introduction">
       <div className="hero__ground" aria-hidden="true" />
 
       <div className="hero__inner">
         {/* --- Top rail --- */}
-        <motion.div
-          className="hero__rail"
-          style={reduced ? undefined : { opacity: metaOpacity }}
-        >
+        <motion.div className="hero__rail" style={reduced ? undefined : { opacity: metaOpacity }}>
           <span className="hero__place mono">{site.location}</span>
           <span className="hero__meta mono" aria-hidden="true">
             {site.heroMeta.map((m, i) => (
@@ -63,7 +56,7 @@ export function Hero() {
           </span>
         </motion.div>
 
-        {/* --- Centre: the portrait --- */}
+        {/* --- Composition: type and person share the same space --- */}
         <div className="hero__stage">
           <p className="hero__positioning">
             <MaskRevealOnMount delay={0.15}>
@@ -91,13 +84,14 @@ export function Hero() {
 
           <motion.div
             className="hero__portrait"
-            style={reduced ? undefined : { y: portraitY, scale: portraitScale }}
+            style={reduced ? undefined : { y: portraitY }}
           >
             <Portrait
               priority
+              cutout={site.portrait.cutout}
               ratio="4 / 5"
-              objectPosition="center 24%"
-              sizes="(max-width: 767px) 78vw, (max-width: 1200px) 42vw, 34vw"
+              objectPosition="center 22%"
+              sizes="(max-width: 767px) 76vw, (max-width: 1200px) 40vw, 32vw"
               alt={`${site.name}, ${site.discipline} student in ${site.location}`}
             />
           </motion.div>
@@ -114,7 +108,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* --- The name, enormous, running past both edges --- */}
+        {/* --- The name. Static in the composition; it only breathes. --- */}
         <div className="hero__nameband">
           <h1 className="sr-only">
             {site.name} — {site.positioning}
@@ -122,7 +116,7 @@ export function Hero() {
           <motion.span
             className="hero__name"
             aria-hidden="true"
-            style={reduced ? undefined : { x: nameX, opacity: nameOpacity }}
+            style={reduced ? undefined : { y: nameY, opacity: nameOpacity, scale: nameScale }}
           >
             <MaskRevealOnMount delay={0.05} innerClassName="hero__name-inner">
               Maryam Imran
@@ -130,7 +124,6 @@ export function Hero() {
           </motion.span>
         </div>
 
-        {/* --- Scroll cue --- */}
         <motion.div
           className="hero__cue"
           style={reduced ? undefined : { opacity: metaOpacity }}

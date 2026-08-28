@@ -1,0 +1,86 @@
+.education {
+  background: var(--paper);
+  padding-block: clamp(4rem, 9vw, 7rem);
+}
+
+.education__meta {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.education__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: clamp(2.5rem, 6vw, 6rem);
+}
+
+.edublock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.edublock__year {
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  color: var(--accent);
+}
+
+.edublock__institution {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 500;
+  line-height: 0.94;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.edublock__qualification {
+  font-size: var(--t-md);
+  line-height: 1.35;
+  letter-spacing: var(--tr-heading);
+  color: var(--text-secondary);
+  max-width: 24ch;
+}
+
+/* Results are the proof; give them their own measured stack. */
+.edublock__results {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 22rem;
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+.edublock__result {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.edublock__result-label {
+  font-size: var(--t-sm);
+  color: var(--text-secondary);
+}
+
+.edublock__result-value {
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: var(--tr-heading);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.edublock__detail {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
