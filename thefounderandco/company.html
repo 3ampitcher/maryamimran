@@ -610,7 +610,7 @@
   <div class="sec">
     <div class="sec-head" style="margin-bottom:0">
       <div class="eyebrow on-dark rv">03 &nbsp;/&nbsp; The stage map</div>
-      <h2 class="disp rv" style="--d:.08s;margin-top:22px">Every stage becomes<br><span class="soft">a different organisation.</span></h2>
+      <h2 class="disp rv" style="--d:.08s;margin-top:22px">Every stage needs<br><span class="soft">a different equation.</span></h2>
     </div>
 
     <div class="stage-shell rv" style="--d:.14s">
@@ -793,7 +793,7 @@ const SERVICES = [
 
 const STAGES = [
   {
-    key:'Pre-Seed', kicker:'the equation starts with', code:'the founding team.',
+    key:'Pre-Seed', kicker:'At Pre-Seed, everything rests on', code:'the founding team.',
     breaks:[
       'Finding a co-founder who covers what you do not',
       'Not knowing your own blind spots yet',
@@ -803,7 +803,7 @@ const STAGES = [
     copy:'Build the founding combination, understand leadership readiness, and access senior expertise without creating a premature full-time structure.'
   },
   {
-    key:'Seed', code:'speed without headcount.',
+    key:'Seed', kicker:'At Seed, what you need is', code:'speed without headcount.',
     breaks:[
       'Every critical decision still runs through the founders',
       'The first leadership gaps start showing',
@@ -813,7 +813,7 @@ const STAGES = [
     copy:'Add fractional leadership, elastic hiring capacity, and targeted product, engineering or AI expertise around the founding team.'
   },
   {
-    key:'Series A', code:'your first real leaders.',
+    key:'Series A', kicker:'At Series A, you are hiring', code:'your first real leaders.',
     breaks:[
       'You cannot personally drive every hire anymore',
       'The executive team has to take shape fast',
@@ -823,7 +823,7 @@ const STAGES = [
     copy:'Build the leadership spine, assess how ready the current team is to scale, and install a hiring engine that runs without you.'
   },
   {
-    key:'Series B', code:'the leadership bench.',
+    key:'Series B', kicker:'At Series B, the missing piece is', code:'the leadership bench.',
     breaks:[
       'Hiring demand outruns the internal team',
       'Leadership has to scale across functions and markets',
@@ -833,7 +833,7 @@ const STAGES = [
     copy:'Use elastic hiring capacity, strengthen the executive bench, and deploy senior operators without permanently growing overhead.'
   },
   {
-    key:'Series C+', code:'governance and depth.',
+    key:'Series C+', kicker:'At Series C+, the bar moves to', code:'governance and depth.',
     breaks:[
       'Full-time C-suite depth becomes non-negotiable',
       'Governance, risk and reporting expectations rise',
@@ -843,7 +843,7 @@ const STAGES = [
     copy:'Secure public-company-calibre leadership, assess organisational readiness, and access specialist governance and transformation expertise.'
   },
   {
-    key:'Every stage', code:'the founder behind the company.',
+    key:'Every stage', kicker:'At every stage, the constant is', code:'the founder behind the company.',
     breaks:[
       'The higher you go, the less honest the feedback gets',
       'Blind spots compound faster than the org chart grows',
@@ -952,7 +952,7 @@ function paintStage(i){
   current = i;
 
   leftEl.innerHTML = `
-    <p class="stage-kicker">At ${st.key === 'Every stage' ? 'every stage' : st.key}, ${st.kicker || 'the equation turns on'}</p>
+    <p class="stage-kicker">${st.kicker}</p>
     <p class="stage-code">${st.code}</p>
     <div class="stage-cols">
       <div>
