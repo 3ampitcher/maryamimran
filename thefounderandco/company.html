@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TheFounder&amp;Co. | We build the team your next stage needs.</title>
+<meta name="description" content="Startups do not have a hiring problem, they have a capability problem. Seven services in three groups, mapped to every stage from pre-seed to Series C+. Executive search, on-demand leadership and embedded capability across KSA, the GCC and MENA.">
+<meta property="og:title" content="TheFounder&amp;Co. — We build the team your next stage needs.">
+<meta property="og:description" content="Build capabilities, not departments. The stage map, the seven services, and the two decades of proof underneath them.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TheFounder&amp;Co.">
+<meta name="theme-color" content="#0E1015">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E1015'/%3E%3Ctext x='32' y='46' font-family='Helvetica,Arial' font-size='42' font-weight='bold' fill='%23C8F03C' text-anchor='middle'%3E%26amp;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/brand.css">
+<style>
+  /* ---------- layout primitives ---------- */
+  .sec{max-width:1200px;margin:0 auto;padding:118px 24px}
+  .sec-tight{padding-top:0}
+  .sec-head{margin-bottom:56px}
+  .disp{
+    font-size:clamp(34px,5.6vw,68px);font-weight:700;letter-spacing:-.04em;line-height:1.03;
+  }
+  .disp .soft{color:#A9ACB2}
+  .lead{font-size:18.5px;line-height:1.65;color:var(--muted);font-weight:500;max-width:62ch}
+
+  /* ---------- section index rail ---------- */
+  .rail-index{
+    position:fixed;left:26px;top:50%;transform:translateY(-50%);z-index:200;
+    display:none;flex-direction:column;gap:14px;
+  }
+  .rail-index a{
+    display:flex;align-items:center;gap:10px;text-decoration:none;
+    font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:#B0B3B8;transition:color .3s;
+  }
+  .rail-index i{
+    display:block;width:16px;height:2px;border-radius:2px;background:#CFD1CC;
+    transition:width .4s var(--ease),background .3s;flex:0 0 auto;
+  }
+  .rail-index a:hover{color:var(--ink)}
+  .rail-index a.on{color:var(--ink)}
+  .rail-index a.on i{width:34px;background:var(--lime-deep)}
+  .rail-index.on-dark a{color:#6E737C}
+  .rail-index.on-dark i{background:#3A3F48}
+  .rail-index.on-dark a.on{color:#fff}
+  .rail-index.on-dark a.on i{background:var(--lime)}
+  @media(min-width:1460px){.rail-index{display:flex}}
+
+  /* ---------- hero ---------- */
+  .p-hero{max-width:1200px;margin:0 auto;padding:80px 24px 40px}
+  .p-hero h1{
+    font-size:clamp(42px,7.4vw,96px);font-weight:700;letter-spacing:-.045em;line-height:1;
+    max-width:15ch;margin-top:30px;
+  }
+  .p-hero .lead{margin-top:32px;font-size:19px}
+  .hero-meta{
+    display:flex;flex-wrap:wrap;gap:12px 34px;margin-top:46px;padding-top:26px;
+    border-top:1px solid var(--line);
+  }
+  .hero-meta div{font-size:13px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .hero-meta div b{display:block;font-size:26px;letter-spacing:-.02em;text-transform:none;color:var(--ink);margin-bottom:4px}
+
+  /* ---------- 01 why ---------- */
+  .why-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:70px;align-items:start}
+  .why-left{position:sticky;top:130px}
+  .why-left .disp{max-width:14ch}
+  .why-note{margin-top:28px;font-size:15.5px;line-height:1.7;color:var(--muted);max-width:38ch;font-weight:500}
+  .why-blocks{display:flex;flex-direction:column;gap:2px}
+  .wb{
+    position:relative;padding:38px 34px 38px 0;border-top:1px solid var(--line);
+    transition:padding-left .45s var(--ease);
+  }
+  .wb:last-child{border-bottom:1px solid var(--line)}
+  .wb-num{
+    font-size:11px;font-weight:700;letter-spacing:.2em;color:#B0B3B8;margin-bottom:14px;
+    transition:color .35s;
+  }
+  .wb h3{font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px}
+  .wb p{font-size:16px;line-height:1.68;color:var(--muted);font-weight:500;max-width:48ch}
+  .wb::before{
+    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;
+    background:var(--lime);transform:scaleY(0);transform-origin:50% 0;
+    transition:transform .45s var(--ease);
+  }
+  .wb:hover{padding-left:26px}
+  .wb:hover::before{transform:scaleY(1)}
+  .wb:hover .wb-num{color:var(--lime-deep)}
+
+  /* ---------- 02 services ---------- */
+  .svc-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:26px}
+  .rail-legend{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:420px;margin-left:auto;margin-right:22px;width:100%}
+  .rail-legend span{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#A9ACB2;text-align:center}
+
+  .group{margin-top:52px}
+  .g-title{
+    display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;
+    padding-bottom:16px;border-bottom:1.5px solid var(--ink);
+  }
+  .g-title h3{font-size:26px;font-weight:700;letter-spacing:-.025em}
+  .g-title p{font-size:14.5px;color:var(--muted);font-weight:500}
+  .g-title .g-count{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#A9ACB2}
+
+  .svc{
+    display:grid;grid-template-columns:1fr 1fr 420px;gap:34px;align-items:center;
+    padding:26px 22px;border-bottom:1px solid var(--line);border-radius:16px;
+    transition:background .35s var(--ease),transform .35s var(--ease),box-shadow .35s var(--ease);
+    cursor:default;
+  }
+  .svc:hover{background:var(--card);transform:translateY(-2px);box-shadow:0 14px 40px rgba(14,16,21,.07)}
+  .svc .n{display:flex;align-items:baseline;gap:14px}
+  .svc .n em{font-style:normal;font-size:11px;font-weight:700;color:#C0C3C7;letter-spacing:.1em}
+  .svc .name{font-size:22px;font-weight:700;letter-spacing:-.025em}
+  .svc .desc{font-size:15px;line-height:1.6;color:var(--muted);font-weight:500}
+  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:center}
+  .cell{height:5px;border-radius:3px;background:#E4E4DE;transition:background .35s,transform .35s var(--ease)}
+  .cell.on{background:var(--lime-soft)}
+  .cell.on.start{background:var(--lime)}
+  .svc:hover .cell.on{background:var(--lime)}
+  .svc:hover .cell.on.start{background:var(--lime-deep)}
+
+  .modes{
+    margin-top:60px;padding:38px 34px;background:var(--card);border-radius:var(--r-lg);
+    display:grid;grid-template-columns:1fr 1.25fr;gap:44px;align-items:center;
+  }
+  .modes p{font-size:15.5px;line-height:1.65;color:var(--muted);font-weight:500;margin-top:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    border:1.5px solid var(--line);border-radius:999px;padding:10px 18px;
+    font-size:14px;font-weight:600;color:var(--muted);
+    transition:border-color .3s,color .3s,background .3s,transform .3s var(--ease);
+  }
+  .chip:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px)}
+  .chip.lead-chip{background:var(--ink);border-color:var(--ink);color:#fff}
+
+  /* ---------- 03 stage map (dark band) ---------- */
+  .band{background:var(--ink);color:#fff;padding:110px 0}
+  .band .sec{padding-top:0;padding-bottom:0}
+  .band .disp .soft{color:#6E737C}
+  .band .lead{color:#9AA0AB}
+
+  .stage-shell{
+    margin-top:54px;border:1px solid var(--line-dark);border-radius:26px;overflow:hidden;background:#12151B;
+  }
+  .stage-tabs{display:flex;gap:2px;padding:8px;border-bottom:1px solid var(--line-dark);overflow-x:auto;scrollbar-width:none}
+  .stage-tabs::-webkit-scrollbar{display:none}
+  .stab{
+    background:none;border:none;cursor:pointer;font-family:var(--sans);
+    color:#7C828E;font-size:15px;font-weight:600;padding:14px 22px;border-radius:12px;
+    white-space:nowrap;position:relative;transition:color .3s,background .3s;
+  }
+  .stab:hover{color:#D7DBE1;background:#181C23}
+  .stab.on{color:#fff}
+  .stab.on::after{
+    content:"";position:absolute;left:22px;right:22px;bottom:6px;height:2px;
+    background:var(--lime);border-radius:2px;
+  }
+  .stage-body{display:grid;grid-template-columns:1fr 1fr}
+  .stage-left{padding:46px 44px}
+  .stage-right{border-left:1px solid var(--line-dark);padding:36px;display:flex;align-items:center;justify-content:center}
+  .stage-kicker{font-size:19px;color:#9AA0AB;font-weight:500}
+  .stage-code{
+    font-family:var(--serif);font-style:italic;font-weight:300;color:var(--lime);
+    font-size:clamp(34px,4.6vw,54px);line-height:1.08;letter-spacing:-.015em;margin-top:12px;
+  }
+  .stage-cols{
+    display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:44px;padding-top:34px;
+    border-top:1px solid var(--line-dark);
+  }
+  .sc-h{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#6E737C;margin-bottom:18px}
+  .breaks li{
+    list-style:none;font-size:15px;line-height:1.55;color:#C3C8D0;font-weight:500;
+    padding:14px 0;border-bottom:1px solid #22262E;
+  }
+  .breaks li:first-child{padding-top:0}
+  .svc-line{font-size:17px;font-weight:700;line-height:1.4;letter-spacing:-.015em;color:#fff}
+  .svc-line .d{color:var(--lime)}
+  .stage-copy{font-size:15px;line-height:1.62;color:#9AA0AB;font-weight:500;margin-top:16px}
+
+  .fade-swap{animation:fadeSwap .45s var(--ease)}
+  @keyframes fadeSwap{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* orbit */
+  .orbit{position:relative;width:100%;max-width:360px;aspect-ratio:1/1}
+  .ring{position:absolute;border-radius:50%;border:1px solid #23272F;left:50%;top:50%;transform:translate(-50%,-50%)}
+  .ring.r1{width:78%;height:78%}
+  .ring.r2{width:52%;height:52%;background:#0E1015}
+  .ring.dash{width:96%;height:96%;border-style:dashed;border-color:#1C2028;animation:spin 90s linear infinite}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .orbit-core{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;width:60%;
+  }
+  .orbit-core b{display:block;font-size:23px;font-weight:700;letter-spacing:-.02em;color:#fff}
+  .orbit-core i{
+    display:block;font-family:var(--serif);font-style:italic;font-weight:300;
+    font-size:15px;color:var(--lime);margin-top:6px;line-height:1.3;
+  }
+  .node{position:absolute;display:flex;align-items:center;gap:9px;transform:translate(-4px,-50%);white-space:nowrap}
+  .node.lft{flex-direction:row-reverse;transform:translate(calc(-100% + 4px),-50%)}
+  .node .d{
+    width:9px;height:9px;border-radius:50%;border:1.5px solid #3A3F48;background:transparent;
+    flex:0 0 auto;transition:background .45s var(--ease),border-color .45s,box-shadow .45s,transform .45s var(--ease);
+  }
+    .node .t{font-size:11px;font-weight:600;color:#5F646D;transition:color .45s}
+  .node.on .d{background:var(--lime);border-color:var(--lime);box-shadow:0 0 0 5px rgba(200,240,60,.14);transform:scale(1.15)}
+  .node.on .t{color:#fff;font-weight:700}
+
+  /* ---------- 04 routing ---------- */
+  .tree{position:relative;margin-top:56px;display:grid;grid-template-columns:1fr 360px;gap:90px;align-items:start}
+  .tree svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+  .wires path{fill:none;stroke:#D5D7D1;stroke-width:1.4;transition:stroke .3s,stroke-width .3s,opacity .3s}
+  .wires path.hot{stroke:var(--lime-deep);stroke-width:2.2}
+  .tree.hover .wires path{opacity:.25}
+  .tree.hover .wires path.hot{opacity:1}
+  .role-block{margin-bottom:34px;position:relative;z-index:1}
+  .role-h{
+    font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A9ACB2;
+    margin-bottom:14px;display:flex;align-items:center;gap:12px;
+  }
+  .role-h::after{content:"";height:1px;flex:1;background:var(--line)}
+  .need{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:16px 20px;margin-bottom:8px;cursor:pointer;
+    font-size:15.5px;font-weight:600;color:var(--ink);
+    transition:border-color .3s,transform .3s var(--ease),box-shadow .3s var(--ease),opacity .3s;
+  }
+  .need .to{
+    font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:#A9ACB2;white-space:nowrap;transition:color .3s;
+  }
+  .need:hover,.need:focus-visible{
+    border-color:var(--lime-deep);transform:translateX(6px);
+    box-shadow:0 10px 30px rgba(14,16,21,.07);outline:none;
+  }
+  .need:hover .to,.need:focus-visible .to{color:var(--lime-deep)}
+  .tree.hover .need{opacity:.42}
+  .tree.hover .need.hot{opacity:1}
+  .svc-col{position:sticky;top:130px;z-index:1}
+  .svc-pill{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:15px 20px;margin-bottom:8px;font-size:15.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    transition:border-color .3s,background .3s,transform .3s var(--ease),opacity .3s;cursor:default;
+  }
+  .svc-pill .cnt{
+    font-size:11px;font-weight:700;color:#A9ACB2;background:#F0F0EC;
+    border-radius:999px;padding:3px 9px;transition:background .3s,color .3s;
+  }
+  .tree.hover .svc-pill{opacity:.42}
+  .tree.hover .svc-pill.hot{opacity:1;border-color:var(--lime-deep);background:#FBFEF0;transform:translateX(-4px)}
+  .svc-pill.hot .cnt{background:var(--lime);color:var(--ink)}
+
+  /* ---------- 05 founder ---------- */
+  .founder{display:grid;grid-template-columns:400px 1fr;gap:70px;align-items:start}
+  .portrait{
+    position:sticky;top:130px;border-radius:24px;overflow:hidden;background:var(--ink);
+    aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;
+  }
+  .portrait img{width:100%;height:100%;object-fit:cover}
+  .portrait .ph{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#4A4F58;
+  }
+  .portrait .ph b{font-size:62px;font-weight:700;color:var(--lime);letter-spacing:-.04em}
+  .portrait .ph span{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+  .p-cap{margin-top:16px}
+  .p-cap b{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em}
+  .p-cap span{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .p-cap span em{font-style:normal;color:var(--lime-deep)}
+
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:44px;border-top:1px solid var(--line)}
+  .fact{
+    padding:28px 24px 28px 0;border-bottom:1px solid var(--line);position:relative;
+    transition:padding-left .4s var(--ease);
+  }
+  .fact::before{
+    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;background:var(--lime);
+    transform:scaleY(0);transform-origin:50% 0;transition:transform .4s var(--ease);
+  }
+  .fact:hover{padding-left:22px}
+  .fact:hover::before{transform:scaleY(1)}
+  .fact i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.2em;color:#B0B3B8;display:block;margin-bottom:12px}
+  .fact p{font-size:16.5px;line-height:1.5;font-weight:600;letter-spacing:-.015em}
+
+  .creed{
+    margin-top:80px;background:var(--ink);color:#fff;border-radius:var(--r-lg);
+    padding:60px 56px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
+    position:relative;overflow:hidden;
+  }
+  .creed::after{
+    content:"";position:absolute;right:-140px;bottom:-160px;width:420px;height:420px;
+    border-radius:50%;border:1px solid #23262E;
+  }
+  .creed .k{position:relative;z-index:1}
+  .creed h3{font-size:clamp(30px,3.6vw,44px);font-weight:700;letter-spacing:-.035em;line-height:1.1}
+  .creed h3 span{display:block}
+  .creed h3 span:nth-child(2){color:#8D939E}
+  .creed h3 span:nth-child(3){color:var(--lime)}
+  .creed p{font-size:16.5px;line-height:1.7;color:#9AA0AB;font-weight:500}
+  .creed p b{color:#fff;font-weight:700}
+
+  /* ---------- 06 logos ---------- */
+  .marquee{overflow:hidden;position:relative;padding:6px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+  .track{display:flex;gap:14px;width:max-content;animation:slide 46s linear infinite}
+  .track.rev{animation-direction:reverse;animation-duration:56s}
+  .marquee:hover .track{animation-play-state:paused}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .logo{
+    border:1px solid var(--line);background:var(--card);border-radius:999px;
+    padding:16px 30px;font-size:17px;font-weight:700;letter-spacing:-.02em;
+    color:#8A8E95;white-space:nowrap;transition:color .3s,border-color .3s,background .3s;
+  }
+  .logo:hover{color:var(--ink);border-color:var(--ink)}
+
+  /* ---------- 07 contact ---------- */
+  .contact-card{
+    background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:64px 58px;
+    display:grid;grid-template-columns:1.25fr 1fr;gap:58px;position:relative;overflow:hidden;
+  }
+  .contact-card::after{
+    content:"";position:absolute;left:-160px;top:-180px;width:460px;height:460px;
+    border-radius:50%;border:1px solid #23262E;
+  }
+  .contact-card > div{position:relative;z-index:1}
+  .contact-card h2{font-size:clamp(32px,4.4vw,54px);font-weight:700;letter-spacing:-.04em;line-height:1.04}
+  .contact-card p{font-size:16.5px;line-height:1.68;color:#9AA0AB;margin-top:22px;max-width:46ch;font-weight:500}
+  .contact-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+  .contact-card .foot-list a,.contact-card .foot-list span{font-size:16px}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:1080px){
+    .svc{grid-template-columns:1fr 1fr;gap:22px}
+    .svc .rail{grid-column:1 / -1}
+    .founder{grid-template-columns:300px 1fr;gap:44px}
+  }
+  @media(max-width:900px){
+    .sec{padding:76px 20px}
+    .band{padding:76px 0}
+    .why-grid{grid-template-columns:1fr;gap:40px}
+    .why-left{position:static}
+    .svc-intro{grid-template-columns:1fr;gap:22px}
+    .rail-legend{margin-left:0}
+    .svc{grid-template-columns:1fr;gap:14px;padding:22px 16px}
+    .modes{grid-template-columns:1fr;gap:26px;padding:30px 24px}
+    .stage-body{grid-template-columns:1fr}
+    .stage-left{padding:32px 24px}
+    .stage-right{border-left:none;border-top:1px solid var(--line-dark);padding:28px}
+    .stage-cols{grid-template-columns:1fr;gap:28px}
+    .tree{grid-template-columns:1fr;gap:34px}
+    .tree svg.wires{display:none}
+    .svc-col{position:static}
+    .tree.hover .need,.tree.hover .svc-pill{opacity:1}
+    .founder{grid-template-columns:1fr;gap:32px}
+    .portrait{position:static;max-width:320px}
+    .facts{grid-template-columns:1fr}
+    .creed{grid-template-columns:1fr;gap:28px;padding:40px 28px}
+    .contact-card{grid-template-columns:1fr;gap:34px;padding:40px 28px}
+    .hero-meta div b{font-size:22px}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="nav-outer">
+  <nav>
+    <a class="brand" href="index.html">
+      <span class="wordmark">TheFounder<span class="amp">&amp;</span>Co<span class="dot">.</span></span>
+      <span class="brand-tag">We solve the people equation</span>
+    </a>
+    <div class="nav-right">
+      <a class="nav-link" href="#services">Services</a>
+      <a class="nav-link" href="#stages">Stage map</a>
+      <a class="nav-link" href="#contact">Contact</a>
+      <a class="nav-cta" href="index.html#solver">Solve yours <span class="ar">&rarr;</span></a>
+    </div>
+  </nav>
+</div>
+
+<div class="rail-index" id="railIndex">
+  <a href="#why"><i></i>01 Why</a>
+  <a href="#services"><i></i>02 Services</a>
+  <a href="#stages"><i></i>03 Stages</a>
+  <a href="#routing"><i></i>04 Start here</a>
+  <a href="#founder"><i></i>05 Who</a>
+  <a href="#proof"><i></i>06 Proof</a>
+  <a href="#contact"><i></i>07 Talk</a>
+</div>
+
+<header class="p-hero">
+  <div class="eyebrow rv">TheFounder&amp;Co. &mdash; KSA &middot; GCC &middot; MENA</div>
+  <h1 class="lines rv"><span class="ln"><span>We build the team</span></span><span class="ln"><span>your <span class="hl">next stage</span></span></span><span class="ln"><span>needs.</span></span></h1>
+  <p class="lead rv" style="--d:.2s">Seven services in three groups, and one thread running through all of them: the stage your company is in decides which capability you need next, and how you should access it. Executive search, on-demand leadership and embedded capability for tech startups and scale-ups.</p>
+  <div class="hero-meta rv" style="--d:.3s">
+    <div><b>20+</b>Years in GCC leadership</div>
+    <div><b>7</b>Services, 3 groups</div>
+    <div><b>5</b>Stages mapped</div>
+    <div><b>1</b>Thread through all of it</div>
+  </div>
+</header>
+
+<!-- ============ 01 WHY WE EXIST ============ -->
+<section class="sec" id="why">
+  <div class="why-grid">
+    <div class="why-left">
+      <div class="eyebrow rv">01 &nbsp;/&nbsp; Why we exist</div>
+      <h2 class="disp rv" style="--d:.08s;margin-top:22px">Startups do not have a hiring problem.<br><span class="soft">They have a capability problem.</span></h2>
+      <p class="why-note rv" style="--d:.16s">Three ideas sit under everything on this page. If you disagree with them, we are probably not the right firm for you.</p>
+    </div>
+    <div class="why-blocks">
+      <div class="wb rv">
+        <div class="wb-num">01</div>
+        <h3>A startup is not a small corporate.</h3>
+        <p>A corporate reorganises every five years. You reinvent every six months. A structure engineered for stability was never built to survive that rate of change &mdash; and neither was the hiring process bolted to it.</p>
+      </div>
+      <div class="wb rv" style="--d:.1s">
+        <div class="wb-num">02</div>
+        <h3>Build capabilities, not departments.</h3>
+        <p>You may need the capability of a CFO. You rarely need the department. The stage decides how you access it, at what commitment, and for how long &mdash; full time is one answer out of eight.</p>
+      </div>
+      <div class="wb rv" style="--d:.2s">
+        <div class="wb-num">03</div>
+        <h3>Every stage runs a different code.</h3>
+        <p>What won you seed will quietly break your Series B. The expensive mistake is rarely the wrong person; it is running the last stage's playbook one stage too long.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 SERVICES ============ -->
+<section class="sec sec-tight" id="services">
+  <div class="svc-intro">
+    <div>
+      <div class="eyebrow rv">02 &nbsp;/&nbsp; What we do</div>
+      <h2 class="disp rv" style="--d:.08s;margin-top:22px">Three groups.<br><span class="soft">Seven services.</span></h2>
+    </div>
+    <div class="rv" style="--d:.16s">
+      <p class="lead" style="font-size:16px;margin-bottom:22px">Every service is plotted on the same line, from the first co-founder conversation to the board table. Read across to see when each one starts earning its keep.</p>
+      <div class="rail-legend">
+        <span>Pre-Seed</span><span>Seed</span><span>Series A</span><span>Series B</span><span>Series C+</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="group rv">
+    <div class="g-title">
+      <h3>Build founders</h3>
+      <p>Form the founding team. Know it, match it, build with it.</p>
+      <span class="g-count">Three services</span>
+    </div>
+    <div class="svc">
+      <div class="n"><em>01</em><span class="name">Founder Hunter</span></div>
+      <div class="desc">Co-founder and founding team matchmaking. The most important hire is the one before employee number one.</div>
+      <div class="rail" data-from="0" data-to="1"></div>
+    </div>
+    <div class="svc">
+      <div class="n"><em>02</em><span class="name">Founder Quotient</span></div>
+      <div class="desc">Structured assessment of founders and leadership teams. Decode the combination before you bet the company on it.</div>
+      <div class="rail" data-from="0" data-to="4"></div>
+    </div>
+    <div class="svc">
+      <div class="n"><em>03</em><span class="name">Founder Inner Circle</span></div>
+      <div class="desc">A capped, confidential circle of founders and CEOs. Candid conversation, trusted introductions, relationships that compound.</div>
+      <div class="rail" data-from="0" data-to="4"></div>
+    </div>
+  </div>
+
+  <div class="group rv">
+    <div class="g-title">
+      <h3>Build leaders</h3>
+      <p>Staff the C-suite, permanently or on demand.</p>
+      <span class="g-count">Two services</span>
+    </div>
+    <div class="svc">
+      <div class="n"><em>04</em><span class="name">Executive Search</span></div>
+      <div class="desc">Permanent C-suite and senior leadership search, built for tech startups and scale-ups, not corporates.</div>
+      <div class="rail" data-from="2" data-to="4"></div>
+    </div>
+    <div class="svc">
+      <div class="n"><em>05</em><span class="name">On-Demand CxO</span></div>
+      <div class="desc">Outcome-based fractional and interim executives. Senior leadership without the full-time commitment.</div>
+      <div class="rail" data-from="1" data-to="4"></div>
+    </div>
+  </div>
+
+  <div class="group rv">
+    <div class="g-title">
+      <h3>Build capability</h3>
+      <p>The tech and hiring engine under the hood.</p>
+      <span class="g-count">Two services</span>
+    </div>
+    <div class="svc">
+      <div class="n"><em>06</em><span class="name">Tech Grid</span></div>
+      <div class="desc">Technology capability from full time to offshore, plus tech as a service and specialist solution partners.</div>
+      <div class="rail" data-from="0" data-to="3"></div>
+    </div>
+    <div class="svc">
+      <div class="n"><em>07</em><span class="name">TA Powerhouse</span></div>
+      <div class="desc">Talent acquisition as a service. Embedded hiring capacity that flexes up and down with your hiring curve.</div>
+      <div class="rail" data-from="1" data-to="4"></div>
+    </div>
+  </div>
+
+  <div class="modes rv">
+    <div>
+      <div class="eyebrow">How you access it</div>
+      <p>Your company needs the capability of a CFO. It rarely needs the department. Pick the access mode your stage can carry, then change it when the company outgrows it.</p>
+    </div>
+    <div class="chips">
+      <span class="chip lead-chip">Full time</span>
+      <span class="chip">Fractional</span>
+      <span class="chip">Interim</span>
+      <span class="chip">Embedded</span>
+      <span class="chip">Outsourced</span>
+      <span class="chip">Offshore</span>
+      <span class="chip">AI assisted</span>
+      <span class="chip">Blended</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 THE STAGE MAP ============ -->
+<section class="band" id="stages">
+  <div class="sec">
+    <div class="sec-head" style="margin-bottom:0">
+      <div class="eyebrow on-dark rv">03 &nbsp;/&nbsp; The stage map</div>
+      <h2 class="disp rv" style="--d:.08s;margin-top:22px">Every stage becomes<br><span class="soft">a different organisation.</span></h2>
+    </div>
+
+    <div class="stage-shell rv" style="--d:.14s">
+      <div class="stage-tabs" id="stageTabs" role="tablist" aria-label="Company stage"></div>
+      <div class="stage-body">
+        <div class="stage-left" id="stageLeft"></div>
+        <div class="stage-right">
+          <div class="orbit" id="orbit">
+            <div class="ring dash"></div>
+            <div class="ring r1"></div>
+            <div class="ring r2"></div>
+            <div class="orbit-core" id="orbitCore"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 ROUTING ============ -->
+<section class="sec" id="routing">
+  <div class="sec-head">
+    <div class="eyebrow rv">04 &nbsp;/&nbsp; Where you start</div>
+    <h2 class="disp rv" style="--d:.08s;margin-top:22px">Start with who you are,<br><span class="soft">not with a job title.</span></h2>
+    <p class="lead rv" style="--d:.16s;margin-top:26px">Ten common asks. Seven services. Hover or tap any line to see where it lands &mdash; several roads run to the same place, which is exactly the point.</p>
+  </div>
+
+  <div class="tree" id="tree">
+    <svg class="wires" id="wires" aria-hidden="true"></svg>
+    <div class="needs" id="needs"></div>
+    <div class="svc-col">
+      <div class="eyebrow" style="margin-bottom:18px">The service</div>
+      <div id="svcPills"></div>
+      <p style="font-size:14px;line-height:1.6;color:var(--muted);margin-top:22px;font-weight:500">
+        Not sure which line is yours? <a href="index.html#solver" style="color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px">Run the solver</a> and it will tell you in ninety seconds.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 WHO IS BEHIND IT ============ -->
+<section class="sec sec-tight" id="founder">
+  <div class="sec-head">
+    <div class="eyebrow rv">05 &nbsp;/&nbsp; Who is behind it</div>
+    <h2 class="disp rv" style="--d:.08s;margin-top:22px">Built on two decades of proof.<br><span class="soft">Not a pitch deck.</span></h2>
+  </div>
+
+  <div class="founder">
+    <div class="rv">
+      <div class="portrait">
+        <img src="assets/imran-yousuf.jpg" alt="Imran Yousuf, Founder and CEO of TheFounder&amp;Co." style="position:absolute;inset:0" onerror="this.remove()">
+        <div class="ph"><b>IY</b><span>Add portrait</span></div>
+      </div>
+      <div class="p-cap">
+        <b>Imran Yousuf</b>
+        <span>Founder <em>&amp;</em> CEO</span>
+      </div>
+    </div>
+
+    <div>
+      <p class="lead rv">Two decades of executive search on one side of the table, and the experience of building and selling a company on the other. TheFounder&amp;Co. exists because those two views rarely sit in the same person &mdash; and startups pay for the gap.</p>
+      <div class="facts">
+        <div class="fact rv"><i>01</i><p>20+ years in GCC executive search and talent advisory</p></div>
+        <div class="fact rv" style="--d:.06s"><i>02</i><p>Former Middle East President, N2Growth</p></div>
+        <div class="fact rv" style="--d:.12s"><i>03</i><p>Three years as Talent Partner to Sanabil Venture Studio</p></div>
+        <div class="fact rv" style="--d:.18s"><i>04</i><p>Founded and exited a startup &mdash; idea to acquisition in 18 months</p></div>
+        <div class="fact rv" style="--d:.24s"><i>05</i><p>BPS-certified assessor with a psychology degree</p></div>
+        <div class="fact rv" style="--d:.3s"><i>06</i><p>C-suite placements across the Saudi technology ecosystem</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="creed rv">
+    <div class="k">
+      <div class="eyebrow on-dark" style="margin-bottom:22px">Built on both sides of the table</div>
+      <h3><span>Search discipline.</span><span>Founder experience.</span><span>Regional pattern recognition.</span></h3>
+    </div>
+    <div class="k">
+      <p><b>TheFounder&amp;Co. is that pattern turned into a system:</b> matching the right capability to the right stage, every time the company changes shape underneath you. Not a CV pipeline. Not a service catalogue. A way of deciding what the business actually needs next, and the discipline to go and get it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 PROOF ============ -->
+<section class="sec sec-tight" id="proof">
+  <div class="sec-head" style="margin-bottom:44px">
+    <div class="eyebrow rv">06 &nbsp;/&nbsp; Where the pattern was built</div>
+    <h2 class="disp rv" style="--d:.08s;margin-top:22px;font-size:clamp(28px,3.8vw,46px)">Companies we have worked with.</h2>
+  </div>
+  <div class="rv">
+    <div class="marquee">
+      <div class="track" id="track1"></div>
+    </div>
+    <div class="marquee" style="margin-top:14px">
+      <div class="track rev" id="track2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 CONTACT ============ -->
+<section class="sec sec-tight" id="contact">
+  <div class="contact-card rv">
+    <div>
+      <div class="eyebrow on-dark" style="margin-bottom:24px">07 &nbsp;/&nbsp; Start the conversation</div>
+      <h2>Tell us the stage.<br>We'll tell you the shape.</h2>
+      <p>A 30 minute working conversation. No CV dump, no service pitch. We map your situation first, then tell you exactly how we would run this &mdash; including what we would not do.</p>
+      <div class="contact-actions">
+        <a class="btn btn-lime" href="index.html#solver">Run the solver <span class="ar">&rarr;</span></a>
+        <a class="btn btn-ghost-light" id="mailBtn" href="#">Email us</a>
+        <a class="btn btn-ghost-light" id="waBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-h" style="color:#61666F">Direct</div>
+      <div class="foot-list" id="contactList"></div>
+      <div style="margin-top:38px;padding-top:26px;border-top:1px solid #23262E">
+        <div class="foot-h" style="color:#61666F">Where we work</div>
+        <p style="font-size:15px;line-height:1.7;color:#9AA0AB;font-weight:500">
+          Headquartered in Jeddah. Mandates across Saudi Arabia, the wider GCC and MENA.
+          We reply to every enquiry within one working day.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <span class="wordmark">TheFounder<span class="amp">&amp;</span>Co<span class="dot">.</span></span>
+        <p class="foot-blurb">We solve the people equation. Executive search, on-demand leadership and embedded capability for tech startups and scale-ups.</p>
+      </div>
+      <div>
+        <div class="foot-h">Navigate</div>
+        <div class="foot-list">
+          <a href="index.html#solver">The solver</a>
+          <a href="#why">Why we exist</a>
+          <a href="#services">Services</a>
+          <a href="#stages">The stage map</a>
+          <a href="#founder">Who is behind it</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-h">Get in touch</div>
+        <div class="foot-list" id="footContact"></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span id="yr"></span> TheFounder&amp;Co. &middot; Jeddah, Saudi Arabia</span>
+      <span>KSA &middot; GCC &middot; MENA</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+/* =====================================================================
+   CONTENT — everything on this page reads from here.
+   Rename a service in SERVICES and it changes in the stage map,
+   the routing tree and the orbit at the same time.
+===================================================================== */
+
+const SERVICES = [
+  {id:'hunter',   name:'Founder Hunter',       angle:118},
+  {id:'quotient', name:'Founder Quotient',     angle:58},
+  {id:'circle',   name:'Founder Inner Circle', angle:8},
+  {id:'search',   name:'Executive Search',     angle:-42},
+  {id:'ondemand', name:'On-Demand CxO',        angle:-96},
+  {id:'grid',     name:'Tech Grid',            angle:-152},
+  {id:'ta',       name:'TA Powerhouse',        angle:162},
+];
+
+const STAGES = [
+  {
+    key:'Pre-Seed', code:'the founding team.',
+    breaks:[
+      'Finding a co-founder who covers what you do not',
+      'Not knowing your own blind spots yet',
+      'Needing product and tech leadership you cannot afford full-time'
+    ],
+    bring:['hunter','quotient','ondemand'],
+    copy:'Build the founding combination, understand leadership readiness, and access senior expertise without creating a premature full-time structure.'
+  },
+  {
+    key:'Seed', code:'speed without headcount.',
+    breaks:[
+      'Every critical decision still runs through the founders',
+      'The first leadership gaps start showing',
+      'Hiring quietly eats half your week'
+    ],
+    bring:['ondemand','ta','grid'],
+    copy:'Add fractional leadership, elastic hiring capacity, and targeted product, engineering or AI expertise around the founding team.'
+  },
+  {
+    key:'Series A', code:'your first real leaders.',
+    breaks:[
+      'You cannot personally drive every hire anymore',
+      'The executive team has to take shape fast',
+      'Management quality becomes the ceiling on growth'
+    ],
+    bring:['search','quotient','ta'],
+    copy:'Build the leadership spine, assess how ready the current team is to scale, and install a hiring engine that runs without you.'
+  },
+  {
+    key:'Series B', code:'the leadership bench.',
+    breaks:[
+      'Hiring demand outruns the internal team',
+      'Leadership has to scale across functions and markets',
+      'There is no bench behind your best people'
+    ],
+    bring:['ta','search','ondemand'],
+    copy:'Use elastic hiring capacity, strengthen the executive bench, and deploy senior operators without permanently growing overhead.'
+  },
+  {
+    key:'Series C+', code:'governance and depth.',
+    breaks:[
+      'Full-time C-suite depth becomes non-negotiable',
+      'Governance, risk and reporting expectations rise',
+      'Board and investor relations need real capability'
+    ],
+    bring:['search','quotient','ondemand'],
+    copy:'Secure public-company-calibre leadership, assess organisational readiness, and access specialist governance and transformation expertise.'
+  },
+  {
+    key:'Every stage', code:'the founder behind the company.',
+    breaks:[
+      'The higher you go, the less honest the feedback gets',
+      'Blind spots compound faster than the org chart grows',
+      'Judgement gets tested in private, not in board meetings'
+    ],
+    bring:['quotient','circle'],
+    copy:'Re-read the leadership combination as the company changes shape, inside a confidential circle of founders who are one stage further down the same road.'
+  },
+];
+
+const NEEDS = [
+  {role:'Investor', items:[
+    {t:'I am looking for a founder to back',                    s:'hunter'},
+    {t:'Assess this founder and founding team for me',          s:'quotient'},
+    {t:'I need talent cover across the portfolio',              s:'ondemand'},
+  ]},
+  {role:'Founder', items:[
+    {t:'I need the right co-founder',                           s:'hunter'},
+    {t:'I need honest counsel I cannot get from my board',      s:'circle'},
+  ]},
+  {role:'CEO or HR leader', items:[
+    {t:'I want to hire full time',                              s:'search'},
+    {t:'I need senior firepower, fractional or interim',        s:'ondemand'},
+    {t:'I need an outcome delivered, not a headcount',          s:'ondemand'},
+    {t:'I want to grow without growing my TA team',             s:'ta'},
+    {t:'I need to ship product without building a department',  s:'grid'},
+  ]},
+];
+
+const LOGOS_A = ['Sanabil Venture Studio','Raed VC','Impact46','Stryber','Mozn','Foodics','Jahez'];
+const LOGOS_B = ['Nana','Mrsool','D360 Bank','Floward','Resal','WalaPlus','Syarah'];
+
+const nameOf = id => (SERVICES.find(s=>s.id===id)||{}).name || id;
+
+/* =====================================================================
+   02 — stage rails under each service
+===================================================================== */
+document.querySelectorAll('.rail').forEach(rail=>{
+  const from = +rail.dataset.from, to = +rail.dataset.to;
+  for(let i=0;i<5;i++){
+    const c = document.createElement('div');
+    c.className = 'cell' + (i>=from && i<=to ? ' on':'') + (i===from ? ' start':'');
+    rail.appendChild(c);
+  }
+});
+
+/* =====================================================================
+   03 — the stage map
+===================================================================== */
+const tabsEl  = document.getElementById('stageTabs');
+const leftEl  = document.getElementById('stageLeft');
+const orbitEl = document.getElementById('orbit');
+const coreEl  = document.getElementById('orbitCore');
+
+/* place the seven service nodes once, then only toggle their state */
+const nodeEls = {};
+SERVICES.forEach(s=>{
+  const el = document.createElement('div');
+  el.className = 'node' + (Math.cos(s.angle*Math.PI/180) < -0.05 ? ' lft':'');
+  el.innerHTML = '<span class="d"></span><span class="t">' + s.name + '</span>';
+  orbitEl.appendChild(el);
+  nodeEls[s.id] = el;
+});
+
+/* labels sit outside the ring, so the radius has to shrink on small screens */
+function layoutNodes(){
+  const R = window.innerWidth < 900 ? 33 : 40;
+  SERVICES.forEach(s=>{
+    const rad = s.angle * Math.PI/180;
+    nodeEls[s.id].style.left = (50 + Math.cos(rad)*R) + '%';
+    nodeEls[s.id].style.top  = (50 - Math.sin(rad)*R) + '%';
+  });
+}
+layoutNodes();
+window.addEventListener('resize', layoutNodes);
+
+function paintStage(i){
+  const st = STAGES[i];
+
+  [...tabsEl.children].forEach((b,n)=>{
+    b.classList.toggle('on', n===i);
+    b.setAttribute('aria-selected', n===i ? 'true':'false');
+  });
+
+  leftEl.innerHTML = `
+    <p class="stage-kicker">At ${st.key === 'Every stage' ? 'every stage' : st.key}, the code is</p>
+    <p class="stage-code">${st.code}</p>
+    <div class="stage-cols">
+      <div>
+        <div class="sc-h">What usually breaks here</div>
+        <ul class="breaks">${st.breaks.map(b=>`<li>${b}</li>`).join('')}</ul>
+      </div>
+      <div>
+        <div class="sc-h">What we bring</div>
+        <p class="svc-line">${st.bring.map(nameOf).join('<span class="d"> &middot; </span>')}</p>
+        <p class="stage-copy">${st.copy}</p>
+      </div>
+    </div>`;
+  leftEl.classList.remove('fade-swap');
+  void leftEl.offsetWidth;
+  leftEl.classList.add('fade-swap');
+
+  coreEl.innerHTML = `<b>${st.key}</b><i>${st.code.replace(/\.$/,'')}</i>`;
+  SERVICES.forEach(s=> nodeEls[s.id].classList.toggle('on', st.bring.includes(s.id)));
+}
+
+STAGES.forEach((st,i)=>{
+  const b = document.createElement('button');
+  b.className = 'stab';
+  b.type = 'button';
+  b.setAttribute('role','tab');
+  b.textContent = st.key;
+  b.addEventListener('click', ()=>paintStage(i));
+  tabsEl.appendChild(b);
+});
+paintStage(0);
+
+/* =====================================================================
+   04 — the routing tree
+===================================================================== */
+const needsEl = document.getElementById('needs');
+const pillsEl = document.getElementById('svcPills');
+const treeEl  = document.getElementById('tree');
+const wiresEl = document.getElementById('wires');
+
+const counts = {};
+NEEDS.forEach(g=>g.items.forEach(it=>{ counts[it.s] = (counts[it.s]||0)+1; }));
+
+NEEDS.forEach(g=>{
+  const block = document.createElement('div');
+  block.className = 'role-block rv';
+  block.innerHTML = `<div class="role-h">${g.role}</div>`;
+  g.items.forEach(it=>{
+    const n = document.createElement('div');
+    n.className = 'need';
+    n.tabIndex = 0;
+    n.dataset.s = it.s;
+    n.innerHTML = `<span>${it.t}</span><span class="to">${nameOf(it.s)}</span>`;
+    block.appendChild(n);
+  });
+  needsEl.appendChild(block);
+});
+
+SERVICES.forEach(s=>{
+  if(!counts[s.id]) return;
+  const p = document.createElement('div');
+  p.className = 'svc-pill';
+  p.dataset.s = s.id;
+  p.innerHTML = `<span>${s.name}</span><span class="cnt">${counts[s.id]}</span>`;
+  pillsEl.appendChild(p);
+});
+
+const NS = 'http://www.w3.org/2000/svg';
+const wirePairs = [...treeEl.querySelectorAll('.need')].map(n=>{
+  const pill = pillsEl.querySelector(`.svc-pill[data-s="${n.dataset.s}"]`);
+  if(!pill) return null;
+  const path = document.createElementNS(NS,'path');
+  path.dataset.s = n.dataset.s;
+  wiresEl.appendChild(path);
+  return {n, pill, path};
+}).filter(Boolean);
+
+function drawWires(){
+  const wide = window.innerWidth >= 900;
+  wiresEl.style.display = wide ? '' : 'none';
+  if(!wide) return;
+  const box = treeEl.getBoundingClientRect();
+  wirePairs.forEach(({n, pill, path})=>{
+    const a = n.getBoundingClientRect(), b = pill.getBoundingClientRect();
+    const x1 = a.right - box.left, y1 = a.top + a.height/2 - box.top;
+    const x2 = b.left  - box.left, y2 = b.top + b.height/2 - box.top;
+    const dx = Math.max((x2 - x1) * 0.5, 40);
+    path.setAttribute('d', `M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`);
+  });
+}
+
+function highlight(id){
+  treeEl.classList.toggle('hover', !!id);
+  treeEl.querySelectorAll('.need').forEach(n=>n.classList.toggle('hot', n.dataset.s===id));
+  pillsEl.querySelectorAll('.svc-pill').forEach(p=>p.classList.toggle('hot', p.dataset.s===id));
+  wiresEl.querySelectorAll('path').forEach(p=>p.classList.toggle('hot', p.dataset.s===id));
+}
+
+treeEl.addEventListener('mouseover', e=>{
+  const t = e.target.closest('.need, .svc-pill');
+  if(t) highlight(t.dataset.s);
+});
+treeEl.addEventListener('mouseleave', ()=>highlight(null));
+treeEl.addEventListener('focusin', e=>{
+  const t = e.target.closest('.need');
+  if(t) highlight(t.dataset.s);
+});
+treeEl.addEventListener('focusout', ()=>highlight(null));
+
+/* recompute the wires whenever the layout can have moved */
+window.addEventListener('resize', drawWires);
+window.addEventListener('load', drawWires);
+if('ResizeObserver' in window) new ResizeObserver(drawWires).observe(treeEl);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(drawWires);
+setTimeout(drawWires, 400);
+
+/* =====================================================================
+   06 — logo marquees (duplicated once so the loop is seamless)
+===================================================================== */
+const fill = (el, list)=>{
+  el.innerHTML = [...list, ...list]
+    .map(n=>`<span class="logo">${n}</span>`).join('');
+};
+fill(document.getElementById('track1'), LOGOS_A);
+fill(document.getElementById('track2'), LOGOS_B);
+
+/* =====================================================================
+   07 — contact actions
+===================================================================== */
+const subject = encodeURIComponent('TheFounder&Co. — a conversation');
+const body = encodeURIComponent('Hi Imran,\n\nHere is where we are:\n\nStage:\nWhat needs to change:\n\n');
+document.getElementById('mailBtn').href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
+document.getElementById('waBtn').href  = `https://wa.me/${SITE.whatsapp}?text=${subject}`;
+
+/* =====================================================================
+   section index rail — active state + light/dark inversion
+===================================================================== */
+const rail = document.getElementById('railIndex');
+const railLinks = [...rail.querySelectorAll('a')];
+const sections = railLinks.map(a=>document.querySelector(a.getAttribute('href')));
+const band = document.getElementById('stages');
+
+let raf = false;
+function onScroll(){
+  const mid = window.innerHeight / 2;
+  let active = 0;
+  sections.forEach((s,i)=>{ if(s && s.getBoundingClientRect().top <= mid + 40) active = i; });
+  railLinks.forEach((a,i)=>a.classList.toggle('on', i===active));
+  const b = band.getBoundingClientRect();
+  rail.classList.toggle('on-dark', b.top <= mid && b.bottom >= mid);
+  drawWires();
+  raf = false;
+}
+window.addEventListener('scroll', ()=>{ if(!raf){ raf = true; requestAnimationFrame(onScroll); } }, {passive:true});
+onScroll();
+
+/* reveal anything the shared script created before these nodes existed */
+initReveal(document.getElementById('needs'));
+</script>
+</body>
+</html>
