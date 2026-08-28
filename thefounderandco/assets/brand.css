@@ -15,8 +15,9 @@
   --card:#FFFFFF;
   --line:#E4E4DE;
   --line-dark:#2A2E37;
-  --muted:#6B6F76;
-  --faint:#9A9DA3;
+  --muted:#65686E;   /* body copy            5.0:1 on paper */
+  --faint:#6C6F75;   /* small labels         4.6:1 on paper */
+  --soft:#87898E;    /* large display line   3.2:1 on paper */
   --lime:#C8F03C;
   --lime-soft:#EDF8C8;
   --lime-deep:#93B518;
@@ -49,6 +50,9 @@ body{
 }
 img{max-width:100%;display:block}
 a{color:inherit}
+
+:focus-visible{outline:2px solid var(--lime-deep);outline-offset:3px;border-radius:4px}
+.site-foot :focus-visible,.band :focus-visible,nav :focus-visible{outline-color:var(--lime)}
 
 ::selection{background:var(--lime);color:var(--ink)}
 
@@ -93,7 +97,7 @@ nav{
 .wordmark .amp,.wordmark .dot{color:var(--lime)}
 .brand-tag{
   display:none;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:#7C828E;padding-left:14px;border-left:1px solid #2E323B;
+  color:#8F949E;padding-left:14px;border-left:1px solid #2E323B;
 }
 .nav-right{display:flex;align-items:center;gap:8px}
 .nav-link{
@@ -143,8 +147,8 @@ nav{
 .foot-inner{max-width:1200px;margin:0 auto}
 .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid #23262E}
 .foot-top .wordmark{font-size:26px}
-.foot-blurb{margin-top:16px;font-size:14.5px;line-height:1.65;color:#8A909B;max-width:34ch}
-.foot-h{font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#61666F;margin-bottom:16px}
+.foot-blurb{margin-top:16px;font-size:14.5px;line-height:1.65;color:#9AA0AB;max-width:34ch}
+.foot-h{font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#797D85;margin-bottom:16px}
 .foot-list{display:flex;flex-direction:column;gap:11px}
 .foot-list a,.foot-list span{
   color:#C3C8D0;text-decoration:none;font-size:14.5px;font-weight:600;width:fit-content;
@@ -158,7 +162,7 @@ nav{
 .foot-list a:hover::after{transform:scaleX(1)}
 .foot-bottom{
   display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:26px;
-  font-size:12.5px;color:#61666F;letter-spacing:.02em;
+  font-size:12.5px;color:#898D95;letter-spacing:.02em;
 }
 @media(max-width:860px){
   .foot-top{grid-template-columns:1fr;gap:34px}

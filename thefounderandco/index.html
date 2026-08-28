@@ -11,6 +11,74 @@
 <meta property="og:site_name" content="TheFounder&amp;Co.">
 <meta name="theme-color" content="#0E1015">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E1015'/%3E%3Ctext x='32' y='46' font-family='Helvetica,Arial' font-size='42' font-weight='bold' fill='%23C8F03C' text-anchor='middle'%3E%26amp;%3C/text%3E%3C/svg%3E">
+<link rel="canonical" href="https://thefounderandco.com/">
+<meta property="og:url" content="https://thefounderandco.com/">
+<meta property="og:image" content="https://thefounderandco.com/assets/og-solver.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://thefounderandco.com/assets/og-solver.png">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"Organization",
+      "@id":"https://thefounderandco.com/#org",
+      "name":"TheFounder&Co.",
+      "url":"https://thefounderandco.com/",
+      "slogan":"We solve the people equation.",
+      "description":"Executive search, on-demand leadership and embedded hiring and technology capability for tech startups and scale-ups across the GCC and MENA.",
+      "email":"imran@rethinkhrs.com",
+      "telephone":"+966507784932",
+      "areaServed":[{"@type":"Place","name":"GCC"},{"@type":"Place","name":"MENA"}],
+      "sameAs":["https://ae.linkedin.com/in/middleeastleadership"],
+      "founder":{"@id":"https://thefounderandco.com/#imran"},
+      "contactPoint":{
+        "@type":"ContactPoint","contactType":"sales",
+        "email":"imran@rethinkhrs.com","telephone":"+966507784932",
+        "areaServed":["GCC","MENA"],"availableLanguage":["English","Arabic"]
+      },
+      "hasOfferCatalog":{
+        "@type":"OfferCatalog","name":"Services",
+        "itemListElement":[
+          {"@type":"OfferCatalog","name":"Founder Code","itemListElement":[
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Founder Quotient","description":"Structured, BPS-certified assessment of founders and leadership teams."}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Founder Hunter","description":"Co-founder and founding team matchmaking."}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Founder Inner Circle","description":"A capped, confidential circle of founders and CEOs."}}
+          ]},
+          {"@type":"OfferCatalog","name":"Leadership","itemListElement":[
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Executive Search","description":"Permanent C-suite and senior leadership search for startups and scale-ups."}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Executive On-Demand","description":"Fractional and interim executives, scoped to outcomes."}}
+          ]},
+          {"@type":"OfferCatalog","name":"Engine","itemListElement":[
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"TA Powerhouse","description":"Talent acquisition as a service: embedded hiring capacity that flexes with your hiring curve."}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Tech Grid","description":"Technology capability from full time to offshore, plus tech as a service."}}
+          ]}
+        ]
+      }
+    },
+    {
+      "@type":"Person",
+      "@id":"https://thefounderandco.com/#imran",
+      "name":"Imran Yousuf",
+      "jobTitle":"Founder & CEO",
+      "worksFor":{"@id":"https://thefounderandco.com/#org"},
+      "image":"https://thefounderandco.com/assets/imran-yousuf.jpg",
+      "sameAs":["https://ae.linkedin.com/in/middleeastleadership"],
+      "description":"Twenty years in GCC executive search and talent advisory. Former Middle East President at N2Growth, three years as Talent Partner to Sanabil Venture Studio, BPS-certified assessor with a psychology degree, and a founder who took a startup from idea to acquisition in 18 months."
+    },
+    {
+      "@type":"WebSite",
+      "@id":"https://thefounderandco.com/#site",
+      "url":"https://thefounderandco.com/",
+      "name":"TheFounder&Co.",
+      "publisher":{"@id":"https://thefounderandco.com/#org"},
+      "inLanguage":"en"
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
@@ -47,14 +115,14 @@
   }
   .slot-label{
     font-size:10px;font-weight:700;letter-spacing:.18em;
-    text-transform:uppercase;color:#8E9198;margin-bottom:6px;
+    text-transform:uppercase;color:var(--faint);margin-bottom:6px;
   }
   .slot-value{
     font-size:16.5px;font-weight:600;display:flex;align-items:center;
     justify-content:space-between;gap:10px;color:var(--ink);
   }
-  .slot.placeholder .slot-value{color:#A0A3A9;font-weight:500;}
-  .slot .arrow{font-size:12px;color:#A0A3A9;transition:transform .2s var(--ease);}
+  .slot.placeholder .slot-value{color:var(--faint);font-weight:500;}
+  .slot .arrow{font-size:12px;color:var(--faint);transition:transform .2s var(--ease);}
   .slot.open .arrow{transform:rotate(180deg);}
   .slot.done{flex:0 1 auto;min-width:150px;}
   .slot.done .slot-label{color:var(--ink);}
@@ -111,15 +179,15 @@
 
   .fine-print{
     text-align:center;font-size:12.5px;font-weight:600;
-    color:#8E9198;margin-top:22px;letter-spacing:.01em;
+    color:var(--faint);margin-top:22px;letter-spacing:.01em;
   }
   .cred-strip{
     display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 16px;
     margin:38px auto 0;font-size:12.5px;font-weight:600;
-    color:#7F838A;letter-spacing:.02em;padding:0 24px 70px;
+    color:var(--faint);letter-spacing:.02em;padding:0 24px 70px;
   }
   .cred-strip b{color:var(--ink);font-weight:700;}
-  .cred-strip .sep{color:#C7C7C0;}
+  .cred-strip .sep{color:#B4B4AC;}
 
   /* ---------- RESULT ---------- */
   #result{display:none;max-width:880px;margin:0 auto;padding:20px 24px 100px;}
@@ -131,7 +199,7 @@
   }
   .result-eyebrow{
     font-size:11px;font-weight:700;letter-spacing:.2em;
-    text-transform:uppercase;color:#8E9198;margin-bottom:16px;
+    text-transform:uppercase;color:var(--faint);margin-bottom:16px;
     display:flex;align-items:center;gap:12px;
   }
   .result-eyebrow::before{content:"";width:26px;height:2px;background:var(--lime);border-radius:2px;}
@@ -143,7 +211,7 @@
     font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.03em;
     margin-top:22px;line-height:1.9;text-transform:uppercase;
   }
-  .dossier .sep{color:#C7C7C0;margin:0 8px;}
+  .dossier .sep{color:#B4B4AC;margin:0 8px;}
   .ask-line{font-size:20px;font-weight:700;margin-top:14px;letter-spacing:-.015em;}
   .result-why{font-size:16.5px;line-height:1.68;color:#3C4046;margin-top:22px;font-weight:500;}
   .straight{
@@ -159,13 +227,35 @@
   .next-block{margin-top:32px;padding-top:28px;border-top:1px solid var(--line);}
   .next-label{
     font-size:10.5px;font-weight:700;letter-spacing:.2em;
-    text-transform:uppercase;color:#8E9198;margin-bottom:12px;
+    text-transform:uppercase;color:var(--faint);margin-bottom:12px;
   }
   .next-block p{font-size:15.5px;line-height:1.65;color:#3C4046;font-weight:500;}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;}
+  /* ---------- email capture ---------- */
+  .capture{
+    margin-top:30px;padding:30px 32px;background:#FAFAF7;
+    border:1px solid var(--line);border-radius:20px;
+  }
+  .capture > p{font-size:15px;line-height:1.65;color:var(--muted);font-weight:500;max-width:56ch;}
+  .cap-form{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;}
+  .cap-form input{
+    flex:1 1 260px;min-width:0;font-family:var(--sans);font-size:16px;font-weight:600;
+    padding:16px 20px;border:1.5px solid var(--line);border-radius:14px;
+    background:var(--card);color:var(--ink);transition:border-color .2s;
+  }
+  .cap-form input::placeholder{color:var(--faint);font-weight:500;}
+  .cap-form input:hover{border-color:#CFCFC8;}
+  .cap-form input:focus{outline:none;border-color:var(--ink);}
+  .cap-form input:focus-visible{outline:2px solid var(--lime-deep);outline-offset:2px;}
+  .cap-form button:disabled{opacity:.45;cursor:progress;}
+  .cap-note{font-size:13px;line-height:1.55;color:var(--faint);font-weight:500;margin-top:14px;}
+  .cap-note.err{color:#A8341F;font-weight:600;}
+  .cap-done{font-size:15.5px;line-height:1.65;color:#3C4046;font-weight:500;}
+  .cap-done a{font-weight:700;}
+
   .restart{
     display:inline-block;margin-top:24px;font-size:13px;font-weight:600;
-    color:#8E9198;text-decoration:underline;text-underline-offset:3px;
+    color:var(--faint);text-decoration:underline;text-underline-offset:3px;
     cursor:pointer;background:none;border:none;font-family:var(--sans);
   }
   .restart:hover{color:var(--ink);}
@@ -179,6 +269,7 @@
     .panel{left:8px;right:8px;max-width:none;}
     .solve-btn{min-height:58px;margin-top:6px;}
     .result-card{padding:34px 26px;}
+    .capture{padding:24px 20px;}
     .ready-pill{padding:14px 20px 4px;}
   }
 </style>
@@ -484,7 +575,7 @@ const TREE = {
       O('aleader','Leadership coach for an executive'),
       O('afunc','Functional advisor (finance, tech, growth, people)'),
     ],
-    next:()=>({terminal:'ondemand'})
+    next:s => s.advisorType==='afounder' ? {terminal:'circle'} : {terminal:'ondemand'}
   },
   embeddedType:{
     label:'Team type', ph:'Choose the pod',
@@ -515,31 +606,73 @@ const TREE = {
    RESULT LIBRARY
 ===================================================================== */
 
+/* The seven services. Every solver outcome resolves to one of these,
+   so the name a visitor sees here is the name they find on the company
+   page. Rename once, here, and both pages agree. */
+const NAMES = {
+  quotient:'Founder Quotient', hunter:'Founder Hunter', circle:'Founder Inner Circle',
+  search:'Executive Search',   ondemand:'Executive On-Demand',
+  ta:'TA Powerhouse',          grid:'Tech Grid',
+};
+const GROUP_OF = {
+  quotient:'Founder Code', hunter:'Founder Code', circle:'Founder Code',
+  search:'Leadership',     ondemand:'Leadership',
+  ta:'Engine',             grid:'Engine',
+};
+
+/* Each ending maps to a service and keeps its own reason. `svc` and `why`
+   may be functions of the answer state where one service answers several
+   different asks. */
 const SERVICES = {
-  search:      {name:'Executive Search',
+  search:{svc:'search',
     why:"This is a search assignment, not a CV supply exercise. We map the market, approach leaders who are not applying anywhere, assess for founder fit and stage fit, and run the process to a signed offer. Built on 20+ years of GCC executive search."},
-  ondemand:    {name:'On-Demand Leadership',
-    why:"You need senior capability without the full-time cost and commitment. We place proven leaders on fractional and interim terms, scoped around what the company actually needs this quarter, with a clear path to convert or exit."},
-  embedded:    {name:'Embedded Teams',
-    why:"We put a dedicated team inside your business, working your tools and your cadence, managed by us. Capacity that scales up and down without permanent overhead."},
-  outcome:     {name:'Outcome Delivery',
-    why:"You are not buying hours, you are buying a result. We scope the outcome, assemble the right pod of people and AI, and take responsibility for delivery against an agreed definition of done."},
-  board:       {name:'Board & NED Search',
-    why:"Board seats are where governance and growth meet. We identify and assess non-executive directors and board members with the sector depth and independence your stage demands."},
-  architecture:{name:'Capability Architecture Session',
-    why:"Most companies hire the role they can name, not the capability they need. In one working session we map your stage, gaps and constraints, then design the leadership and team architecture for the next 18 months. You leave with a plan, not a proposal."},
-  fhunter_founder:{name:'The Founder Hunter',
-    why:"We source and assess founder talent the way investors assess deals: track record, drive, coachability and fit with the venture thesis. Assessment led by a BPS-certified assessor with three years inside a sovereign venture studio."},
-  fhunter_cof:{name:'The Founder Hunter',
-    why:"Completing a founding team is a different search from hiring an executive. We assess for complementarity with the existing founder, equity mindset and stage resilience, not just functional skill."},
-  fhunter_cofcap:{name:'The Founder Hunter',
-    why:"Finding your co-founder is the highest-stakes people decision you will make. We run a structured search and assessment for complementarity, shared values and conflict patterns, so you choose with evidence, not chemistry alone."},
-  assess:      {name:'Founder Assessment',
+  board:{svc:'search',
+    why:"Board seats are where governance and growth meet, and filling one is a search assignment like any other. We identify and assess non-executive directors with the sector depth, independence and appetite your stage actually demands &mdash; not just a name people recognise."},
+
+  ondemand:{svc:'ondemand',
+    why:"You need senior capability without the full-time cost and commitment. We place proven operators on fractional and interim terms, scoped around what the company actually needs this quarter, with an agreed definition of done and a clear path to convert or exit."},
+  portfolio:{svc:'ondemand',
+    why:"One partner across the portfolio: leadership hiring support, compensation benchmarks, reference intelligence and founder assessment, on retainer. Your companies get search-grade support without each one paying search-grade fees."},
+
+  assess:{svc:'quotient',
     why:"Structured, BPS-certified assessment of the people you are about to back. Most startup failure is people failure. Assessing the founder before the term sheet is cheaper than learning after it."},
-  portfolio:   {name:'Portfolio Talent Partner',
-    why:"One talent partner across the portfolio: leadership hiring support, compensation benchmarks, reference intelligence and founder assessment, on retainer. Your portfolio companies get search-grade support without each one paying search-grade fees."},
-  fir:         {name:'Founder-in-Residence',
-    why:"An entrepreneurial operator embedded to incubate and lead a new venture inside or alongside your business. We find people who have built before and want to build again, with skin in the game."},
+  architecture:{svc:'quotient',
+    why:"Most companies hire the role they can name, not the capability they need. We map your stage, gaps and constraints, then design the leadership and team architecture for the next eighteen months &mdash; including which seats should not be full time yet. You leave with a plan, not a proposal."},
+
+  fhunter_founder:{svc:'hunter',
+    why:"We source and assess founder talent the way investors assess deals: track record, drive, coachability and fit with the venture thesis. Assessment led by a BPS-certified assessor with three years inside a sovereign venture studio."},
+  fhunter_cof:{svc:'hunter',
+    why:"Completing a founding team is a different search from hiring an executive. We assess for complementarity with the existing founder, equity mindset and stage resilience, not just functional skill."},
+  fhunter_cofcap:{svc:'hunter',
+    why:"Finding your co-founder is the highest-stakes people decision you will make. We run a structured search and assessment for complementarity, shared values and conflict patterns, so you choose with evidence, not chemistry alone."},
+  fir:{svc:'hunter',
+    why:"An entrepreneurial operator embedded to incubate and lead a new venture inside or alongside your business. We find people who have built before and want to build again, with skin in the game, and assess them the way we assess a founding team."},
+
+  circle:{svc:'circle',
+    why:"The higher you go, the less honest the feedback gets. A capped, confidential circle of founders and CEOs roughly one stage apart, where the questions you cannot put to your board or your team get asked properly. Introductions are made because they should be, not because someone is selling."},
+
+  embedded:{
+    svc:s => ({eta:'ta', eeng:'grid', edata:'grid'})[s.embeddedType] || 'ondemand',
+    why:s => s.embeddedType==='eta'
+      ? "Talent acquisition as a service: a dedicated hiring pod inside your business, on your tools and your cadence, managed by us. Capacity that flexes with your hiring curve instead of against it &mdash; and a process that stays behind when you scale it back."
+      : (s.embeddedType==='eeng' || s.embeddedType==='edata')
+      ? "A dedicated product, engineering or data squad working inside your business, assembled and managed by us. The capability you need without a twelve-month hiring cycle or permanent overhead."
+      : "A dedicated pod inside your business, working your tools and your cadence, managed by us. Senior capacity that scales up and down without permanent headcount."},
+
+  outcome:{
+    svc:s => ({olaunch:'grid', odata:'grid', ohiring:'ta'})[s.outcomeGoal] || 'ondemand',
+    why:s => s.outcomeGoal==='ohiring'
+      ? "You are not buying hours, you are buying a working hiring engine: process, structured interviews, calibrated scorecards, compensation benchmarks and the capacity to run them. Scope and definition of done agreed before we start."
+      : (s.outcomeGoal==='olaunch' || s.outcomeGoal==='odata')
+      ? "You are not buying hours, you are buying a result. We scope the outcome, assemble the product, engineering and data capability to hit it, and take responsibility for delivery against an agreed definition of done."
+      : "You are not buying hours, you are buying a result. We scope the outcome, put the right senior operators against it, and take responsibility for delivery against an agreed definition of done."},
+};
+
+/* resolve a value that may be a plain value or a function of state */
+const val = (v,s) => typeof v==='function' ? v(s) : v;
+const serviceOf = (t,s) => {
+  const id = val(SERVICES[t].svc, s);
+  return {id, name:NAMES[id], group:GROUP_OF[id], why:val(SERVICES[t].why, s)};
 };
 
 /* stage-aware straight talk rules, evaluated in order, max two shown */
@@ -561,6 +694,16 @@ const RULES = [
    text:()=>`You pay for the result, not the hours. Scope is agreed before we start, and so is the definition of done.`},
   {when:(s,t)=> t==='search' && s.revenue==='r0' && !EARLY.includes(s.stage),
    text:()=>`Pre-revenue at your stage means runway discipline matters more than title inflation. We will build the compensation case accordingly.`},
+  {when:(s,t)=> t==='search' && s.level!=='csuite',
+   text:s=>`A ${txt('level')} hire in ${txt('functionArea').toLowerCase()} lives or dies on the brief, not the shortlist. We spend the first session on what good actually looks like in your company before we approach anyone.`},
+  {when:(s,t)=> t==='board',
+   text:()=>`A board seat filled for optics costs more than an empty one. We assess for independence and appetite to do the work, not for a name people recognise.`},
+  {when:(s,t)=> t==='portfolio',
+   text:()=>`Portfolio talent support only works if the founders actually use it. We start with the two or three companies that want it, not a mandate from the top.`},
+  {when:(s,t)=> t==='fir',
+   text:()=>`A founder-in-residence without real equity is an employee with an interesting title. We will pressure-test the package before we start the search.`},
+  {when:(s,t)=> t==='circle',
+   text:()=>`The circle is capped on purpose. If it is full when you ask, we will tell you rather than dilute the room.`},
 ];
 
 /* =====================================================================
@@ -762,7 +905,7 @@ function dossier(s,t){
 
 /* Hand the answers to the CTA so nothing the visitor typed is thrown away. */
 function ctaLinks(s,t){
-  const svc = SERVICES[t];
+  const svc = serviceOf(t,s);
   const lines = [
     `Best-fit model: ${svc.name}`,
     askLine(s,t).replace(/^The (ask|outcome): /,'Ask: '),
@@ -779,13 +922,14 @@ function ctaLinks(s,t){
 
 function solve(t){
   const s = S();
-  const svc = SERVICES[t];
+  const svc = serviceOf(t,s);
   const straight = RULES.filter(r=>r.when(s,t)).slice(0,2).map(r=>r.text(s));
   const links = ctaLinks(s,t);
+  lastResult = {terminal:t, state:s, svc};
 
   const card = document.getElementById('resultCard');
   card.innerHTML = `
-    <div class="result-eyebrow">Your best-fit model</div>
+    <div class="result-eyebrow">${svc.group} &mdash; your best-fit service</div>
     <div class="result-service"><span class="hl">${svc.name}</span></div>
     <div class="dossier">${dossier(s,t)}</div>
     <div class="ask-line">${askLine(s,t)}</div>
@@ -804,6 +948,16 @@ function solve(t){
       </div>
       <button class="restart" id="restartBtn">Change my answers</button>
     </div>
+
+    <div class="capture" id="capture">
+      <div class="next-label">Get the written version</div>
+      <p>We will send how we would actually run this: scope, sequence, what it costs when it goes wrong, and what we would not do. Your answers come attached, so the reply is about your company rather than a brochure.</p>
+      <form class="cap-form" id="capForm" novalidate>
+        <input type="email" id="capEmail" name="email" placeholder="you@company.com" autocomplete="email" aria-label="Your email address" required>
+        <button type="submit" class="btn btn-dark">Send it to me <span class="ar">&rarr;</span></button>
+      </form>
+      <p class="cap-note" id="capNote">Used to send this one breakdown and to follow up once. Nothing else, no list.</p>
+    </div>
   `;
   document.getElementById('result').classList.add('show');
   document.getElementById('result').style.display='block';
@@ -811,7 +965,80 @@ function solve(t){
     hideResult();
     document.getElementById('solver').scrollIntoView({behavior:'smooth'});
   });
+  document.getElementById('capForm').addEventListener('submit', onCapture);
   setTimeout(()=> document.getElementById('result').scrollIntoView({behavior:'smooth'}), 60);
+}
+
+/* ---------------- email capture ----------------
+   Posts to SITE.formEndpoint when one is configured. Until then it falls
+   back to opening a prefilled email, so the form is never a dead end. */
+let lastResult = null;
+
+function captureSummary(){
+  const {terminal, state, svc} = lastResult;
+  return [
+    `Service: ${svc.group} — ${svc.name}`,
+    askLine(state, terminal).replace(/^The (ask|outcome): /, 'Ask: '),
+    `Profile: ${dossierParts(state).join(' / ')}`,
+    `Answers: ${Object.entries(state).map(([k,v])=>`${k}=${v}`).join(', ')}`
+  ].join('\n');
+}
+
+async function onCapture(ev){
+  ev.preventDefault();
+  const input = document.getElementById('capEmail');
+  const note  = document.getElementById('capNote');
+  const email = input.value.trim();
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+    note.textContent = 'That does not look like a working email address. Check it and try again.';
+    note.className = 'cap-note err';
+    input.focus();
+    return;
+  }
+
+  const btn = ev.target.querySelector('button');
+  btn.disabled = true;
+  const summary = captureSummary();
+
+  if(SITE.formEndpoint){
+    try{
+      const res = await fetch(SITE.formEndpoint, {
+        method:'POST',
+        headers:{'Content-Type':'application/json', 'Accept':'application/json'},
+        body: JSON.stringify({
+          email,
+          service: lastResult.svc.name,
+          group:   lastResult.svc.group,
+          ask:     askLine(lastResult.state, lastResult.terminal),
+          profile: dossierParts(lastResult.state).join(' / '),
+          answers: lastResult.state,
+          summary,
+          source:  'solver'
+        })
+      });
+      if(!res.ok) throw new Error(res.status);
+      captureDone(email);
+    }catch(err){
+      btn.disabled = false;
+      note.textContent = 'That did not go through. Email ' + SITE.email + ' and we will pick it up from there.';
+      note.className = 'cap-note err';
+    }
+    return;
+  }
+
+  // no endpoint configured yet: hand it over as a prefilled email
+  window.location.href = `mailto:${SITE.email}`
+    + `?subject=${encodeURIComponent('Solver result — ' + lastResult.svc.name)}`
+    + `&body=${encodeURIComponent(summary + '\n\nSend the written breakdown to: ' + email + '\n')}`;
+  captureDone(email);
+}
+
+function captureDone(email){
+  const cap = document.getElementById('capture');
+  cap.innerHTML = `
+    <div class="next-label">On its way</div>
+    <p class="cap-done">Thanks &mdash; we have your selection and will send the breakdown to <b>${email}</b>. If it has not landed within one working day, mail <a href="mailto:${SITE.email}">${SITE.email}</a> directly.</p>`;
 }
 
 function hideResult(){

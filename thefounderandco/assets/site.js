@@ -9,8 +9,15 @@ const SITE = {
   phoneDisplay: '+966 50 778 4932',
   whatsapp:     '966507784932',          // digits only, country code first
   website:      'thefounderandco.com',
-  linkedin:     '',                       // paste the profile URL and it appears everywhere
-  location:     'GCC · MENA'
+  linkedin:     'https://ae.linkedin.com/in/middleeastleadership',
+  location:     'GCC · MENA',
+  domain:       'https://thefounderandco.com',
+
+  // Where the solver's email capture posts. Paste a Formspree / Getform /
+  // Basin endpoint here and submissions go straight to your inbox with the
+  // visitor's full selection attached. Leave it empty and the form falls
+  // back to opening a prefilled email instead, so it still works today.
+  formEndpoint: ''
 };
 
 /* ---------- footer contact block ---------- */
