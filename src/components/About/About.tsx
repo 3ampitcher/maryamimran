@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Portrait, PORTRAIT_ABOUT_SRC } from '../Portrait/Portrait';
+import { Portrait, PORTRAIT_ABOUT_SRC, PORTRAIT_SRC } from '../Portrait/Portrait';
 import { MaskReveal, Reveal } from '../Motion/Reveal';
 import { site } from '../../data/site';
 import './About.css';
@@ -49,6 +49,7 @@ export function About() {
           <Reveal delay={0.2} className="about__portrait-wrap">
             <Portrait
               src={PORTRAIT_ABOUT_SRC}
+              fallbackSrc={PORTRAIT_SRC}
               ratio="4 / 5"
               objectPosition="center 26%"
               sizes="(max-width: 900px) 88vw, 38vw"

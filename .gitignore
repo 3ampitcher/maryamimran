@@ -2,6 +2,7 @@ node_modules
 dist
 dist-ssr
 dist-standalone
+source-images
 standalone
 *.local
 .DS_Store

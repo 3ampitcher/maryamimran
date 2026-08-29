@@ -17,6 +17,14 @@
   inset: 0;
 }
 
+/* <picture> is inline by default, so an img inside it has nothing for
+   height:100% to resolve against and collapses to its intrinsic height. */
+.portrait picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .portrait__img {
   width: 100%;
   height: 100%;
@@ -29,13 +37,29 @@
   will-change: transform;
 }
 
-.portrait--loaded .portrait__img {
+.portrait--loaded /* <picture> is inline by default, so an img inside it has nothing for
+   height:100% to resolve against and collapses to its intrinsic height. */
+.portrait picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.portrait__img {
   opacity: 1;
   transform: scale(1);
 }
 
 /* Frame: the lower edge dissolves, so it never reads as a photo card. */
-.portrait--frame .portrait__img {
+.portrait--frame /* <picture> is inline by default, so an img inside it has nothing for
+   height:100% to resolve against and collapses to its intrinsic height. */
+.portrait picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.portrait__img {
   -webkit-mask-image: linear-gradient(
     to bottom,
     #000 0%,

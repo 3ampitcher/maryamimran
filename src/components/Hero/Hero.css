@@ -40,14 +40,14 @@
 
 .hero__scrim--top {
   top: 0;
-  /* Holds across the navigation band, then clears well above the face.
-     White nav type over the brightest possible frame measures ~4.9:1. */
-  height: 32%;
+  /* Carries the navigation only, then clears well above the face. Measured
+     on the real frame: nav links 5.0:1 against the brightest pixel beneath. */
+  height: 26%;
   background: linear-gradient(
     to bottom,
-    rgba(24, 26, 29, 0.76) 0%,
-    rgba(24, 26, 29, 0.52) 28%,
-    rgba(24, 26, 29, 0.14) 65%,
+    rgba(24, 26, 29, 0.85) 0%,
+    rgba(24, 26, 29, 0.72) 30%,
+    rgba(24, 26, 29, 0.28) 65%,
     transparent 100%
   );
 }
@@ -83,35 +83,6 @@
 }
 
 /* Top rail */
-
-.hero__rail {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
-  font-size: var(--t-label);
-  letter-spacing: var(--tr-label);
-  text-transform: uppercase;
-  color: var(--white-70);
-}
-
-.hero__place {
-  white-space: nowrap;
-}
-
-.hero__meta {
-  display: flex;
-  gap: 0.6rem;
-}
-
-.hero__meta-item {
-  display: inline-flex;
-  gap: 0.6rem;
-}
-
-.hero__meta-sep {
-  color: var(--white-45, rgba(247, 247, 244, 0.45));
-}
 
 /* Foot: positioning line, then the name */
 
@@ -154,11 +125,18 @@
 }
 
 .hero__context {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7em;
   font-size: var(--t-label);
   letter-spacing: var(--tr-label);
   text-transform: uppercase;
   color: var(--white-70);
   text-align: right;
+}
+
+.hero__context-sep {
+  color: #8ba4f2;
 }
 
 /* The name */
@@ -253,16 +231,19 @@
     justify-content: flex-start;
   }
 
+  /* Two clean lines rather than one phrase wrapping mid-way. */
   .hero__context {
+    flex-direction: column;
+    gap: 0.15rem;
     text-align: left;
+  }
+
+  .hero__context-sep {
+    display: none;
   }
 
   .hero__name {
     font-size: clamp(2.75rem, 19vw, 6rem);
-  }
-
-  .hero__meta {
-    display: none;
   }
 
   .hero__scrim--bottom {

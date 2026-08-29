@@ -61,18 +61,6 @@ export function Hero() {
 
       {/* --- Everything else sits on the photograph --- */}
       <div className="hero__inner">
-        <motion.div className="hero__rail" style={reduced ? undefined : { opacity: railOpacity }}>
-          <span className="hero__place mono">{site.location}</span>
-          <span className="hero__meta mono" aria-hidden="true">
-            {site.heroMeta.map((m, i) => (
-              <span key={m} className="hero__meta-item">
-                {i > 0 && <span className="hero__meta-sep">/</span>}
-                {m}
-              </span>
-            ))}
-          </span>
-        </motion.div>
-
         <motion.div
           className="hero__foot"
           style={reduced ? undefined : { y: nameY, opacity: nameOpacity }}
@@ -118,7 +106,13 @@ export function Hero() {
             <span className="hero__cue-line" />
           </motion.span>
 
-          <p className="hero__context mono">{site.discipline}</p>
+          <p className="hero__context mono">
+            {site.location}
+            <span className="hero__context-sep" aria-hidden="true">
+              —
+            </span>
+            {site.discipline}
+          </p>
         </div>
       </div>
     </section>

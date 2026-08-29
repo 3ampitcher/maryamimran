@@ -30,14 +30,16 @@ export const site = {
   /* --- Portrait ------------------------------------------------------- */
   portrait: {
     /* The hero is a full-bleed environmental portrait — a wide shot, not a
-       headshot. Landscape, roughly 16:9, exported around 2400px wide. */
+       headshot. Run `npm run images` after dropping a new original into
+       source-images/ and the responsive set below is regenerated. */
     src: '/assets/portrait/maryam-portrait.jpg',
     aboutSrc: '/assets/portrait/maryam-about.jpg',
+    /* Widths that exist on disk, smallest first. The browser picks one via
+       srcset; `src` above is the fallback. Must match scripts/optimize-images.mjs. */
+    widths: [800, 1200, 1672],
     /* Where the face sits in the frame, as x% y%. The hero crops hard on
-       tall/narrow viewports, and this is what keeps her in shot. Nudge these
-       two numbers if a future photo is framed differently — nothing else
-       needs to change. */
-    focus: '62% 30%',
+       tall viewports and this is what keeps her in shot. */
+    focus: '56% 30%',
   },
 
   /* --- Resume ----------------------------------------------------------
@@ -49,8 +51,6 @@ export const site = {
     available: false,
   },
 
-  /* --- Hero metadata (small, top-right of the portrait) --- */
-  heroMeta: ['UBT', 'BAIS', '2026'],
 } as const;
 
 /* ============================================================

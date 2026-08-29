@@ -15,8 +15,14 @@ npm run build      # static output in /dist
 npm run preview    # serve the built site locally
 npm run typecheck  # TypeScript only
 
+npm run images             # optimise photos in source-images/
 npm run build:standalone   # -> standalone/maryam-imran.html
 ```
+
+`images` turns full-resolution originals in `source-images/` into the WebP +
+JPEG sets the site serves, at three widths each. The hero photograph goes from
+1.6 MB to a 45 KB WebP on desktop and 19 KB on a phone. Re-run it after
+replacing any photo, then commit the regenerated files in `public/assets/`.
 
 `build:standalone` packs the whole site into **one self-contained .html file** —
 JS, CSS and fonts all inlined. Double-click it and it opens; no server, no
