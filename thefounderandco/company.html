@@ -223,45 +223,129 @@
   .wb:hover::before{transform:scaleY(1)}
   .wb:hover .wb-num{color:var(--lime-deep)}
 
-  /* ---------- 02 services ---------- */
-  .svc-lead{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:end;margin-bottom:62px}
-  .svc-lead .lead{font-size:16.5px}
+  /* ---------- 02 services: one index, three chapters ---------- */
+  .svc-lead{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:end;margin-bottom:74px}
+  .svc-lead .lead{font-size:17px;max-width:44ch}
 
-  .gcols{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
-  .gcol{border-top:2px solid var(--ink);padding-top:24px}
-  .gcol h3{font-size:25px;font-weight:700;letter-spacing:-.028em;line-height:1.1}
-  .gcol-intro{
-    font-size:15px;line-height:1.62;color:var(--muted);font-weight:500;
-    margin-top:12px;padding-bottom:26px;border-bottom:1px solid var(--line);
-  }
+  .si{border-top:2px solid var(--ink)}
 
-  .gsvc{
-    padding:26px 0;border-bottom:1px solid var(--line);position:relative;
-    transition:padding-left .4s var(--ease);
+  /* chapter marker -- a rule with a name on it, not a card */
+  .si-chapter{
+    display:flex;align-items:baseline;justify-content:space-between;gap:32px;flex-wrap:wrap;
+    padding:44px 0 20px;
   }
-  .gsvc:last-child{border-bottom:none}
-  .gsvc::before{
-    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;
-    background:var(--lime);transform:scaleY(0);transform-origin:50% 0;
-    transition:transform .4s var(--ease);
+  .si-chapter:first-child{padding-top:30px}
+  .si-chapter h3{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.035em;line-height:1}
+  .si-chapter p{font-size:14.5px;line-height:1.6;color:var(--muted);font-weight:500;max-width:46ch}
+
+  /* the row */
+  .si-row{border-top:1px solid var(--line);position:relative}
+  .si-row:last-child{border-bottom:1px solid var(--line)}
+  .si-row::before{
+    content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--lime);
+    transform:scaleX(0);transform-origin:0 50%;transition:transform .55s var(--ease);
   }
-  .gsvc:hover{padding-left:18px}
-  .gsvc:hover::before{transform:scaleY(1)}
-  .gsvc h4{font-size:19.5px;font-weight:700;letter-spacing:-.022em}
-  .gsvc .def{font-size:15px;font-weight:600;line-height:1.5;margin-top:9px}
-  .gsvc .body{font-size:14.5px;line-height:1.7;color:var(--muted);font-weight:500;margin-top:13px}
-  .gsvc .when{display:flex;align-items:center;gap:14px;margin-top:20px}
-  .gsvc .when .rail{flex:1 1 auto}
-  .gsvc .when em{
-    font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.13em;
-    text-transform:uppercase;color:var(--muted);white-space:nowrap;flex:0 0 auto;
+  .si-row:hover::before,.si-row:focus-within::before,.si-row.open::before{transform:scaleX(1)}
+
+  .si-head{
+    width:100%;background:none;border:none;padding:34px 0;cursor:pointer;text-align:left;
+    font-family:var(--sans);color:inherit;
+    display:grid;grid-template-columns:78px minmax(230px,1.05fr) 1.25fr auto 46px;
+    gap:28px;align-items:center;
+    transition:opacity .4s var(--ease);
   }
-  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;align-items:center}
-  .cell{height:5px;border-radius:3px;background:#E1E1DB;transition:background .35s}
+  .si-head:focus-visible{outline:2px solid var(--lime-deep);outline-offset:6px}
+
+  .si-num{
+    font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--faint);
+    transition:color .4s var(--ease),transform .55s var(--ease);
+  }
+  .si-name{
+    font-size:clamp(24px,2.7vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.05;
+    transition:transform .55s var(--ease);
+  }
+  .si-short{font-size:16px;line-height:1.5;color:var(--muted);font-weight:500;transition:color .4s}
+  .si-stage{
+    font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;
+    color:var(--faint);white-space:nowrap;transition:color .4s;
+  }
+  .si-plus{
+    justify-self:end;width:34px;height:34px;position:relative;flex:0 0 auto;
+    transition:transform .55s var(--ease);
+  }
+  .si-plus::before,.si-plus::after{
+    content:"";position:absolute;left:50%;top:50%;background:var(--ink);border-radius:1px;
+    transform:translate(-50%,-50%);transition:opacity .4s var(--ease),background .4s;
+  }
+  .si-plus::before{width:15px;height:1.5px}
+  .si-plus::after{width:1.5px;height:15px}
+
+  .si-row:hover .si-num,.si-row:focus-within .si-num{color:var(--lime-deep);transform:translateX(4px)}
+  .si-row:hover .si-name,.si-row:focus-within .si-name{transform:translateX(12px)}
+  .si-row:hover .si-short,.si-row:focus-within .si-short{color:var(--ink)}
+  .si-row:hover .si-stage,.si-row:focus-within .si-stage{color:var(--ink)}
+  .si-row:hover .si-plus,.si-row:focus-within .si-plus{transform:scale(1.2)}
+  .si-row:hover .si-plus::before,.si-row:hover .si-plus::after,
+  .si-row:focus-within .si-plus::before,.si-row:focus-within .si-plus::after{background:var(--lime-deep)}
+  .si-row.open .si-plus{transform:rotate(180deg)}
+  .si-row.open .si-plus::after{opacity:0}
+  .si-row.open .si-name{transform:translateX(12px)}
+  .si-row.open .si-num{color:var(--lime-deep)}
+
+  /* attention follows the pointer: everything else recedes */
+  .si:hover .si-row:not(:hover):not(.open) .si-head{opacity:.36}
+
+  /* the detail, as a spread rather than a dropdown */
+  .si-panel{height:0;overflow:hidden;transition:height .6s var(--ease)}
+  .si-inner{
+    padding:6px 0 54px 106px;position:relative;
+    opacity:0;transform:translateY(16px);
+    transition:opacity .5s var(--ease),transform .5s var(--ease);
+  }
+  .si-row.open .si-inner{opacity:1;transform:none;transition-delay:.14s}
+  .si-inner::before{
+    content:"";position:absolute;left:78px;top:10px;bottom:54px;width:2px;background:var(--lime);
+  }
+  .si-prop{
+    font-family:var(--serif);font-style:italic;font-weight:300;
+    font-size:clamp(24px,2.9vw,36px);line-height:1.2;letter-spacing:-.01em;
+    max-width:22ch;margin-bottom:38px;
+  }
+  .si-grid{display:grid;grid-template-columns:1fr 1fr;gap:38px 56px;max-width:920px}
+  .si-b h4{
+    font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;
+    color:var(--faint);margin-bottom:13px;
+  }
+  .si-b p{font-size:15.5px;line-height:1.7;color:var(--muted);font-weight:500}
+  .si-b ul{list-style:none}
+  .si-b li{
+    font-size:15.5px;line-height:1.6;color:var(--muted);font-weight:500;
+    padding:9px 0 9px 20px;position:relative;
+  }
+  .si-b li::before{
+    content:"";position:absolute;left:0;top:18px;width:9px;height:1.5px;
+    background:var(--lime-deep);border-radius:1px;
+  }
+  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;align-items:center;max-width:280px;margin-top:16px}
+  .cell{height:5px;border-radius:3px;background:#E1E1DB}
   .cell.on{background:var(--lime-soft)}
   .cell.on.start{background:var(--lime)}
-  .gsvc:hover .cell.on{background:var(--lime)}
-  .gsvc:hover .cell.on.start{background:var(--lime-deep)}
+  .si-rail-key{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:280px;margin-top:8px;
+    font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
+  }
+  .si-rail-key span{text-align:center}
+  .si-cta{display:flex;gap:13px;flex-wrap:wrap;margin-top:34px;grid-column:1 / -1}
+
+  /* a small tag rides the pointer across the index */
+  .si-cursor{
+    position:fixed;top:0;left:0;z-index:250;pointer-events:none;
+    background:var(--ink);color:var(--lime);border-radius:999px;padding:9px 15px;
+    font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;
+    opacity:0;transform:translate3d(-50%,-50%,0) scale(.75);
+    transition:opacity .25s var(--ease),transform .25s var(--ease);
+  }
+  .si-cursor.on{opacity:1;transform:translate3d(var(--x),var(--y),0) translate(-50%,-50%) scale(1)}
 
   /* ---------- 03 stage map (dark band) ---------- */
   .band{background:var(--ink);color:#fff;padding:110px 0}
@@ -492,14 +576,24 @@
   /* ---------- responsive ---------- */
   @media(max-width:1080px){
     .hero-grid{gap:44px}
-    .gcols{gap:26px}
+    .si-head{grid-template-columns:64px minmax(190px,1fr) 1fr auto 40px;gap:20px}
+    .si-inner{padding-left:84px}
+    .si-inner::before{left:64px}
     .founder{grid-template-columns:300px 1fr;gap:44px}
   }
   @media(max-width:1000px){
     .hero-grid{grid-template-columns:1fr;gap:40px}
     .p-hero h1{max-width:none}
-    .gcols{grid-template-columns:1fr;gap:44px}
-    .svc-lead{grid-template-columns:1fr;gap:24px}
+    .svc-lead{grid-template-columns:1fr;gap:24px;margin-bottom:52px}
+    .si-short{display:none}
+    .si-head{
+      grid-template-columns:56px 1fr auto 36px;
+      grid-template-areas:"num name stage plus";
+    }
+    .si-num{grid-area:num}
+    .si-name{grid-area:name}
+    .si-stage{grid-area:stage}
+    .si-plus{grid-area:plus}
   }
   @media(max-width:900px){
     .sec{padding:76px 20px}
@@ -510,6 +604,21 @@
     .stage-left{padding:32px 24px}
     .stage-right{border-left:none;border-top:1px solid var(--line-dark);padding:28px}
     .stage-cols{grid-template-columns:1fr;gap:28px}
+    .si-chapter{padding:34px 0 16px}
+    .si-head{
+      grid-template-columns:40px 1fr 30px;gap:6px 14px;padding:24px 0;
+      grid-template-areas:"num name plus" ".   stage plus";
+      align-items:start;
+    }
+    .si-name{font-size:22px;line-height:1.15}
+    .si-stage{font-size:10px}
+    .si-plus{align-self:center}
+    .si-row:hover .si-name,.si-row:focus-within .si-name,.si-row.open .si-name{transform:none}
+    .si:hover .si-row:not(:hover):not(.open) .si-head{opacity:1}
+    .si-inner{padding:0 0 40px 44px}
+    .si-inner::before{left:0}
+    .si-grid{grid-template-columns:1fr;gap:28px}
+    .si-cursor{display:none}
     .tree{grid-template-columns:1fr;gap:34px}
     .tree svg.wires{display:none}
     .svc-col{position:static}
@@ -639,80 +748,15 @@
   <div class="svc-lead">
     <div>
       <div class="eyebrow rv">02 &nbsp;/&nbsp; Services</div>
-      <h2 class="disp lines rv" style="--d:.06s;margin-top:22px"><span class="ln"><span>Founder Code.</span></span><span class="ln"><span>Leadership.</span></span><span class="ln"><span>Engine.</span></span></h2>
+      <h2 class="disp lines rv" style="--d:.06s;margin-top:22px"><span class="ln"><span>Founder.</span></span><span class="ln"><span>Leadership.</span></span><span class="ln"><span>Engine.</span></span></h2>
     </div>
     <div class="rv" style="--d:.16s">
-      <p class="lead">Three things a company needs from its people, in the order it usually needs them: the founding combination, the leaders who come after it, and the engine that keeps both supplied. Under each sits the same thread &mdash; your stage decides which capability you need next, and how you should access it. The bar under every service shows where it starts earning its keep, from the first co-founder conversation to the board table.</p>
+      <p class="lead">Three parts of the same people equation. Seven services in one index &mdash; scan the whole thing in ten seconds, then open the one that is yours.</p>
     </div>
   </div>
 
-  <div class="gcols">
-
-    <article class="gcol rv">
-      <h3>Founder Code</h3>
-      <p class="gcol-intro">Form the founding team, then keep reading it honestly as the company changes shape. The people decisions you make before employee number one set the ceiling on everything after.</p>
-
-      <div class="gsvc">
-        <h4>Founder Quotient</h4>
-        <p class="def">Structured assessment of founders and leadership teams.</p>
-        <p class="body">A BPS-certified read on the people, not the pitch: track record, drive, coachability, judgement under pressure, and how strength and blind spots are distributed across the team. Investors use it before a term sheet. Boards use it before a promotion. Founders use it on themselves, before they scale a company around habits that will not survive the next stage. You get a written assessment and a working conversation, not a score in a portal.</p>
-        <div class="when"><div class="rail" data-from="0" data-to="4"></div><em>Every stage</em></div>
-      </div>
-
-      <div class="gsvc">
-        <h4>Founder Hunter</h4>
-        <p class="def">Co-founder and founding team matchmaking.</p>
-        <p class="body">We run co-founder search the way we run executive search: a mapped market, structured outreach to people who are not looking, and assessment against the specific gap in the founding combination rather than a generic ideal. We test for complementarity, equity mindset, appetite for the stage you are actually at, and how each of you behaves when things go badly &mdash; because that is when founding teams break, not when they are winning. You choose with evidence, not chemistry alone.</p>
-        <div class="when"><div class="rail" data-from="0" data-to="1"></div><em>Pre-seed &rarr; Seed</em></div>
-      </div>
-
-      <div class="gsvc">
-        <h4>Founder Inner Circle</h4>
-        <p class="def">A capped, confidential circle of founders and CEOs.</p>
-        <p class="body">The higher you go, the less honest the feedback gets. A deliberately small group of founders and CEOs roughly one stage apart, meeting under Chatham House rules, where the questions you cannot put to your board or your team get asked properly. Introductions are made because they should be, not because someone is selling. No stage, no sponsors, no content calendar &mdash; the value is that the room stays small.</p>
-        <div class="when"><div class="rail" data-from="0" data-to="4"></div><em>Every stage</em></div>
-      </div>
-    </article>
-
-    <article class="gcol rv" style="--d:.1s">
-      <h3>Leadership</h3>
-      <p class="gcol-intro">Staff the C-suite, permanently or on demand. The same market map sits underneath both; what changes is the commitment your stage can carry.</p>
-
-      <div class="gsvc">
-        <h4>Executive Search</h4>
-        <p class="def">Permanent C-suite and senior leadership search.</p>
-        <p class="body">Retained search built for startups rather than corporates. We map the market, approach leaders who are not applying anywhere, and assess for founder fit and stage fit as hard as for functional skill &mdash; because the CFO who is right for Series A is often wrong at Series C, and the reverse is just as true. We build the compensation case including equity, which is where most regional processes come apart, run it to a signed offer, and stay involved through the first ninety days. Twenty years of GCC search sits behind it.</p>
-        <div class="when"><div class="rail" data-from="2" data-to="4"></div><em>Series A onward</em></div>
-      </div>
-
-      <div class="gsvc">
-        <h4>Executive On-Demand</h4>
-        <p class="def">Fractional and interim executives, scoped to outcomes.</p>
-        <p class="body">Senior capability without the full-time cost, commitment or risk. Fractional for the leader you need two days a week and cannot yet justify five. Interim for a gap you need covered now &mdash; a departure, a transformation, a fundraise. Scoped around what the company actually needs this quarter, with an agreed definition of done and a clean path to convert to permanent or to exit. Frequently the right answer for someone who arrived certain they wanted a full-time hire.</p>
-        <div class="when"><div class="rail" data-from="1" data-to="4"></div><em>Seed onward</em></div>
-      </div>
-    </article>
-
-    <article class="gcol rv" style="--d:.2s">
-      <h3>Engine</h3>
-      <p class="gcol-intro">The hiring and technology engine under the hood. Capacity you can turn up and down with the curve, instead of carrying it permanently and hoping the curve agrees.</p>
-
-      <div class="gsvc">
-        <h4>TA Powerhouse</h4>
-        <p class="def">Talent acquisition as a service.</p>
-        <p class="body">Embedded hiring capacity that flexes with your hiring curve instead of against it: a dedicated recruiter or pod working inside your business, on your tools and your cadence, managed by us. It comes with the parts most startups never get round to building &mdash; a process that actually closes, structured interviews, calibrated scorecards, compensation benchmarks and an employer story people respond to. It typically pays for itself against agency fees after roughly three hires, and the process stays behind when you scale it back.</p>
-        <div class="when"><div class="rail" data-from="1" data-to="4"></div><em>Seed onward</em></div>
-      </div>
-      <div class="gsvc">
-        <h4>Tech Grid</h4>
-        <p class="def">Technology capability, from full time to offshore.</p>
-        <p class="body">Product, engineering and AI capability accessed in whatever shape the stage can carry: full-time hires, offshore squads, technology as a service, or specialist solution partners for a defined build. Early on it means shipping without standing up a department you cannot yet feed. Later it means adding a capability the internal team does not have, without waiting out a twelve-month hiring cycle. We assemble it and stay accountable for it.</p>
-        <div class="when"><div class="rail" data-from="0" data-to="3"></div><em>Pre-seed &rarr; Series B</em></div>
-      </div>
-
-    </article>
-
-  </div>
+  <div class="si rv" id="svcIndex"></div>
+  <div class="si-cursor" id="siCursor" aria-hidden="true">Open</div>
 
 </section>
 
@@ -1009,17 +1053,241 @@ const LOGOS_B = [
 
 const nameOf = id => (SERVICES.find(s=>s.id===id)||{}).name || id;
 
+
+
 /* =====================================================================
-   02 — stage rails under each service
+   02 — the service index
+   One list, three chapters, seven rows. Everything below is content;
+   the behaviour underneath it never needs editing to add a service.
 ===================================================================== */
-document.querySelectorAll('.rail').forEach(rail=>{
-  const from = +rail.dataset.from, to = +rail.dataset.to;
-  for(let i=0;i<5;i++){
-    const c = document.createElement('div');
-    c.className = 'cell' + (i>=from && i<=to ? ' on':'') + (i===from ? ' start':'');
-    rail.appendChild(c);
+
+const CHAPTERS = [
+  {
+    name:'Founder',
+    note:'Form the founding combination, then keep reading it honestly as the company changes shape underneath you.',
+    items:[
+      {
+        name:'Founder Quotient',
+        short:'Assess founders and founding teams.',
+        stage:'Every stage', from:0, to:4,
+        prop:'The pitch is easy to read. The people are not.',
+        what:'A BPS-certified assessment of founders and leadership teams: track record, drive, coachability, judgement under pressure, and how strength and blind spots are distributed across the group. Structured interviews and validated instruments, not a personality quiz.',
+        who:'Investors before a term sheet. Boards before a promotion. Founders on themselves, before scaling a company around habits that will not survive the next stage.',
+        get:[
+          'A written assessment of each individual and of the combination',
+          'The specific risks in how the team is currently wired',
+          'A working conversation to pressure-test what you do about it',
+          'Re-assessment as the company changes shape'
+        ],
+        fits:'Every stage. Before you back someone, promote someone, or double the team.'
+      },
+      {
+        name:'Founder Hunter',
+        short:'Find the right co-founder or founding complement.',
+        stage:'Pre-seed → Seed', from:0, to:1,
+        prop:'The most important hire is the one before employee number one.',
+        what:'Co-founder and founding-team search run with executive-search discipline: a mapped market, structured outreach to people who are not looking, and assessment against the specific gap in your founding combination rather than a generic ideal.',
+        who:'Solo founders who know what they are missing. Investors forming a team around a thesis. Founding teams completing the set before they raise.',
+        get:[
+          'A mapped and approached market, not a shortlist from a network',
+          'Assessment for complementarity, equity mindset and stage resilience',
+          'A read on how each candidate behaves when things go badly',
+          'Support through the equity and expectations conversation'
+        ],
+        fits:'Pre-seed to seed, or whenever an investor is building a team around a thesis.'
+      },
+      {
+        name:'Founder Inner Circle',
+        short:'Candid counsel for founders and CEOs.',
+        stage:'Every stage', from:0, to:4,
+        prop:'The higher you go, the less honest the feedback gets.',
+        what:'A capped, confidential circle of founders and CEOs roughly one stage apart, meeting under Chatham House rules. The questions you cannot put to your board, your investors or your team get asked properly, by people who were recently where you are.',
+        who:'Founders and CEOs who have run out of people who will tell them the truth.',
+        get:[
+          'A small room that stays small — membership is capped on purpose',
+          'Introductions made because they should be, not because someone is selling',
+          'Confidentiality that is enforced rather than assumed',
+          'No stage, no sponsors, no content calendar'
+        ],
+        fits:'Every stage, and most acutely when the board is not the right place for the question.'
+      }
+    ]
+  },
+  {
+    name:'Leadership',
+    note:'Staff the C-suite, permanently or on demand. The same market map sits under both; what changes is the commitment your stage can carry.',
+    items:[
+      {
+        name:'Executive Search',
+        short:'Permanent senior leadership search.',
+        stage:'Series A onward', from:2, to:4,
+        prop:'Retained search built for startups, not corporates.',
+        what:'We map the market, approach leaders who are not applying anywhere, and assess for founder fit and stage fit as hard as for functional skill — because the CFO who is right for Series A is often wrong at Series C, and the reverse is just as true.',
+        who:'Companies filling a C-suite or senior seat that will set the ceiling on the next two years.',
+        get:[
+          'A mapped market and a longlist whose logic you can see',
+          'Assessment against your stage, not a generic competency model',
+          'The compensation case built including equity, where most regional processes come apart',
+          'A process run to signed offer, and involvement through the first ninety days'
+        ],
+        fits:'Series A onward, or earlier for a genuinely non-negotiable seat.'
+      },
+      {
+        name:'Executive On-Demand',
+        short:'Senior capability without a full-time hire.',
+        stage:'Seed onward', from:1, to:4,
+        prop:'The seat filled before you can carry the seat.',
+        what:'Fractional for the leader you need two days a week and cannot yet justify five. Interim for a gap you need covered now — a departure, a transformation, a fundraise. Scoped around what the company actually needs this quarter.',
+        who:'Companies that need the capability before they can afford the headcount, and companies that need it in place this month.',
+        get:[
+          'A proven operator, not a consultant with a deck',
+          'A scope and a definition of done agreed before anyone starts',
+          'A clean path to convert to permanent, or to exit',
+          'An honest answer when it should be a full-time search instead'
+        ],
+        fits:'Seed onward. Especially when the honest answer to “can we carry this seat” is not yet.'
+      }
+    ]
+  },
+  {
+    name:'Engine',
+    note:'The hiring and technology capacity under the hood. Turn it up and down with the curve instead of carrying it and hoping the curve agrees.',
+    items:[
+      {
+        name:'TA Powerhouse',
+        short:'Talent acquisition as a service.',
+        stage:'Seed onward', from:1, to:4,
+        prop:'Hiring capacity that flexes with your curve instead of against it.',
+        what:'A dedicated recruiter or pod working inside your business, on your tools and your cadence, managed by us — together with the parts most startups never get round to building.',
+        who:'Companies whose hiring demand has outrun the internal team, and companies with no internal team yet.',
+        get:[
+          'Embedded recruiters who scale up and down with the plan',
+          'A process that actually closes: structured interviews, calibrated scorecards',
+          'Compensation benchmarks and an employer story people respond to',
+          'The process left behind when you scale the capacity back'
+        ],
+        fits:'Seed onward, whenever hiring is eating the founders’ week. Typically pays for itself against agency fees after roughly three hires.'
+      },
+      {
+        name:'Tech Grid',
+        short:'Flexible technology capability.',
+        stage:'Pre-seed → Series B', from:0, to:3,
+        prop:'Ship without standing up a department you cannot yet feed.',
+        what:'Product, engineering and AI capability accessed in whatever shape the stage can carry: full-time hires, offshore squads, technology as a service, or specialist solution partners for a defined build.',
+        who:'Early companies that need to ship, and scaled ones missing a capability they cannot hire in twelve months.',
+        get:[
+          'The right shape for the stage, chosen with you rather than sold to you',
+          'Squads assembled, managed and held accountable by us',
+          'Specialist partners for defined builds',
+          'One point of accountability however many parties are involved'
+        ],
+        fits:'Pre-seed through Series B.'
+      }
+    ]
   }
-});
+];
+
+(function serviceIndex(){
+  const root = document.getElementById('svcIndex');
+  if(!root) return;
+  const STAGE_KEY = ['Pre-seed','Seed','A','B','C+'];
+  let n = 0;
+
+  const rail = (from,to)=>
+    `<div class="rail">${[0,1,2,3,4].map(i=>
+      `<div class="cell${i>=from&&i<=to?' on':''}${i===from?' start':''}"></div>`).join('')}</div>` +
+    `<div class="si-rail-key">${STAGE_KEY.map(k=>`<span>${k}</span>`).join('')}</div>`;
+
+  CHAPTERS.forEach(ch=>{
+    const head = document.createElement('div');
+    head.className = 'si-chapter';
+    head.innerHTML = `<h3>${ch.name}</h3><p>${ch.note}</p>`;
+    root.appendChild(head);
+
+    ch.items.forEach(it=>{
+      n++;
+      const num = String(n).padStart(2,'0');
+      const id  = 'svc-' + num;
+      const row = document.createElement('div');
+      row.className = 'si-row';
+      row.innerHTML = `
+        <button class="si-head" type="button" aria-expanded="false" aria-controls="${id}">
+          <span class="si-num">${num}</span>
+          <span class="si-name">${it.name}</span>
+          <span class="si-short">${it.short}</span>
+          <span class="si-stage">${it.stage}</span>
+          <span class="si-plus" aria-hidden="true"></span>
+        </button>
+        <div class="si-panel" id="${id}" role="region" aria-label="${it.name}">
+          <div class="si-inner">
+            <p class="si-prop">${it.prop}</p>
+            <div class="si-grid">
+              <div class="si-b"><h4>What it is</h4><p>${it.what}</p></div>
+              <div class="si-b"><h4>Who it is for</h4><p>${it.who}</p></div>
+              <div class="si-b"><h4>What you get</h4><ul>${it.get.map(g=>`<li>${g}</li>`).join('')}</ul></div>
+              <div class="si-b"><h4>When it fits</h4><p>${it.fits}</p>${rail(it.from,it.to)}</div>
+              <div class="si-cta">
+                <a class="btn btn-dark" href="mailto:${SITE.email}?subject=${encodeURIComponent(it.name)}">Talk about ${it.name} <span class="ar">&rarr;</span></a>
+                <a class="btn btn-ghost" href="index.html#solver">Not sure? Run the solver</a>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      root.appendChild(row);
+    });
+  });
+
+  /* one open at a time, height animated so the page never jumps */
+  const rows = [...root.querySelectorAll('.si-row')];
+
+  function close(row){
+    const panel = row.querySelector('.si-panel');
+    panel.style.height = panel.offsetHeight + 'px';
+    requestAnimationFrame(()=>{ panel.style.height = '0px'; });
+    row.classList.remove('open');
+    row.querySelector('.si-head').setAttribute('aria-expanded','false');
+  }
+  function open(row){
+    const panel = row.querySelector('.si-panel');
+    const inner = panel.firstElementChild;
+    panel.style.height = inner.offsetHeight + 'px';
+    panel.addEventListener('transitionend', function done(e){
+      if(e.propertyName !== 'height') return;
+      panel.style.height = 'auto';                 // survive a window resize
+      panel.removeEventListener('transitionend', done);
+    });
+    row.classList.add('open');
+    row.querySelector('.si-head').setAttribute('aria-expanded','true');
+  }
+
+  rows.forEach(row=>{
+    row.querySelector('.si-head').addEventListener('click', ()=>{
+      const isOpen = row.classList.contains('open');
+      rows.forEach(r=>{ if(r.classList.contains('open')) close(r); });
+      if(!isOpen) open(row);
+    });
+  });
+
+  /* a tag rides the pointer while it is over the index */
+  const cursor = document.getElementById('siCursor');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+            && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(fine && cursor){
+    let raf = false, x = 0, y = 0;
+    root.addEventListener('pointermove', e=>{
+      x = e.clientX; y = e.clientY;
+      const row = e.target.closest('.si-row');
+      cursor.textContent = row && row.classList.contains('open') ? 'Close' : 'Open';
+      if(!raf){ raf = true; requestAnimationFrame(()=>{
+        cursor.style.setProperty('--x', x + 'px');
+        cursor.style.setProperty('--y', y + 'px');
+        raf = false;
+      }); }
+    });
+    root.addEventListener('pointerenter', ()=> cursor.classList.add('on'));
+    root.addEventListener('pointerleave', ()=> cursor.classList.remove('on'));
+  }
+})();
 
 /* =====================================================================
    The worked example in the hero
