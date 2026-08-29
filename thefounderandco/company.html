@@ -133,11 +133,10 @@
     display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
   }
   .hero-h{
-    font-size:clamp(36px,4.8vw,72px);font-weight:700;letter-spacing:-.05em;line-height:.96;
+    font-size:clamp(38px,5vw,76px);font-weight:700;letter-spacing:-.05em;line-height:.98;
     margin-top:26px;
   }
-  .hero-h em{font-style:normal;color:var(--lime-deep)}
-  .hero-h i{font-style:normal;color:var(--lime-deep)}
+
 
   /* the three things every engagement is judged on */
   .hero-attrs{
@@ -182,9 +181,19 @@
   .hero-figure{
     position:relative;display:grid;place-items:center;padding:80px 32px;overflow:hidden;
   }
+  /* the diagram sits on a soft disc rather than floating on the paper, and the
+     dotted texture is masked to that disc so it stops drifting across the half */
+  .hero-figure::before{
+    content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(94%,760px);aspect-ratio:1/1;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,#EBEBE3 0%,#ECECE5 44%,rgba(236,236,229,0) 79%);
+  }
   .fig-web{
-    position:absolute;inset:-4%;width:108%;height:108%;pointer-events:none;
-    color:#BFBFB6;opacity:.16;
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(94%,760px);height:auto;aspect-ratio:1/1;pointer-events:none;
+    color:#B4B4AA;opacity:.34;
+    -webkit-mask:radial-gradient(circle,#000 0%,#000 40%,transparent 72%);
+    mask:radial-gradient(circle,#000 0%,#000 40%,transparent 72%);
   }
   .fig-web circle{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round}
 
@@ -196,9 +205,9 @@
      everything inside the ring is absolutely positioned, so without a width of
      its own it collapses to zero */
   .dial-wrap{width:100%;display:grid;justify-items:center;position:relative;z-index:1}
-  .dial{position:relative;width:min(100%,var(--ring,420px));aspect-ratio:1/1}
-  @media(min-width:1500px){ .dial{--ring:460px} }
-  @media(min-width:1240px) and (max-width:1499px){ .dial{--ring:430px} }
+  .dial{position:relative;width:min(100%,var(--ring,440px));aspect-ratio:1/1}
+  @media(min-width:1500px){ .dial{--ring:500px} }
+  @media(min-width:1240px) and (max-width:1499px){ .dial{--ring:465px} }
   /* direct child only: the node buttons carry their own icons, and this rule
      was absolutely positioning those into each node's top-left corner */
   .dial > svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -253,7 +262,7 @@
   .dial-rows{display:none}
 
   @media(max-width:1080px){
-    .dial{--ring:330px;--nd:50px}
+    .dial{--ring:350px;--nd:50px}
     .dial-core{width:56%}
     .dial-core .v{font-size:16px}
     .nd svg{width:19px;height:19px}
@@ -972,8 +981,8 @@
     <div class="eyebrow rv">Behind the equation</div>
 
     <h1 class="hero-h lines rv" style="--d:.06s">
-      <span class="ln"><span>The <em>people</em> equation</span></span>
-      <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
+      <span class="ln"><span>The people equation</span></span>
+      <span class="ln"><span>is bigger than <span class="hl">hiring.</span></span></span>
     </h1>
 
     <ul class="hero-attrs rv" style="--d:.2s">
