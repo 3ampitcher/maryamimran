@@ -135,85 +135,63 @@
     font-size:clamp(17px,1.75vw,21px);line-height:1.58;color:var(--muted);font-weight:500;
   }
 
-  /* ---------- the equation ----------
-     One line from where you are to where you are going, with a gap in it.
-     Five different things can fill that gap and only one of them is a hire.
-     Fill it and the path forward completes - that is the whole argument,
-     drawn once instead of explained. */
-  .eq{margin-top:44px;padding-top:28px;border-top:1px solid var(--line)}
-  .eq-q{
-    font-size:12px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);
+  /* ---------- the dial ----------
+     One ring, five equal arcs. Hiring is one fifth of it and you can see
+     that without being told - which is the headline's argument, drawn.
+     Light an arc and the centre says what that answer actually is. */
+  .hero-body{
+    display:grid;grid-template-columns:1fr 1.05fr;gap:0 64px;margin-top:40px;align-items:center;
+    grid-template-areas:"say dial" "cta dial";
+  }
+  .hero-say{grid-area:say}
+  .dial-wrap{grid-area:dial}
+  .hero-say .hero-sub{margin-top:0}
+  .eq-note{margin-top:24px;font-size:14px;font-weight:600;color:var(--faint);max-width:44ch}
+  .eq-note b{color:var(--ink);font-weight:700}
+
+  .dial-wrap{display:flex;justify-content:center;align-self:center}
+  .dial{position:relative;width:100%;max-width:300px;aspect-ratio:1/1}
+  .dial svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .arc{
+    fill:none;stroke:#D3D3CB;stroke-width:9.5;
+    transition:stroke .4s var(--ease),stroke-width .4s var(--ease);
+  }
+  .hit{fill:none;stroke:transparent;stroke-width:18;cursor:pointer}
+  .dial.on .seg.sel .arc{stroke:var(--lime-deep);stroke-width:11}
+
+  .dial-core{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:60%;text-align:center;
+  }
+  .dial-core .ask{
+    font-size:16px;line-height:1.35;font-weight:700;letter-spacing:-.02em;color:var(--ink);
+  }
+  .dial-core .k{
+    font-size:11.5px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:var(--lime-deep);
+  }
+  .dial-core .v{
+    margin-top:9px;font-size:19px;line-height:1.25;font-weight:700;letter-spacing:-.025em;color:var(--ink);
   }
 
-  .eq-track{display:flex;align-items:center;margin-top:26px}
-  .eq-l{flex:1 1 0;height:2px;background:var(--ink);border-radius:2px;min-width:20px}
-  .eq-r{
-    flex:1.25 1 0;position:relative;height:2px;min-width:20px;
-    background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 15px);
+  .dl{
+    position:absolute;white-space:nowrap;transform:translate(0,-50%);
+    background:none;border:none;padding:6px 0;cursor:pointer;font-family:var(--sans);
+    font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--muted);transition:color .35s var(--ease);
   }
-  /* the solid lime run and its head only exist once the gap is filled */
-  .eq-r::before{
-    content:"";position:absolute;inset:0;background:var(--lime-deep);border-radius:2px;
-    transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--ease);
-  }
-  .eq-r::after{
-    content:"";position:absolute;right:-1px;top:50%;width:0;height:0;
-    border-left:11px solid var(--lime-deep);
-    border-top:7px solid transparent;border-bottom:7px solid transparent;
-    transform:translate(6px,-50%);opacity:0;
-    transition:opacity .3s var(--ease) .3s,transform .4s var(--ease) .3s;
-  }
-  .eq.on .eq-r::before{transform:scaleX(1)}
-  .eq.on .eq-r::after{opacity:1;transform:translate(0,-50%)}
+  .dl em{display:none}
+  .dl i{font-style:normal}
+  .dl.lft{transform:translate(-100%,-50%)}
+  .dial.on .dl{color:#A0A3A8}
+  .dial.on .dl.sel{color:var(--lime-deep)}
 
-  .eq-slot{
-    flex:0 0 auto;width:196px;height:58px;margin:0 14px;border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    border:2px dashed var(--line);background:transparent;
-    transition:background .35s var(--ease),border-color .35s var(--ease);
-  }
-  .eq-slot em{
-    font-style:normal;font-size:24px;font-weight:700;color:var(--soft);
-    transition:color .3s var(--ease);
-  }
-  .eq-slot b{
-    font-size:14px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--lime);
-  }
-  .eq.on .eq-slot{background:var(--ink);border-color:var(--ink);border-style:solid}
-
-  .eq-ends{
-    display:flex;justify-content:space-between;margin-top:12px;
-    font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
-  }
-
-  .eq-opts{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:34px}
-  .eq-o{
-    text-align:left;background:none;border:none;cursor:pointer;font-family:var(--sans);
-    padding:18px 22px 20px 0;border-top:2px solid var(--line);
-    transition:border-color .35s var(--ease),opacity .35s var(--ease);
-  }
-  .eq-o + .eq-o{padding-left:22px}
-  .eq-o b{
-    display:block;font-size:clamp(14px,1.35vw,17px);font-weight:800;
-    letter-spacing:.1em;text-transform:uppercase;line-height:1.2;
-    transition:color .3s var(--ease);
-  }
-  .eq-o span{
-    display:block;margin-top:10px;font-size:14.5px;line-height:1.45;
-    color:var(--muted);font-weight:500;letter-spacing:-.01em;
-  }
-  .eq.on .eq-o{opacity:.42}
-  .eq.on .eq-o.sel{opacity:1;border-color:var(--lime-deep)}
-  .eq.on .eq-o.sel b{color:var(--lime-deep)}
-  .eq-note{margin-top:24px;font-size:13.5px;font-weight:600;color:var(--faint)}
-
-  @media(prefers-reduced-motion:reduce){
-    .eq-r::before,.eq-r::after,.eq-slot,.eq-o,.eq-slot em{transition:none}
-  }
+  /* the same five as rows on small screens, where there is no hover and no
+     room for labels around a ring */
+  .dial-rows{display:none}
 
   .hero-under{
-    display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
-    margin-top:38px;
+    grid-area:cta;display:flex;align-items:center;gap:32px;flex-wrap:wrap;
+    margin-top:36px;
   }
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
   .hero-proof{
@@ -725,26 +703,28 @@
     .p-hero{padding:52px 20px 34px}
     .hero-h{letter-spacing:-.045em}
     .hero-sub{margin-top:24px}
-    .eq{margin-top:40px}
-    .eq-slot{width:126px;height:48px;margin:0 9px}
-    .eq-slot em{font-size:20px}
-    .eq-slot b{font-size:11.5px;letter-spacing:.12em}
-    .eq-ends{font-size:10.5px}
-    /* five columns will not fit; the same five read as rows, verb left,
-       what it covers right */
-    .eq-opts{grid-template-columns:1fr;gap:0;margin-top:28px}
-    .eq-o{
-      display:flex;align-items:baseline;justify-content:space-between;gap:20px;
-      padding:15px 0;border-top:none;border-bottom:1px solid var(--line);
-    }
-    .eq-o:first-child{border-top:2px solid var(--line)}
-    .eq-o + .eq-o{padding-left:0}
-    .eq-o b{font-size:14px;flex:0 0 auto}
-    .eq-o span{margin-top:0;text-align:right;font-size:14px;max-width:56%}
-    .eq.on .eq-o{opacity:1}
-    .eq.on .eq-o.sel{border-bottom-color:var(--lime-deep)}
+    /* the figure belongs above the buttons on a phone, not below them */
+    .hero-body{grid-template-columns:1fr;gap:0;margin-top:30px;
+      grid-template-areas:"say" "dial" "rows" "cta"}
+    .dial-wrap{margin-top:34px}
+    .dial{max-width:230px}
+    .dl{display:none}
     .eq-note{margin-top:18px}
-    .hero-under{flex-direction:column;align-items:stretch;margin-top:34px;gap:22px}
+    .dial-rows{display:block;grid-area:rows;margin-top:30px;border-top:2px solid var(--line)}
+    .dr{
+      display:flex;align-items:baseline;justify-content:space-between;gap:20px;width:100%;
+      background:none;border:none;border-bottom:1px solid var(--line);cursor:pointer;
+      font-family:var(--sans);padding:15px 0;text-align:left;
+      transition:border-color .35s var(--ease);
+    }
+    .dr b{
+      font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;flex:0 0 auto;
+      transition:color .3s var(--ease);
+    }
+    .dr span{font-size:14px;color:var(--muted);font-weight:500;text-align:right;max-width:56%}
+    .dr.sel{border-bottom-color:var(--lime-deep)}
+    .dr.sel b{color:var(--lime-deep)}
+    .hero-under{flex-direction:column;align-items:stretch;margin-top:30px;gap:22px}
   }
 </style>
 </head>
@@ -785,34 +765,28 @@
     <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
   </h1>
 
-  <p class="hero-sub rv" style="--d:.16s">Because the answer is not always another hire.</p>
-
-  <div class="eq rv" id="eq" style="--d:.24s">
-    <div class="eq-q" id="eqQ">What does the company need next?</div>
-
-    <div class="eq-track" aria-hidden="true">
-      <span class="eq-l"></span>
-      <span class="eq-slot" id="eqSlot"><em>?</em></span>
-      <span class="eq-r"></span>
+  <div class="hero-body">
+    <div class="hero-say rv" style="--d:.18s">
+      <p class="hero-sub">Because the answer is not always another hire.</p>
+      <p class="eq-note">Five ways to answer it. <b>Only one of them is a hire.</b></p>
     </div>
-    <div class="eq-ends" aria-hidden="true"><span>Where you are</span><span>The next stage</span></div>
 
-    <div class="eq-opts" id="eqOpts">
-      <button class="eq-o" type="button" data-v="Understand" aria-pressed="false"><b>Understand</b><span>Founders and teams</span></button>
-      <button class="eq-o" type="button" data-v="Find"       aria-pressed="false"><b>Find</b><span>The missing partner</span></button>
-      <button class="eq-o" type="button" data-v="Hire"       aria-pressed="false"><b>Hire</b><span>The right leader</span></button>
-      <button class="eq-o" type="button" data-v="Step in"    aria-pressed="false"><b>Step in</b><span>Capability when needed</span></button>
-      <button class="eq-o" type="button" data-v="Build"      aria-pressed="false"><b>Build</b><span>The technology</span></button>
+    <div class="dial-wrap rv" style="--d:.26s">
+      <div class="dial" id="dial">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><g id="dialSegs"></g></svg>
+        <div class="dial-core" id="dialCore"></div>
+      </div>
     </div>
-    <p class="eq-note">Five ways to answer it. Only one of them is a hire.</p>
-  </div>
 
-  <div class="hero-under rv" style="--d:.32s">
-    <div class="hero-cta">
-      <a class="btn btn-dark" href="index.html#solver">Find what you need <span class="ar">&rarr;</span></a>
-      <a class="btn btn-ghost" href="#services">See every service</a>
+    <div class="dial-rows" id="dialRows"></div>
+
+    <div class="hero-under rv" style="--d:.32s">
+      <div class="hero-cta">
+        <a class="btn btn-dark" href="index.html#solver">Find what you need <span class="ar">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#services">See every service</a>
+      </div>
+      <p class="hero-proof">20+ years in GCC leadership</p>
     </div>
-    <p class="hero-proof">20+ years in GCC leadership</p>
   </div>
 </header>
 
@@ -1574,40 +1548,102 @@ const CHAPTERS = [
 })();
 
 /* =====================================================================
-   The equation
-   The gap in the line is the question. Whichever of the five fills it, the
-   path to the next stage completes - so the visual makes the argument the
-   headline makes: the answer is not always another hire.
+   The dial
+   Five equal arcs on one ring: hiring is visibly a fifth of the answer,
+   which is the headline's claim without a caption. Light an arc and the
+   centre says what that answer is. Rows instead of labels on small
+   screens, where there is no hover and no room around a ring.
 ===================================================================== */
-(function equation(){
-  const eq   = document.getElementById('eq');
-  const slot = document.getElementById('eqSlot');
-  const opts = document.getElementById('eqOpts');
-  if(!eq || !slot || !opts) return;
-  const items = [...opts.querySelectorAll('.eq-o')];
+const WAYS = [
+  ['Understand','Founders and teams'],
+  ['Find','The missing partner'],
+  ['Hire','The right leader'],
+  ['Step in','Capability when needed'],
+  ['Build','The technology'],
+];
 
-  function fill(el){
-    eq.classList.add('on');
-    slot.innerHTML = '<b>' + el.dataset.v + '</b>';
-    items.forEach(o=>{
-      o.classList.toggle('sel', o === el);
-      o.setAttribute('aria-pressed', o === el ? 'true' : 'false');
+(function dial(){
+  const el   = document.getElementById('dial');
+  const segs = document.getElementById('dialSegs');
+  const core = document.getElementById('dialCore');
+  const rows = document.getElementById('dialRows');
+  if(!el || !segs || !core) return;
+
+  const NS   = 'http://www.w3.org/2000/svg';
+  const R    = 40;
+  const C    = 2 * Math.PI * R;
+  const GAP  = 9;                       // user units of blank between arcs
+  const SEG  = C / WAYS.length - GAP;
+  const STEP = 360 / WAYS.length;
+  const ASK  = 'What does the company need next?';
+
+  const segEls = [], labEls = [], rowEls = [];
+
+  WAYS.forEach(([k,v],i)=>{
+    const g = document.createElementNS(NS,'g');
+    g.setAttribute('class','seg');
+    const rot = `rotate(${-90 + STEP * i} 50 50)`;    // every arc starts at 12 o'clock
+    for(const cls of ['arc','hit']){
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('class', cls);
+      c.setAttribute('cx','50'); c.setAttribute('cy','50'); c.setAttribute('r', R);
+      c.setAttribute('stroke-dasharray', `${SEG} ${C - SEG}`);
+      c.setAttribute('transform', rot);
+      g.appendChild(c);
+    }
+    segs.appendChild(g);
+    segEls.push(g);
+
+    // the label is a button so the dial is reachable by keyboard, and it is
+    // HTML rather than <text> so it stays crisp and easy to align
+    const mid = (-90 + STEP * (i + 0.5)) * Math.PI / 180;
+    const lab = document.createElement('button');
+    lab.type = 'button';
+    lab.className = 'dl' + (Math.cos(mid) < -0.05 ? ' lft' : '');
+    lab.setAttribute('aria-pressed','false');
+    lab.innerHTML = `<i>${k}</i><em>${v}</em>`;
+    lab.style.left = (50 + Math.cos(mid) * 53) + '%';
+    lab.style.top  = (50 + Math.sin(mid) * 53) + '%';
+    el.appendChild(lab);
+    labEls.push(lab);
+  });
+
+  function paint(n){
+    el.classList.toggle('on', n !== null);
+    const mark = (list, cls) => list.forEach((e,i)=>{
+      e.classList.toggle(cls, i === n);
+      if(e.tagName === 'BUTTON') e.setAttribute('aria-pressed', i === n ? 'true' : 'false');
+    });
+    mark(segEls,'sel'); mark(labEls,'sel'); mark(rowEls,'sel');
+    core.innerHTML = n === null
+      ? `<p class="ask">${ASK}</p>`
+      : `<div class="k">${WAYS[n][0]}</div><div class="v">${WAYS[n][1]}</div>`;
+  }
+
+  const bind = (node, i)=>{
+    // a tap fires pointerenter too, so hover is mouse-only and click covers the rest
+    node.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') paint(i); });
+    node.addEventListener('click', ()=>paint(i));
+  };
+  labEls.forEach(bind);
+  [...el.querySelectorAll('.hit')].forEach(bind);
+  labEls.forEach((l,i)=> l.addEventListener('focus', ()=>paint(i)));
+  el.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') paint(null); });
+
+  if(rows){
+    WAYS.forEach(([k,v],i)=>{
+      const b = document.createElement('button');
+      b.className = 'dr';
+      b.type = 'button';
+      b.setAttribute('aria-pressed','false');
+      b.innerHTML = `<b>${k}</b><span>${v}</span>`;
+      b.addEventListener('click', ()=>paint(i));
+      rows.appendChild(b);
+      rowEls.push(b);
     });
   }
-  function empty(){
-    eq.classList.remove('on');
-    slot.innerHTML = '<em>?</em>';
-    items.forEach(o=>{ o.classList.remove('sel'); o.setAttribute('aria-pressed','false'); });
-  }
 
-  items.forEach(el=>{
-    // mouse only: a tap also fires pointerenter, which would fight the click
-    el.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') fill(el); });
-    el.addEventListener('focus', ()=>fill(el));
-    el.addEventListener('click', ()=>fill(el));   // touch, and keyboard activation
-  });
-  opts.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') empty(); });
-  opts.addEventListener('focusout', e=>{ if(!opts.contains(e.relatedTarget)) empty(); });
+  paint(null);
 })();
 
 /* =====================================================================
