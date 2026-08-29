@@ -235,9 +235,11 @@
   /* ---------- 01 why ---------- */
   .why-head{max-width:780px;margin-bottom:72px}
   .why-head .disp{margin-top:24px}
-  .why-kicker{
-    font-family:var(--serif);font-style:italic;font-weight:300;color:var(--lime);
-    font-size:clamp(26px,3.4vw,44px);line-height:1.15;letter-spacing:-.01em;margin-top:14px;
+  /* one statement in white, its answer in grey - no third colour and no
+     second typeface */
+  .why-answer{
+    margin-top:18px;font-size:clamp(28px,3.5vw,52px);font-weight:700;
+    letter-spacing:-.04em;line-height:1.05;color:#8D939E;
   }
 
   .why-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
@@ -298,8 +300,12 @@
      Closed: three equal columns. Open: the chosen column takes 72% and the
      other two hold as 14% rails that stay labelled and clickable, so the
      panel is never a layer over the page - it is the column itself. */
-  .svc-lead{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:end;margin-bottom:66px}
-  .svc-lead .lead{font-size:17px;max-width:44ch}
+  .svc-lead{margin-bottom:60px}
+  .svc-sub{
+    margin-top:20px;font-size:clamp(18px,1.7vw,24px);line-height:1.35;
+    letter-spacing:-.02em;color:var(--muted);font-weight:500;
+  }
+  .svc-note{margin-top:14px;font-size:14px;font-weight:600;color:var(--faint);letter-spacing:.01em}
 
   .sx{border-top:2px solid var(--ink)}
   .sx-grid{
@@ -964,8 +970,8 @@
   <div class="sec">
     <div class="why-head">
       <div class="eyebrow on-dark rv">01 &nbsp;/&nbsp; Why we exist</div>
-      <h2 class="disp rv" style="--d:.06s">Startups do not have<br><span class="soft">a hiring problem.</span></h2>
-      <p class="why-kicker rv" style="--d:.14s">They have a capability problem.</p>
+      <h2 class="disp rv" style="--d:.06s">Startups do not have<br>a hiring problem.</h2>
+      <p class="why-answer rv" style="--d:.14s">They have a capability problem.</p>
     </div>
 
     <div class="why-cols">
@@ -1047,15 +1053,12 @@
 </section>
 
 <!-- ============ 02 SERVICES ============ -->
-<section class="sec sec-tight" id="services">
+<section class="sec" id="services">
   <div class="svc-lead">
-    <div>
-      <div class="eyebrow rv">02 &nbsp;/&nbsp; Services</div>
-      <h2 class="disp lines rv" style="--d:.06s;margin-top:22px"><span class="ln"><span>Founder.</span></span><span class="ln"><span>Leadership.</span></span><span class="ln"><span>Engine.</span></span></h2>
-    </div>
-    <div class="rv" style="--d:.16s">
-      <p class="lead">Three parts of the same people equation. Scan all seven in ten seconds, then open the one that is yours.</p>
-    </div>
+    <div class="eyebrow rv">02 &nbsp;/&nbsp; Services</div>
+    <h2 class="disp rv" style="--d:.06s;margin-top:22px">Founder. Leadership. Engine.</h2>
+    <p class="svc-sub rv" style="--d:.12s">Three parts of the same people equation.</p>
+    <p class="svc-note rv" style="--d:.18s">Scan all seven, then open the one that is yours.</p>
   </div>
 
   <div class="sx rv" id="svcIndex"></div>

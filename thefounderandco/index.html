@@ -325,6 +325,15 @@
   <span>Founder-built, not recruiter-built</span>
 </div>
 
+<!-- Netlify only stores submissions for forms it finds in the deployed HTML.
+     The real one is built by script after the solver runs, so this hidden twin
+     declares the same name and fields for the build bot to detect. -->
+<form name="solver" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="solver">
+  <input name="bot-field"><input type="email" name="email">
+  <input name="service"><input name="group"><textarea name="answers"></textarea>
+</form>
+
 <section id="result">
   <div class="result-card" id="resultCard"></div>
 </section>
@@ -1047,16 +1056,25 @@ async function onCapture(ev){
 
   if(SITE.formEndpoint){
     try{
+      const body = new URLSearchParams({
+        'form-name': SITE.formName || 'solver',
+        'bot-field': '',
+        email,
+        service: lastResult.svc.name,
+        group:   lastResult.svc.group,
+        answers: summary
+      });
       const res = await fetch(SITE.formEndpoint, {
         method:'POST',
-        headers:{'Content-Type':'application/json', 'Accept':'application/json'},
-        body: JSON.stringify(capturePayload(email, summary))
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body: body.toString()
       });
       if(!res.ok) throw new Error(res.status);
       captureDone(email);
     }catch(err){
       btn.disabled = false;
-      note.textContent = 'That did not go through. Email ' + SITE.email + ' and we will pick it up from there.';
+      note.innerHTML = 'That did not go through. Mail <a href="mailto:' + SITE.email + '">' + SITE.email
+                     + '</a> and we will pick it up from there.';
       note.className = 'cap-note err';
     }
     return;
@@ -1072,8 +1090,8 @@ async function onCapture(ev){
 function captureDone(email){
   const cap = document.getElementById('capture');
   cap.innerHTML = `
-    <div class="next-label">On its way</div>
-    <p class="cap-done">Thanks &mdash; we have your selection and will send the breakdown to <b>${email}</b>. If it has not landed within one working day, mail <a href="mailto:${SITE.email}">${SITE.email}</a> directly.</p>`;
+    <div class="next-label">Got it</div>
+    <p class="cap-done">Your answers are with us, along with <b>${email}</b>. Imran reads these himself and will reply within one working day. If nothing lands, mail <a href="mailto:${SITE.email}">${SITE.email}</a> directly.</p>`;
 }
 
 function hideResult(){

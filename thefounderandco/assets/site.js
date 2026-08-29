@@ -30,7 +30,15 @@ const SITE = {
   // Leave both empty and the form still works -- it opens a prefilled
   // email instead -- but nothing reaches you unless the visitor sends it.
   // ---------------------------------------------------------------
-  formEndpoint: '',
+  /* Netlify picks up any form it finds in the deployed HTML and stores every
+     submission in the site dashboard, then emails a notification. The solver's
+     form is built by script after someone answers, which the build bot never
+     sees, so index.html also carries a hidden static copy for it to detect.
+     Submissions post here as urlencoded with form-name, per Netlify's own
+     pattern for JS-submitted forms. Anywhere that is not Netlify, this POST
+     fails and the visitor is told to mail Imran directly. */
+  formEndpoint: '/',
+  formName:     'solver',
   formKey:      ''
 };
 
