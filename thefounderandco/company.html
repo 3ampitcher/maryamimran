@@ -124,7 +124,7 @@
   /* ---------- hero ---------- */
   .p-hero{max-width:1200px;margin:0 auto;padding:64px 24px 40px}
   .hero-h{
-    font-size:clamp(42px,7.6vw,106px);font-weight:700;letter-spacing:-.052em;line-height:.97;
+    font-size:clamp(34px,8.6vw,106px);font-weight:700;letter-spacing:-.052em;line-height:.97;
     margin-top:24px;
   }
   /* every statement the brand makes ends on a lime period, the same one that
@@ -135,35 +135,80 @@
     font-size:clamp(17px,1.75vw,21px);line-height:1.58;color:var(--muted);font-weight:500;
   }
 
-  /* ---------- the five ways ---------- */
-  .ways{margin-top:46px}
-  .ways-rule{position:relative;height:2px;background:var(--line);border-radius:2px}
-  .ways-mark{
-    position:absolute;top:0;left:0;height:2px;width:100%;border-radius:2px;
-    background:var(--lime-deep);
-    transition:left .55s var(--ease),width .55s var(--ease);
+  /* ---------- the equation ----------
+     One line from where you are to where you are going, with a gap in it.
+     Five different things can fill that gap and only one of them is a hire.
+     Fill it and the path forward completes - that is the whole argument,
+     drawn once instead of explained. */
+  .eq{margin-top:44px;padding-top:28px;border-top:1px solid var(--line)}
+  .eq-q{
+    font-size:12px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);
   }
-  .ways-row{display:grid;grid-template-columns:repeat(5,1fr)}
-  .way{
-    padding:20px 26px 22px 0;cursor:default;
-    transition:opacity .4s var(--ease),transform .4s var(--ease);
+
+  .eq-track{display:flex;align-items:center;margin-top:26px}
+  .eq-l{flex:1 1 0;height:2px;background:var(--ink);border-radius:2px;min-width:20px}
+  .eq-r{
+    flex:1.25 1 0;position:relative;height:2px;min-width:20px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 15px);
   }
-  .way + .way{padding-left:26px;border-left:1px solid var(--line)}
-  .way b{
-    display:block;font-size:clamp(15px,1.45vw,19px);font-weight:800;
+  /* the solid lime run and its head only exist once the gap is filled */
+  .eq-r::before{
+    content:"";position:absolute;inset:0;background:var(--lime-deep);border-radius:2px;
+    transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--ease);
+  }
+  .eq-r::after{
+    content:"";position:absolute;right:-1px;top:50%;width:0;height:0;
+    border-left:11px solid var(--lime-deep);
+    border-top:7px solid transparent;border-bottom:7px solid transparent;
+    transform:translate(6px,-50%);opacity:0;
+    transition:opacity .3s var(--ease) .3s,transform .4s var(--ease) .3s;
+  }
+  .eq.on .eq-r::before{transform:scaleX(1)}
+  .eq.on .eq-r::after{opacity:1;transform:translate(0,-50%)}
+
+  .eq-slot{
+    flex:0 0 auto;width:196px;height:58px;margin:0 14px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    border:2px dashed var(--line);background:transparent;
+    transition:background .35s var(--ease),border-color .35s var(--ease);
+  }
+  .eq-slot em{
+    font-style:normal;font-size:24px;font-weight:700;color:var(--soft);
+    transition:color .3s var(--ease);
+  }
+  .eq-slot b{
+    font-size:14px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--lime);
+  }
+  .eq.on .eq-slot{background:var(--ink);border-color:var(--ink);border-style:solid}
+
+  .eq-ends{
+    display:flex;justify-content:space-between;margin-top:12px;
+    font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
+  }
+
+  .eq-opts{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:34px}
+  .eq-o{
+    text-align:left;background:none;border:none;cursor:pointer;font-family:var(--sans);
+    padding:18px 22px 20px 0;border-top:2px solid var(--line);
+    transition:border-color .35s var(--ease),opacity .35s var(--ease);
+  }
+  .eq-o + .eq-o{padding-left:22px}
+  .eq-o b{
+    display:block;font-size:clamp(14px,1.35vw,17px);font-weight:800;
     letter-spacing:.1em;text-transform:uppercase;line-height:1.2;
-    transition:color .35s var(--ease);
+    transition:color .3s var(--ease);
   }
-  .way span{
-    display:block;margin-top:11px;font-size:15px;line-height:1.45;
+  .eq-o span{
+    display:block;margin-top:10px;font-size:14.5px;line-height:1.45;
     color:var(--muted);font-weight:500;letter-spacing:-.01em;
   }
-  /* dim the set, lift the one you are on - the offer stays legible either way */
-  .ways.hot .way{opacity:.4}
-  .ways.hot .way.on{opacity:1}
-  .ways.hot .way.on b{color:var(--lime-deep)}
-  .ways-note{
-    margin-top:20px;font-size:13.5px;font-weight:600;color:var(--faint);letter-spacing:.01em;
+  .eq.on .eq-o{opacity:.42}
+  .eq.on .eq-o.sel{opacity:1;border-color:var(--lime-deep)}
+  .eq.on .eq-o.sel b{color:var(--lime-deep)}
+  .eq-note{margin-top:24px;font-size:13.5px;font-weight:600;color:var(--faint)}
+
+  @media(prefers-reduced-motion:reduce){
+    .eq-r::before,.eq-r::after,.eq-slot,.eq-o,.eq-slot em{transition:none}
   }
 
   .hero-under{
@@ -680,18 +725,25 @@
     .p-hero{padding:52px 20px 34px}
     .hero-h{letter-spacing:-.045em}
     .hero-sub{margin-top:24px}
-    .ways{margin-top:44px}
+    .eq{margin-top:40px}
+    .eq-slot{width:126px;height:48px;margin:0 9px}
+    .eq-slot em{font-size:20px}
+    .eq-slot b{font-size:11.5px;letter-spacing:.12em}
+    .eq-ends{font-size:10.5px}
     /* five columns will not fit; the same five read as rows, verb left,
        what it covers right */
-    .ways-row{grid-template-columns:1fr}
-    .way{
+    .eq-opts{grid-template-columns:1fr;gap:0;margin-top:28px}
+    .eq-o{
       display:flex;align-items:baseline;justify-content:space-between;gap:20px;
-      padding:16px 0;border-bottom:1px solid var(--line);
+      padding:15px 0;border-top:none;border-bottom:1px solid var(--line);
     }
-    .way + .way{padding-left:0;border-left:none}
-    .way b{font-size:14px;flex:0 0 auto}
-    .way span{margin-top:0;text-align:right;font-size:14px;max-width:56%}
-    .ways-note{margin-top:20px}
+    .eq-o:first-child{border-top:2px solid var(--line)}
+    .eq-o + .eq-o{padding-left:0}
+    .eq-o b{font-size:14px;flex:0 0 auto}
+    .eq-o span{margin-top:0;text-align:right;font-size:14px;max-width:56%}
+    .eq.on .eq-o{opacity:1}
+    .eq.on .eq-o.sel{border-bottom-color:var(--lime-deep)}
+    .eq-note{margin-top:18px}
     .hero-under{flex-direction:column;align-items:stretch;margin-top:34px;gap:22px}
   }
 </style>
@@ -729,28 +781,30 @@
   <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
 
   <h1 class="hero-h lines rv" style="--d:.06s">
-    <span class="ln"><span>Build what the</span></span>
-    <span class="ln"><span>next stage needs<i>.</i></span></span>
+    <span class="ln"><span>The people equation</span></span>
+    <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
   </h1>
 
-  <p class="hero-sub rv" style="--d:.16s">
-    Sometimes it is a stronger founding team. Sometimes a leader, extra capability,
-    a complete talent function or the technology itself.
-  </p>
+  <p class="hero-sub rv" style="--d:.16s">Because the answer is not always another hire.</p>
 
-  <!-- Five ways in, not five steps. One lime line spans all of them at rest and
-       narrows to whichever one you are on, so the set reads as a single offer
-       you can enter at any point. -->
-  <div class="ways rv" id="ways" style="--d:.24s" aria-label="Five ways we help">
-    <div class="ways-rule"><span class="ways-mark" id="waysMark"></span></div>
-    <div class="ways-row">
-      <div class="way"><b>Understand</b><span>Founders and teams</span></div>
-      <div class="way"><b>Find</b><span>The missing partner</span></div>
-      <div class="way"><b>Hire</b><span>The right leader</span></div>
-      <div class="way"><b>Step in</b><span>On-demand capability and talent</span></div>
-      <div class="way"><b>Build</b><span>The technology</span></div>
+  <div class="eq rv" id="eq" style="--d:.24s">
+    <div class="eq-q" id="eqQ">What does the company need next?</div>
+
+    <div class="eq-track" aria-hidden="true">
+      <span class="eq-l"></span>
+      <span class="eq-slot" id="eqSlot"><em>?</em></span>
+      <span class="eq-r"></span>
     </div>
-    <p class="ways-note">Separate ways to work with us &mdash; not five compulsory steps.</p>
+    <div class="eq-ends" aria-hidden="true"><span>Where you are</span><span>The next stage</span></div>
+
+    <div class="eq-opts" id="eqOpts">
+      <button class="eq-o" type="button" data-v="Understand" aria-pressed="false"><b>Understand</b><span>Founders and teams</span></button>
+      <button class="eq-o" type="button" data-v="Find"       aria-pressed="false"><b>Find</b><span>The missing partner</span></button>
+      <button class="eq-o" type="button" data-v="Hire"       aria-pressed="false"><b>Hire</b><span>The right leader</span></button>
+      <button class="eq-o" type="button" data-v="Step in"    aria-pressed="false"><b>Step in</b><span>Capability when needed</span></button>
+      <button class="eq-o" type="button" data-v="Build"      aria-pressed="false"><b>Build</b><span>The technology</span></button>
+    </div>
+    <p class="eq-note">Five ways to answer it. Only one of them is a hire.</p>
   </div>
 
   <div class="hero-under rv" style="--d:.32s">
@@ -1520,44 +1574,40 @@ const CHAPTERS = [
 })();
 
 /* =====================================================================
-   The five ways
-   One lime line spans the whole set at rest and narrows to whichever way
-   you are on, so five parallel offers read as one thing you can enter at
-   any point - never as five steps in an order.
+   The equation
+   The gap in the line is the question. Whichever of the five fills it, the
+   path to the next stage completes - so the visual makes the argument the
+   headline makes: the answer is not always another hire.
 ===================================================================== */
-(function ways(){
-  const wrap = document.getElementById('ways');
-  const mark = document.getElementById('waysMark');
-  if(!wrap || !mark) return;
-  const items = [...wrap.querySelectorAll('.way')];
-  const wide  = () => window.matchMedia('(min-width:901px)').matches;
+(function equation(){
+  const eq   = document.getElementById('eq');
+  const slot = document.getElementById('eqSlot');
+  const opts = document.getElementById('eqOpts');
+  if(!eq || !slot || !opts) return;
+  const items = [...opts.querySelectorAll('.eq-o')];
 
-  function spanAll(){
-    mark.style.left = '0%';
-    mark.style.width = '100%';
+  function fill(el){
+    eq.classList.add('on');
+    slot.innerHTML = '<b>' + el.dataset.v + '</b>';
+    items.forEach(o=>{
+      o.classList.toggle('sel', o === el);
+      o.setAttribute('aria-pressed', o === el ? 'true' : 'false');
+    });
   }
-  function spanOne(el){
-    const w = wrap.getBoundingClientRect(), r = el.getBoundingClientRect();
-    mark.style.left  = ((r.left - w.left) / w.width * 100) + '%';
-    mark.style.width = (r.width / w.width * 100) + '%';
-  }
-  function clear(){
-    wrap.classList.remove('hot');
-    items.forEach(el=>el.classList.remove('on'));
-    spanAll();
+  function empty(){
+    eq.classList.remove('on');
+    slot.innerHTML = '<em>?</em>';
+    items.forEach(o=>{ o.classList.remove('sel'); o.setAttribute('aria-pressed','false'); });
   }
 
   items.forEach(el=>{
-    el.addEventListener('pointerenter', ()=>{
-      if(!wide()) return;                    // rows on small screens, no dimming
-      wrap.classList.add('hot');
-      items.forEach(o=>o.classList.toggle('on', o === el));
-      spanOne(el);
-    });
+    // mouse only: a tap also fires pointerenter, which would fight the click
+    el.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') fill(el); });
+    el.addEventListener('focus', ()=>fill(el));
+    el.addEventListener('click', ()=>fill(el));   // touch, and keyboard activation
   });
-  wrap.addEventListener('pointerleave', clear);
-  window.addEventListener('resize', ()=>{ if(!wrap.classList.contains('hot')) spanAll(); });
-  spanAll();
+  opts.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') empty(); });
+  opts.addEventListener('focusout', e=>{ if(!opts.contains(e.relatedTarget)) empty(); });
 })();
 
 /* =====================================================================
