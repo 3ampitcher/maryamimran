@@ -5,7 +5,7 @@
 ===================================================================== */
 
 const SITE = {
-  email:        'imran@rethinkhrs.com',
+  email:        'imran@thefounderand.co',
   phoneDisplay: '+966 50 778 4932',
   whatsapp:     '966507784932',          // digits only, country code first
   website:      'thefounderandco.com',
@@ -18,7 +18,7 @@ const SITE = {
   // stops throwing away the answers people give it.
   //
   //   Web3Forms  (fastest -- no account)
-  //     1. https://web3forms.com -> enter imran@rethinkhrs.com
+  //     1. https://web3forms.com -> enter imran@thefounderand.co
   //     2. they email you an access key
   //     3. formEndpoint = 'https://api.web3forms.com/submit'
   //        formKey      = the key they sent
