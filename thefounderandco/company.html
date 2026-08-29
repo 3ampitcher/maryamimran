@@ -231,13 +231,23 @@
   .wb.in .fig .a:nth-of-type(9){opacity:1;transform:none;transition-delay:0.675s}
   .wb.in .fig .a:nth-of-type(10){opacity:1;transform:none;transition-delay:0.730s}
 
-  /* ---------- 02 services: three columns, one shared panel ---------- */
+  /* ---------- 02 services ----------
+     Closed: three equal columns. Open: the chosen column takes 72% and the
+     other two hold as 14% rails that stay labelled and clickable, so the
+     panel is never a layer over the page - it is the column itself. */
   .svc-lead{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:end;margin-bottom:66px}
   .svc-lead .lead{font-size:17px;max-width:44ch}
 
   .sx{border-top:2px solid var(--ink)}
-  .sx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-  .sx-col{padding:34px 32px 0 0;position:relative}
+  .sx-grid{
+    display:grid;grid-template-columns:33.333% 33.333% 33.334%;
+    min-height:var(--sx-h,auto);
+    transition:grid-template-columns .5s var(--ease),min-height .5s var(--ease);
+  }
+  .sx-grid[data-open="0"]{grid-template-columns:72% 14% 14%}
+  .sx-grid[data-open="1"]{grid-template-columns:14% 72% 14%}
+  .sx-grid[data-open="2"]{grid-template-columns:14% 14% 72%}
+  .sx-col{padding:34px 32px 0 0;position:relative;min-width:0}
   .sx-col + .sx-col{padding-left:32px}
   .sx-col + .sx-col::before{
     content:"";position:absolute;left:0;top:34px;bottom:14px;width:1px;background:var(--line);
@@ -245,21 +255,25 @@
 
   .sx-head{margin-bottom:26px}
   .ch-id{display:flex;align-items:center;gap:16px}
-  .sx-head h3{font-size:clamp(24px,2.6vw,32px);font-weight:700;letter-spacing:-.035em;line-height:1}
+  .sx-head h3{font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.035em;line-height:1}
   .sx-head p{font-size:14.5px;line-height:1.6;color:var(--muted);font-weight:500;margin-top:14px;max-width:32ch}
   .ch-mark{width:46px;height:46px;flex:0 0 auto;overflow:visible;transition:transform .6s var(--ease)}
   .ch-mark circle,.ch-mark rect{fill:#ADADA5;transition:fill .4s}
   .ch-mark line{stroke:#C2C2BA;stroke-width:2;transition:stroke .4s}
   .ch-mark .lit{fill:var(--lime-deep)}
   .sx-col:hover .ch-mark{transform:rotate(45deg)}
+  .ch-open{
+    display:block;width:100%;text-align:left;background:none;border:none;padding:0;
+    font-family:var(--sans);color:inherit;cursor:default;
+  }
 
   .sx-row{border-top:1px solid var(--line);position:relative}
-  .sx-row:last-of-type{border-bottom:1px solid var(--line)}
+  .sx-rows > .sx-row:last-child{border-bottom:1px solid var(--line)}
   .sx-row::before{
     content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--lime);
     transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--ease);
   }
-  .sx-row:hover::before,.sx-row:focus-within::before,.sx-row.on::before{transform:scaleX(1)}
+  .sx-row:hover::before,.sx-row:focus-within::before{transform:scaleX(1)}
 
   .sx-btn{
     width:100%;background:none;border:none;cursor:pointer;text-align:left;
@@ -270,7 +284,7 @@
   }
   .sx-btn:focus-visible{outline:2px solid var(--lime-deep);outline-offset:5px}
   .sx-num{grid-area:num;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--faint);padding-top:5px;transition:color .4s}
-  .sx-name{grid-area:name;font-size:21px;font-weight:700;letter-spacing:-.028em;line-height:1.15}
+  .sx-name{grid-area:name;font-size:20px;font-weight:700;letter-spacing:-.028em;line-height:1.15}
   .sx-desc{grid-area:desc;font-size:14.5px;line-height:1.5;color:var(--muted);font-weight:500;margin-top:3px}
   .sx-stage{grid-area:stage;font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);margin-top:7px;transition:color .4s}
   .sx-plus{grid-area:plus;justify-self:end;width:26px;height:26px;position:relative;margin-top:4px;transition:transform .5s var(--ease)}
@@ -280,55 +294,108 @@
   }
   .sx-plus::before{width:13px;height:1.5px}
   .sx-plus::after{width:1.5px;height:13px}
-  .sx-row:hover .sx-num,.sx-row.on .sx-num{color:var(--lime-deep)}
+  .sx-row:hover .sx-num{color:var(--lime-deep)}
   .sx-row:hover .sx-stage{color:var(--ink)}
   .sx-row:hover .sx-plus{transform:scale(1.18)}
   .sx-row:hover .sx-plus::before,.sx-row:hover .sx-plus::after{background:var(--lime-deep)}
   .sx-row:hover .sx-btn{padding-left:12px}
-  .sx-row.on .sx-btn{padding-left:12px}
-  .sx-row.on .sx-plus{transform:rotate(180deg)}
-  .sx-row.on .sx-plus::after{opacity:0}
-  .sx-grid:hover .sx-row:not(:hover):not(.on) .sx-btn{opacity:.4}
+  .sx-grid:not([data-open]):hover .sx-row:not(:hover) .sx-btn{opacity:.4}
 
-  /* the detail: one panel, moved to whichever slot suits the viewport */
-  .sx-panel{height:0;overflow:hidden;transition:height .6s var(--ease)}
-  .sx-inner{
-    padding:44px 0 56px;opacity:0;transform:translateY(16px);
-    transition:opacity .5s var(--ease),transform .5s var(--ease);
+  /* ---- the rails ---- */
+  .sx-col.sx-rail{opacity:.72;transition:opacity .4s var(--ease)}
+  .sx-col.sx-rail:hover,.sx-col.sx-rail:focus-within{opacity:1}
+  .sx-col.sx-rail .ch-id{flex-direction:column;align-items:flex-start;gap:12px}
+  .sx-col.sx-rail .ch-open{cursor:pointer}
+  .sx-col.sx-rail .sx-head h3{font-size:12.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+  .sx-col.sx-rail .sx-head p{display:none}
+  .sx-col.sx-rail .ch-mark{width:34px;height:34px}
+  .sx-col.sx-rail .sx-btn{
+    grid-template-columns:1fr 22px;grid-template-areas:"num plus" "name name";
+    padding:18px 0;gap:10px 8px;
   }
-  .sx-panel.open .sx-inner{opacity:1;transform:none;transition-delay:.14s}
-  .sx-top{
-    display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;
-    padding-bottom:26px;border-bottom:1px solid var(--line);margin-bottom:36px;
+  .sx-col.sx-rail .sx-desc,.sx-col.sx-rail .sx-stage{display:none}
+  .sx-col.sx-rail .sx-name{font-size:15.5px;letter-spacing:-.02em;line-height:1.25}
+  .sx-col.sx-rail .sx-plus{width:20px;height:20px;margin-top:0}
+  .sx-col.sx-rail .sx-btn:hover{padding-left:0}
+
+  /* the selected column hands its space to the panel */
+  .sx-col.open > .sx-head,.sx-col.open > .sx-rows{display:none}
+  .sx-host{display:none}
+  .sx-col.open > .sx-host{display:block}
+
+  /* ---- the panel ---- */
+  .sp{
+    padding:34px 0 40px;opacity:0;transform:translateY(14px);
+    transition:opacity .42s var(--ease) .18s,transform .42s var(--ease) .18s;
   }
-  .sx-top .n{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--lime-deep)}
-  .sx-top h4{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.035em;line-height:1}
-  .sx-top .st{font-size:10.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--faint)}
-  .sx-close{
-    margin-left:auto;background:none;border:1.5px solid var(--line);border-radius:999px;
-    padding:9px 18px;font:700 12.5px var(--sans);letter-spacing:.02em;color:var(--muted);
-    cursor:pointer;transition:border-color .3s,color .3s,background .3s;
+  .sx-col.open .sp.in{opacity:1;transform:none}
+  .sp-bar{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+  .sp-meta{font-size:12.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+  .sp-meta b{color:var(--lime-deep)}
+  .sp-close{
+    flex:0 0 auto;background:none;border:1.5px solid var(--line);border-radius:999px;
+    padding:10px 20px;font:700 13px var(--sans);color:var(--muted);cursor:pointer;
+    transition:border-color .3s,color .3s;
   }
-  .sx-close:hover{border-color:var(--ink);color:var(--ink)}
-  .sx-prop{
-    grid-column:1/-1;font-family:var(--serif);font-style:italic;font-weight:300;
-    font-size:clamp(24px,2.9vw,38px);line-height:1.18;letter-spacing:-.01em;max-width:24ch;
-    margin-bottom:16px;
+  .sp-close:hover{border-color:var(--ink);color:var(--ink)}
+  .sp-name{
+    margin-top:18px;font-size:clamp(30px,3.9vw,48px);font-weight:700;
+    letter-spacing:-.04em;line-height:1.02;
   }
-  .sx-body{display:grid;grid-template-columns:repeat(4,1fr);gap:36px 40px}
-  .sx-b h5{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;color:var(--faint);margin-bottom:13px}
-  .sx-b p{font-size:15px;line-height:1.68;color:var(--muted);font-weight:500;max-width:60ch}
-  .sx-b ul{list-style:none}
-  .sx-b li{font-size:15px;line-height:1.6;color:var(--muted);font-weight:500;padding:8px 0 8px 20px;position:relative;max-width:60ch}
-  .sx-b li::before{content:"";position:absolute;left:0;top:17px;width:9px;height:1.5px;background:var(--lime-deep);border-radius:1px}
-  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;align-items:center;margin-top:16px}
+  .sp-rule{display:block;width:44px;height:3px;border-radius:2px;background:var(--lime-deep);margin:26px 0 22px}
+  .sp-prop{
+    font-size:clamp(19px,2vw,25px);line-height:1.32;font-weight:600;letter-spacing:-.025em;
+    color:var(--ink);max-width:30ch;
+  }
+  .sp-cols{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px}
+  .sp-b h5{
+    font-size:12.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:16px;
+  }
+  .sp-b p{font-size:17.5px;line-height:1.62;color:#34373D;font-weight:500;max-width:46ch}
+  .sp-b ul{list-style:none}
+  .sp-b li{
+    font-size:17.5px;line-height:1.5;color:#34373D;font-weight:500;
+    padding:0 0 14px 22px;position:relative;
+  }
+  .sp-b li::before{
+    content:"";position:absolute;left:0;top:12px;width:11px;height:2px;
+    background:var(--lime-deep);border-radius:1px;
+  }
+  .sp-fit{margin-top:38px;max-width:34ch}
+  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;align-items:center;margin-top:18px}
   .cell{height:5px;border-radius:3px;background:#E1E1DB}
   .cell.on{background:var(--lime-soft)}
   .cell.on.start{background:var(--lime)}
-  .sx-railkey{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:8px;
-    font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+  .sx-railkey{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:9px;
+    font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
   .sx-railkey span{text-align:center}
-  .sx-cta{grid-column:1/-1;display:flex;gap:13px;flex-wrap:wrap;margin-top:14px}
+  .sp-cta{margin-top:34px}
+  .sp-sib{
+    margin-top:44px;font-size:14.5px;font-weight:500;color:var(--muted);
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .sp-sib button{
+    background:none;border:none;padding:0;cursor:pointer;font-family:var(--sans);
+    font-size:14.5px;font-weight:700;color:var(--ink);letter-spacing:-.01em;
+    border-bottom:1.5px solid var(--line);transition:border-color .3s var(--ease);
+  }
+  .sp-sib button:hover{border-color:var(--lime-deep)}
+  .sp-sib span{color:var(--faint)}
+  .sp-nav{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    margin-top:26px;padding-top:24px;border-top:1px solid var(--line);
+  }
+  .sp-step{
+    background:none;border:none;padding:0;cursor:pointer;font-family:var(--sans);
+    font-size:14.5px;font-weight:700;color:var(--muted);letter-spacing:-.01em;
+    display:inline-flex;align-items:center;gap:11px;transition:color .3s var(--ease);
+  }
+  .sp-step:hover{color:var(--ink)}
+  .sp-step .ar{transition:transform .3s var(--ease)}
+  .sp-step.prev:hover .ar{transform:translateX(-4px)}
+  .sp-step.next:hover .ar{transform:translateX(4px)}
+  .sp-sheet-top{display:none}
 
   .si-cursor{
     position:fixed;top:0;left:0;z-index:250;pointer-events:none;
@@ -338,6 +405,24 @@
     transition:opacity .25s var(--ease),transform .25s var(--ease);
   }
   .si-cursor.on{opacity:1;transform:translate3d(var(--x),var(--y),0) translate(-50%,-50%) scale(1)}
+
+  /* tablet: the panel takes almost everything, the other two stay as tabs */
+  @media(max-width:1023px){
+    .sx-grid[data-open="0"]{grid-template-columns:76% 12% 12%}
+    .sx-grid[data-open="1"]{grid-template-columns:12% 76% 12%}
+    .sx-grid[data-open="2"]{grid-template-columns:12% 12% 76%}
+    .sx-col.sx-rail > .sx-rows{display:none}
+    .sx-col.sx-rail .sx-head h3{
+      writing-mode:vertical-rl;transform:rotate(180deg);margin-top:14px;letter-spacing:.2em;
+    }
+    .sx-col.sx-rail{padding-right:10px}
+    .sx-col.sx-rail + .sx-col,.sx-col + .sx-col.sx-rail{padding-left:14px}
+    .sp-cols{grid-template-columns:1fr;gap:32px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .sx-grid,.sp{transition:none}
+  }
 
   /* ---------- 03 stage map (dark band) ---------- */
   .band{background:var(--ink);color:#fff;padding:110px 0}
@@ -671,10 +756,55 @@
     .stage-right{border-left:none;border-top:1px solid var(--line-dark);padding:28px}
     .stage-cols{grid-template-columns:1fr;gap:28px;max-width:62ch}
     .why-head{margin-bottom:44px}
-    .sx-grid:hover .sx-row:not(:hover):not(.on) .sx-btn{opacity:1}
-    .sx-body{grid-template-columns:1fr;gap:26px}
-    .sx-inner{padding:30px 0 34px}
-    .sx-top{margin-bottom:26px}
+    .sx-grid:hover .sx-row:not(:hover) .sx-btn{opacity:1}
+    /* no squeezed columns on a phone: the service opens as a sheet over the
+       page, with its own close and prev/next pinned to the top */
+    .sx-grid[data-open]{grid-template-columns:1fr}
+    .sx-col.sx-rail{opacity:1}
+    .sx-col.sx-rail > .sx-rows{display:block}
+    .sx-col.sx-rail .ch-id{flex-direction:row;align-items:center;gap:16px}
+    .sx-col.sx-rail .sx-head h3{
+      writing-mode:horizontal-tb;transform:none;margin-top:0;
+      font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.035em;text-transform:none;
+    }
+    .sx-col.sx-rail .sx-head p{display:block}
+    .sx-col.sx-rail .ch-mark{width:46px;height:46px}
+    .sx-col.sx-rail .sx-btn{
+      grid-template-columns:40px 1fr 28px;
+      grid-template-areas:"num name plus" ".   desc plus" ".   stage plus";
+      padding:24px 0;gap:5px 12px;
+    }
+    .sx-col.sx-rail .sx-desc,.sx-col.sx-rail .sx-stage{display:block}
+    .sx-col.sx-rail .sx-name{font-size:20px;line-height:1.15}
+    .sx-col.sx-rail .sx-plus{width:26px;height:26px;margin-top:4px}
+    .sx-col.open > .sx-head,.sx-col.open > .sx-rows{display:block}
+
+    .sx-host{position:fixed;inset:0;z-index:320;display:none}
+    .sx-col.open > .sx-host{
+      display:block;background:var(--bg);background-image:var(--texture);
+      overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+      padding:0 20px calc(28px + env(safe-area-inset-bottom));
+    }
+    .sp{padding:0 0 40px}
+    .sp-sheet-top{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      position:sticky;top:0;z-index:2;padding:14px 0;
+      background:var(--bg);border-bottom:1px solid var(--line);
+    }
+    .sp-sheet-top .sp-close{padding:9px 17px}
+    .sp-sheet-nav{display:flex;gap:8px}
+    .sp-ico{
+      width:40px;height:40px;border-radius:999px;border:1.5px solid var(--line);
+      background:none;cursor:pointer;color:var(--muted);font-size:15px;line-height:1;
+      display:inline-flex;align-items:center;justify-content:center;
+    }
+    .sp-ico:disabled{opacity:.35;cursor:default}
+    .sp-bar{margin-top:22px}
+    .sp-bar .sp-close{display:none}
+    .sp-cols{grid-template-columns:1fr;gap:30px;margin-top:34px}
+    .sp-name{font-size:clamp(30px,8vw,40px)}
+    .sp-nav{display:none}
+    body.sheet-open{overflow:hidden}
     .si-cursor{display:none}
     .tree{grid-template-columns:1fr;gap:34px}
     .tree svg.wires{display:none}
@@ -1330,16 +1460,22 @@ const CHAPTERS = [
   const grid = document.createElement('div');
   grid.className = 'sx-grid';
   let n = 0;
-  const items = [];
+  const items = [], cols = [];
 
-  CHAPTERS.forEach(ch=>{
+  CHAPTERS.forEach((ch, ci)=>{
     const col = document.createElement('section');
     col.className = 'sx-col';
     col.innerHTML =
       `<header class="sx-head">
-         <div class="ch-id"><svg class="ch-mark" viewBox="0 0 76 76" aria-hidden="true">${ch.mark}</svg>
-         <h3>${ch.name}</h3></div><p>${ch.note}</p>
-       </header>`;
+         <button class="ch-open" type="button">
+           <span class="ch-id"><svg class="ch-mark" viewBox="0 0 76 76" aria-hidden="true">${ch.mark}</svg>
+           <h3>${ch.name}</h3></span>
+         </button>
+         <p>${ch.note}</p>
+       </header>
+       <div class="sx-rows"></div>
+       <div class="sx-host"></div>`;
+    const rows = col.querySelector('.sx-rows');
 
     ch.items.forEach(it=>{
       n++;
@@ -1357,159 +1493,201 @@ const CHAPTERS = [
            <span class="sx-stage">${it.stage}</span>
            <span class="sx-plus" aria-hidden="true"></span>
          </button>`;
-      col.appendChild(row);
-      items.push({...it, num, slug, row, col});
+      rows.appendChild(row);
+      items.push({...it, num, slug, row, col, ci, group: ch.name});
     });
 
-    const host = document.createElement('div');
-    host.className = 'sx-host';
-    col.appendChild(host);
+    cols.push(col);
     grid.appendChild(col);
   });
   root.appendChild(grid);
 
-  // ---- one panel, parked in whichever slot suits the viewport ----
-  const wideHost = document.createElement('div');
-  wideHost.className = 'sx-host';
-  root.appendChild(wideHost);
-
   const panel = document.createElement('div');
-  panel.className = 'sx-panel';
+  panel.className = 'sp';
   panel.id = 'sxPanel';
   panel.setAttribute('role','region');
-  panel.innerHTML = '<div class="sx-inner"></div>';
-  const inner = panel.firstElementChild;
-  wideHost.appendChild(panel);
+  panel.tabIndex = -1;
 
   const rail = (from,to)=>
     `<div class="rail">${[0,1,2,3,4].map(i=>
       `<div class="cell${i>=from&&i<=to?' on':''}${i===from?' start':''}"></div>`).join('')}</div>` +
     `<div class="sx-railkey">${STAGE_KEY.map(k=>`<span>${k}</span>`).join('')}</div>`;
 
+  const sheet = () => window.matchMedia('(max-width:900px)').matches;
+
+  function markup(it){
+    const i = items.indexOf(it);
+    const prev = items[(i - 1 + items.length) % items.length];
+    const next = items[(i + 1) % items.length];
+    // the open column has swallowed its own rows, so its other services need a
+    // way back that is not a walk through the whole set
+    const sibs = items.filter(x => x.ci === it.ci && x !== it);
+    const sib = sibs.length
+      ? `<p class="sp-sib">Also in ${it.group}: ${sibs.map(x=>
+          `<button type="button" data-jump="${x.slug}">${x.name}</button>`).join('<span>&middot;</span>')}</p>`
+      : '';
+    return `
+      <div class="sp-sheet-top">
+        <div class="sp-sheet-nav">
+          <button class="sp-ico" type="button" data-go="prev" aria-label="Previous service, ${prev.name}">&larr;</button>
+          <button class="sp-ico" type="button" data-go="next" aria-label="Next service, ${next.name}">&rarr;</button>
+        </div>
+        <button class="sp-close" type="button" data-go="close">Close</button>
+      </div>
+      <div class="sp-bar">
+        <p class="sp-meta"><b>${it.num}</b> &middot; ${it.group} &middot; ${it.stage}</p>
+        <button class="sp-close" type="button" data-go="close">Close</button>
+      </div>
+      <h4 class="sp-name">${it.name}</h4>
+      <span class="sp-rule" aria-hidden="true"></span>
+      <p class="sp-prop">${it.prop}</p>
+      <div class="sp-cols">
+        <div>
+          <div class="sp-b"><h5>What it is</h5><p>${it.what}</p></div>
+          <div class="sp-b sp-fit"><h5>When it fits</h5><p>${it.fits}</p>${rail(it.from,it.to)}</div>
+        </div>
+        <div>
+          <div class="sp-b"><h5>What you get</h5><ul>${it.get.slice(0,3).map(g=>`<li>${g}</li>`).join('')}</ul></div>
+          <a class="btn btn-dark sp-cta" href="mailto:${SITE.email}?subject=${encodeURIComponent(it.name)}">Talk about ${it.name} <span class="ar">&rarr;</span></a>
+        </div>
+      </div>
+      ${sib}
+      <div class="sp-nav">
+        <button class="sp-step prev" type="button" data-go="prev"><span class="ar">&larr;</span>${prev.name}</button>
+        <button class="sp-step next" type="button" data-go="next">${next.name}<span class="ar">&rarr;</span></button>
+      </div>`;
+  }
+
+  let current = null;
+
   function fill(it){
     panel.setAttribute('aria-label', it.name);
-    inner.innerHTML = `
-      <div class="sx-top">
-        <span class="n">${it.num}</span>
-        <h4>${it.name}</h4>
-        <span class="st">${it.stage}</span>
-        <button class="sx-close" type="button">Close</button>
-      </div>
-      <div class="sx-body">
-        <p class="sx-prop">${it.prop}</p>
-        <div class="sx-b"><h5>What it is</h5><p>${it.what}</p></div>
-        <div class="sx-b"><h5>Who it is for</h5><p>${it.who}</p></div>
-        <div class="sx-b"><h5>What you get</h5><ul>${it.get.map(g=>`<li>${g}</li>`).join('')}</ul></div>
-        <div class="sx-b"><h5>When it fits</h5><p>${it.fits}</p>${rail(it.from,it.to)}</div>
-        <div class="sx-cta">
-          <a class="btn btn-dark" href="mailto:${SITE.email}?subject=${encodeURIComponent(it.name)}">Talk about ${it.name} <span class="ar">&rarr;</span></a>
-          <a class="btn btn-ghost" href="index.html#solver">Not sure? Run the solver</a>
-        </div>
-      </div>`;
-    inner.querySelector('.sx-close').addEventListener('click', ()=>{ close(); setHash(null); });
-  }
-
-  let current = null, pending = null;
-
-  function setHash(slug){
-    history.replaceState(null,'', slug ? '#'+slug : location.pathname + location.search);
-  }
-
-  function cancelPending(){
-    if(pending){ cancelAnimationFrame(pending); pending = null; }
-  }
-  function settleToAuto(){
-    panel.addEventListener('transitionend', function done(e){
-      if(e.propertyName !== 'height') return;
-      panel.style.height = 'auto';          // survive a resize
-      panel.removeEventListener('transitionend', done);
+    panel.innerHTML = markup(it);
+    panel.querySelectorAll('[data-jump]').forEach(b=>
+      b.addEventListener('click', ()=> go(items.find(x => x.slug === b.dataset.jump))));
+    panel.querySelectorAll('[data-go]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const d = b.dataset.go;
+        if(d === 'close') return go(null);
+        const i = items.indexOf(current);
+        go(items[(i + (d === 'next' ? 1 : -1) + items.length) % items.length]);
+      });
     });
   }
-  function deselect(){
-    if(!current) return;
-    current.row.classList.remove('on');
-    current.row.querySelector('.sx-btn').setAttribute('aria-expanded','false');
-    current = null;
+
+  /* The section keeps one height whatever is open, so nothing below it moves
+     when you switch service. Measured once from the real panels rather than
+     guessed, and re-measured if the type reflows. */
+  let openH = 0;
+  function measure(){
+    const probe = document.createElement('div');
+    probe.className = 'sx-col open';
+    probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;padding:0';
+    const host = document.createElement('div');
+    host.className = 'sx-host';
+    host.style.display = 'block';
+    const p2 = document.createElement('div');
+    p2.className = 'sp in';
+    p2.style.cssText = 'opacity:1;transform:none;transition:none';
+    host.appendChild(p2); probe.appendChild(host);
+    grid.appendChild(probe);
+    // the narrowest the open column can be: 72% less both column paddings, so
+    // the tallest wrap is what gets measured whichever column is opened
+    probe.style.width = Math.max(240, grid.offsetWidth * 0.72 - 64) + 'px';
+    openH = 0;
+    items.forEach(it=>{ p2.innerHTML = markup(it); openH = Math.max(openH, p2.offsetHeight); });
+    probe.remove();
+    // the panel sits below the column's own top padding, so the floor has to
+    // clear both or the grid grows past it and the section shifts
+    openH += parseFloat(getComputedStyle(cols[0]).paddingTop) || 0;
+    if(current) grid.style.setProperty('--sx-h', openH + 'px');
   }
 
-  function close(){
-    if(!current) return;
-    cancelPending();
-    panel.style.height = panel.offsetHeight + 'px';
-    pending = requestAnimationFrame(()=>{ panel.style.height = '0px'; pending = null; });
-    panel.classList.remove('open');
-    deselect();
+  function paint(){
+    cols.forEach((c,i)=>{
+      const open = !!current && current.ci === i;
+      c.classList.toggle('open', open);
+      c.classList.toggle('sx-rail', !!current && !open);
+    });
+    items.forEach(it=>
+      it.row.querySelector('.sx-btn').setAttribute('aria-expanded', String(it === current)));
+    if(current) grid.dataset.open = String(current.ci);
+    else delete grid.dataset.open;
+    document.body.classList.toggle('sheet-open', !!current && sheet());
   }
 
-  function open(it, instant){
-    cancelPending();                        // a queued collapse must not land on the new panel
-    const from = panel.offsetHeight;        // measure before anything moves
-    deselect();
+  function go(it, opts){
+    const push = !opts || opts.push !== false;
+    if(it === current && it){ return; }
+    const wasNull = !current;
+    current = it || null;
 
-    // the panel sits under the whole grid on desktop, under its own column on a phone
-    const host = wide() ? wideHost : it.col.querySelector('.sx-host');
-    if(panel.parentNode !== host) host.appendChild(panel);
-    fill(it);
-
-    if(instant){
-      panel.style.transition = 'none';
-      panel.style.height = 'auto';
-      panel.offsetHeight;
-      panel.style.transition = '';
+    if(current){
+      if(!openH) measure();
+      grid.style.setProperty('--sx-h', openH + 'px');
+      fill(current);
+      const host = current.col.querySelector('.sx-host');
+      if(panel.parentNode !== host) host.appendChild(panel);
+      paint();
+      // the lift starts after the column has begun widening, not with it
+      panel.classList.remove('in');
+      requestAnimationFrame(()=> requestAnimationFrame(()=> panel.classList.add('in')));
+      if(sheet()) panel.parentNode.scrollTop = 0;
     } else {
-      // morph from whatever height was on screen to the new content's height,
-      // so switching service reads as one movement rather than close-then-open
-      panel.style.height = from + 'px';
-      panel.offsetHeight;
-      panel.style.height = inner.offsetHeight + 'px';
-      settleToAuto();
+      grid.style.removeProperty('--sx-h');
+      panel.classList.remove('in');
+      paint();
+      if(panel.parentNode) panel.parentNode.removeChild(panel);
     }
-    panel.classList.add('open');
-    it.row.classList.add('on');
-    it.row.querySelector('.sx-btn').setAttribute('aria-expanded','true');
-    current = it;
+
+    if(push){
+      const url = current ? '#' + current.slug : location.pathname + location.search;
+      if(wasNull !== !current || current) history.pushState(null, '', url);
+      else history.replaceState(null, '', url);
+    }
   }
 
   items.forEach(it=>{
-    it.row.querySelector('.sx-btn').addEventListener('click', ()=>{
-      if(current === it){ close(); setHash(null); }
-      else { open(it); setHash(it.slug); }
+    it.row.querySelector('.sx-btn').addEventListener('click', ()=> go(it === current ? null : it));
+  });
+  cols.forEach((c,i)=>{
+    c.querySelector('.ch-open').addEventListener('click', ()=>{
+      if(!current || current.ci === i) return;          // only a rail opens a category
+      go(items.find(x => x.ci === i));
     });
   });
 
-  /* company.html#executive-search opens that service and lands on it */
-  function openFromHash(instant){
-    const want = decodeURIComponent(location.hash.slice(1));
-    const it = items.find(x => x.slug === want);
-    if(!it) return false;
-    root.classList.add('in');
-    open(it, instant);
-
-    const land = ()=> it.row.scrollIntoView({block:'start', behavior:'instant'});
-    let last = null, stable = 0, frames = 0;
-    const settle = ()=>{
-      const pos = Math.round(it.row.getBoundingClientRect().top + window.scrollY);
-      if(pos === last){ stable++; } else { last = pos; stable = 0; land(); }
-      if(stable < 6 && ++frames < 150) requestAnimationFrame(settle);
-    };
-    requestAnimationFrame(settle);
-    return true;
-  }
-  // instant either way: a URL-driven open is a navigation, and animating the
-  // height while scrolling to it makes the target move under the scroll
-  window.addEventListener('hashchange', ()=> openFromHash(true));
-  if(location.hash) requestAnimationFrame(()=> openFromHash(true));
-
-  // keep the panel in the right slot across the breakpoint
-  let lastWide = wide();
-  window.addEventListener('resize', ()=>{
-    if(wide() === lastWide) return;
-    lastWide = wide();
-    if(!current) return;
-    const host = wide() ? wideHost : current.col.querySelector('.sx-host');
-    host.appendChild(panel);
-    panel.style.height = 'auto';
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape' && current){ const r = current.row; go(null); r.querySelector('.sx-btn').focus(); }
   });
+
+  /* company.html#executive-search opens that service; back and forward work */
+  function sync(scroll){
+    const want = decodeURIComponent(location.hash.slice(1));
+    const it = items.find(x => x.slug === want) || null;
+    if(it === current) return;
+    go(it, {push:false});
+    if(it && scroll){
+      root.classList.add('in');
+      let last = null, stable = 0, frames = 0;
+      const settle = ()=>{
+        const pos = Math.round(grid.getBoundingClientRect().top + window.scrollY);
+        if(pos === last){ stable++; } else { last = pos; stable = 0;
+          grid.scrollIntoView({block:'start', behavior:'instant'}); }
+        if(stable < 6 && ++frames < 150) requestAnimationFrame(settle);
+      };
+      requestAnimationFrame(settle);
+    }
+  }
+  window.addEventListener('popstate', ()=> sync(false));
+  window.addEventListener('hashchange', ()=> sync(true));
+  if(location.hash) requestAnimationFrame(()=> sync(true));
+
+  window.addEventListener('resize', ()=>{
+    document.body.classList.toggle('sheet-open', !!current && sheet());
+    if(current){ measure(); }
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ openH = 0; if(current) measure(); });
 
   /* a tag rides the pointer while it is over the index */
   const cursor = document.getElementById('siCursor');
@@ -1519,14 +1697,14 @@ const CHAPTERS = [
     let raf = false, x = 0, y = 0;
     grid.addEventListener('pointermove', e=>{
       x = e.clientX; y = e.clientY;
-      const row = e.target.closest('.sx-row');
-      cursor.textContent = row && row.classList.contains('on') ? 'Close' : 'Open';
+      // only over a closed row: over an open panel it would just be litter
+      cursor.classList.toggle('on', !!e.target.closest('.sx-row'));
       if(!raf){ raf = true; requestAnimationFrame(()=>{
         cursor.style.setProperty('--x', x+'px'); cursor.style.setProperty('--y', y+'px'); raf = false;
       }); }
     });
-    grid.addEventListener('pointerenter', ()=> cursor.classList.add('on'));
     grid.addEventListener('pointerleave', ()=> cursor.classList.remove('on'));
+    grid.addEventListener('click', ()=> cursor.classList.remove('on'));
   }
 })();
 
