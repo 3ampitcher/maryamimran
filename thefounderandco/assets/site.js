@@ -116,13 +116,17 @@ function initMobileNav(){
   sheet.className = 'nav-sheet';
   sheet.id = 'navSheet';
   sheet.hidden = true;
-  // the lime CTA stays visible on top of the sheet, so listing it again here
-  // would just be the same button twice; the sheet carries navigation only
   const rows = links.map((a,n)=>
     `<a href="${a.getAttribute('href')}"><em>0${n+1}</em>${a.textContent.trim()}</a>`);
+  // the bar keeps only the wordmark and the menu button on phones, so the
+  // action comes back here at full width instead of as a squeezed pill
+  const action = cta
+    ? `<a class="sheet-cta" href="${cta.getAttribute('href')}">Solve yours <span class="ar">&rarr;</span></a>`
+    : '';
   sheet.innerHTML =
     `<div class="sheet-h">Menu</div>
      <nav class="sheet-links">${rows.join('')}</nav>
+     ${action}
      <div class="sheet-foot">
        <a href="mailto:${SITE.email}">${SITE.email}</a>
        <a href="tel:+${SITE.whatsapp}">${SITE.phoneDisplay}</a>
