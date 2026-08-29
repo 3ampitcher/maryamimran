@@ -151,6 +151,50 @@
   .eq-note{margin-top:24px;font-size:14px;font-weight:600;color:var(--faint);max-width:44ch}
   .eq-note b{color:var(--ink);font-weight:700}
 
+  /* ---------- the dial ----------
+     One ring, five equal arcs. Hiring is visibly a fifth of it, which is
+     the headline's claim drawn rather than illustrated. */
+  .dial{position:relative;width:100%;max-width:300px;aspect-ratio:1/1}
+  .dial svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .arc{
+    fill:none;stroke:#D3D3CB;stroke-width:9.5;
+    transition:stroke .4s var(--ease),stroke-width .4s var(--ease);
+  }
+  .hit{fill:none;stroke:transparent;stroke-width:18;cursor:pointer}
+  .dial.on .seg.sel .arc{stroke:var(--lime-deep);stroke-width:11}
+
+  .dial-core{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:60%;text-align:center;
+  }
+  .dial-core .ask{
+    font-size:16px;line-height:1.35;font-weight:700;letter-spacing:-.02em;color:var(--ink);
+  }
+  .dial-core .k{
+    font-size:11.5px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:var(--lime-deep);
+  }
+  .dial-core .v{
+    margin-top:9px;font-size:19px;line-height:1.25;font-weight:700;letter-spacing:-.025em;color:var(--ink);
+  }
+
+  .dl{
+    position:absolute;white-space:nowrap;transform:translate(0,-50%);
+    background:none;border:none;padding:6px 0;cursor:pointer;font-family:var(--sans);
+    font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink);transition:color .35s var(--ease);
+  }
+  .dl em{display:none}
+  .dl i{font-style:normal;position:relative;display:inline-block;padding-bottom:5px}
+  .dl i::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;
+    background:var(--lime-deep);transform:scaleX(0);transform-origin:50% 50%;
+    transition:transform .3s var(--ease);
+  }
+  .dl:hover i::after,.dl:focus-visible i::after,.dl.sel i::after{transform:scaleX(1)}
+  .dl.lft{transform:translate(-100%,-50%)}
+  .dial.on .dl{color:#A5A8AD}
+  .dial.on .dl.sel{color:var(--lime-deep)}
+
   .dial-wrap{display:flex;flex-direction:column;align-items:center;align-self:center}
   .dial-cap{
     max-width:32ch;margin-bottom:30px;text-align:center;
