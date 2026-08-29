@@ -67,6 +67,14 @@
 
   var STORE_KEY = 'fc.style-finder.v1';
 
+  /* Two seams for the single-file build (see build-single.mjs), which puts
+     all eight pages in one document and routes on the hash. On the real
+     site both are absent and these are no-ops. */
+  var HASH_PREFIX = window.FC_HASH_PREFIX || '';
+  function pageHref(page, frag) {
+    return window.FC_LINK ? window.FC_LINK(page, frag) : page + '.html#' + frag;
+  }
+
   var views = {
     intro:  root.querySelector('[data-view="intro"]'),
     quiz:   root.querySelector('[data-view="quiz"]'),
@@ -85,6 +93,7 @@
 
   var answers = new Array(ITEMS.length).fill(null);
   var current = 0;
+  var shown = null;   // the style code currently rendered in the result view
 
   /* --- Persistence is a convenience, never a requirement ------------ */
   function save() {
@@ -255,11 +264,12 @@
     ['horizon', 'arena', 'mode'].forEach(function (axis) {
       parts.push(axis[0] + '=' + result.axes[axis].pct);
     });
-    history.replaceState(null, '', '#' + parts.join('&'));
+    history.replaceState(null, '', '#' + HASH_PREFIX + parts.join('&'));
   }
 
   function readHash() {
     var hash = window.location.hash.replace(/^#/, '');
+    if (HASH_PREFIX && hash.indexOf(HASH_PREFIX) === 0) hash = hash.slice(HASH_PREFIX.length);
     if (!hash) return null;
     var params = {};
     hash.split('&').forEach(function (pair) {
@@ -363,12 +373,13 @@
           '<ul class="cluster" style="margin-top:.4rem">' +
             style.complements.map(function (code) {
               var s = window.FC_STYLES[code];
-              return '<li><a class="pill pill--accent" href="founder-styles.html#style-' + s.name.toLowerCase() + '">' + code + ' · The ' + s.name + '</a></li>';
+              return '<li><a class="pill pill--accent" href="' + pageHref('founder-styles', 'style-' + s.name.toLowerCase()) + '">' + code + ' · The ' + s.name + '</a></li>';
             }).join('') +
           '</ul>' +
         '</div>' +
       '</div>';
 
+    shown = result.code;
     show('result');
     scrollToFinder();
     if (els.live) els.live.textContent = 'Result ready: the ' + style.name + ', ' + result.code + '.';
@@ -431,4 +442,10 @@
   // A shared result link renders straight into the result view.
   var fromHash = readHash();
   if (fromHash) renderResult(fromHash);
+
+  // Back, forward, or a result link pasted into an already-open page.
+  window.addEventListener('hashchange', function () {
+    var next = readHash();
+    if (next && next.code !== shown) renderResult(next);
+  });
 })();

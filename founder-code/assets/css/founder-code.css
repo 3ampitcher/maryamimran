@@ -1080,8 +1080,8 @@ a.styleTile:hover { background: var(--accent-quiet); }
 
 /* The full style entries run the width of the shell. Their headline copy
    is deliberately short, but the reading paragraph needs a measure. */
-#all .card > .lead { max-width: 58ch; }
-#all .card > p.card__body { max-width: 88ch; }
+.styleEntries > .card > .lead { max-width: 58ch; }
+.styleEntries > .card > p.card__body { max-width: 88ch; }
 
 /* Axis picker: three either/or switches that resolve to one style. */
 .picker { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }

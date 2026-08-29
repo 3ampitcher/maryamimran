@@ -26,8 +26,21 @@ picker — behaves identically.
 Deploying: publish this folder. There is nothing to compile.
 
 ```bash
-node check.mjs      # dead links, dead fragments, duplicate ids, missing assets
+node check.mjs           # dead links, dead fragments, duplicate ids, missing assets
+node build-single.mjs    # -> dist/founder-code.html
 ```
+
+`build-single.mjs` packs all eight pages, the stylesheet, the scripts and the
+webfonts into **one self-contained .html file** — around 430 KB, no server, no
+network, no other files. Double-click it and the whole site opens. Handy for
+sending someone a preview or keeping a snapshot. Because every page shares one
+document it routes on the hash (`#/founder-quotient`,
+`#/founder-styles/style-inventor`), via the `FC_HASH_PREFIX` and `FC_LINK` seams
+in `style-finder.js`. `--fragment` emits the same bundle without the
+`<html>`/`<head>`/`<body>` wrapper, for hosts that supply their own.
+
+The real deployment is still the eight plain files; the bundle is an output, not
+the source of truth.
 
 ---
 
