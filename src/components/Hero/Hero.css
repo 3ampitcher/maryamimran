@@ -20,9 +20,10 @@
 
 .hero__media {
   position: absolute;
-  /* Just enough overshoot for the drift to never expose an edge. More than
-     this and the photograph is scaled up for no visible benefit. */
-  inset: 0 0 -6% 0;
+  /* Exactly the viewport at rest, so the photograph is shown at its full
+     height. The scale during scroll is what keeps the lower edge covered
+     while the image rises. */
+  inset: 0;
   z-index: 0;
   will-change: transform;
 }
@@ -55,16 +56,21 @@
 
 .hero__scrim--bottom {
   bottom: 0;
-  /* Begins below the face and deepens toward the edge. Measured against a
-     pure-white frame: the base rail ~11:1, the name ~7.6:1, the
-     positioning line ~4.4:1. */
-  height: 48%;
+  /* Deliberately light — a vignette, not a black wash. Only the very bottom
+     edge carries real weight, for the small type that sits there; the name
+     above it is large enough to hold on a much softer ground. */
+  /* Lighter and longer rather than dark and short: the old version stacked
+     to 0.92 in the last fifth and read as a black band across the bottom of
+     the photograph. This never gets darker than 0.72 and ramps over most of
+     the lower half, so it reads as a grade rather than a shadow — while
+     still carrying white type over the brightest part of the frame. */
+  height: 62%;
   background: linear-gradient(
     to top,
-    rgba(24, 26, 29, 0.92) 0%,
-    rgba(24, 26, 29, 0.84) 20%,
-    rgba(24, 26, 29, 0.66) 48%,
-    rgba(24, 26, 29, 0.36) 74%,
+    rgba(24, 26, 29, 0.72) 0%,
+    rgba(24, 26, 29, 0.66) 25%,
+    rgba(24, 26, 29, 0.54) 55%,
+    rgba(24, 26, 29, 0.28) 80%,
     transparent 100%
   );
 }
@@ -266,13 +272,13 @@
   }
 
   .hero__scrim--bottom {
-    height: 58%;
+    height: 52%;
     background: linear-gradient(
       to top,
-      rgba(24, 26, 29, 0.94) 0%,
-      rgba(24, 26, 29, 0.86) 26%,
-      rgba(24, 26, 29, 0.64) 58%,
-      rgba(24, 26, 29, 0.28) 82%,
+      rgba(24, 26, 29, 0.8) 0%,
+      rgba(24, 26, 29, 0.72) 24%,
+      rgba(24, 26, 29, 0.54) 56%,
+      rgba(24, 26, 29, 0.24) 82%,
       transparent 100%
     );
   }
@@ -284,13 +290,13 @@
    lighter scrim and show more of the photograph. */
 @media (max-height: 920px) and (min-aspect-ratio: 17/10) {
   .hero__scrim--bottom {
-    height: 66%;
+    height: 72%;
     background: linear-gradient(
       to top,
-      rgba(24, 26, 29, 0.93) 0%,
-      rgba(24, 26, 29, 0.86) 20%,
-      rgba(24, 26, 29, 0.7) 44%,
-      rgba(24, 26, 29, 0.4) 70%,
+      rgba(24, 26, 29, 0.76) 0%,
+      rgba(24, 26, 29, 0.7) 22%,
+      rgba(24, 26, 29, 0.56) 52%,
+      rgba(24, 26, 29, 0.28) 80%,
       transparent 100%
     );
   }
@@ -322,8 +328,8 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: clamp(0.9rem, 2vw, 1.5rem);
-  padding: 0.6rem 0.6rem 0.6rem clamp(1.1rem, 3.5vw, 2.6rem);
+  gap: clamp(1rem, 2.2vw, 1.75rem);
+  padding: 0.85rem 0.85rem 0.85rem clamp(1.35rem, 3.8vw, 2.9rem);
   border-radius: 0 999px 999px 0;
   background: var(--ink);
   color: var(--white);
@@ -331,9 +337,9 @@
 }
 
 .hero__located-text {
-  font-size: var(--t-xs);
+  font-size: var(--t-sm);
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.3;
   letter-spacing: 0.005em;
   white-space: nowrap;
 }
@@ -341,8 +347,8 @@
 .hero__located-icon {
   display: grid;
   place-items: center;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 3rem;
+  height: 3rem;
   flex: none;
   border-radius: 50%;
   background: rgba(247, 247, 244, 0.12);
@@ -358,8 +364,8 @@
   }
 
   .hero__located-icon {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 }
 

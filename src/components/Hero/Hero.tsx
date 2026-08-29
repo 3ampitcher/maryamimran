@@ -33,8 +33,8 @@ export function Hero() {
 
   /* A slow drift on the image reads as depth; a faster one on the
      type makes the two feel like one composition compressing. */
-  const mediaY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
-  const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  const mediaY = useTransform(scrollYProgress, [0, 1], ['0%', '-6%']);
+  const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.14]);
   const nameY = useTransform(scrollYProgress, [0, 1], ['0%', '-32%']);
   /* The name is a continuous band of repeats; scrolling drags it sideways.
      Two copies, each wider than the viewport, so any offset in this range
@@ -71,7 +71,7 @@ export function Hero() {
           {site.location}
         </span>
         <span className="hero__located-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.25">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.25">
             <circle cx="12" cy="12" r="9" />
             <ellipse cx="12" cy="12" rx="4" ry="9" />
             <path d="M3.2 9h17.6M3.2 15h17.6" />

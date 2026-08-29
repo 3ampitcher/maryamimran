@@ -89,7 +89,11 @@ export function Portrait({
   return (
     <div
       className={`portrait portrait--${fill ? 'fill' : 'frame'} portrait--${status} ${className}`}
-      style={fill ? undefined : { ['--portrait-ratio' as string]: ratio }}
+      style={
+        fill
+          ? { ['--portrait-focus-x' as string]: objectPosition.split(' ')[0] }
+          : { ['--portrait-ratio' as string]: ratio }
+      }
     >
       {status !== 'missing' && (
         <picture>
@@ -103,7 +107,7 @@ export function Portrait({
             srcSet={hasSet ? buildSrcSet(current, widths, 'jpg') : undefined}
             sizes={hasSet ? sizes : undefined}
             alt={alt}
-            style={{ objectPosition }}
+            style={fill ? undefined : { objectPosition }}
             loading={priority ? 'eager' : 'lazy'}
             decoding={priority ? 'sync' : 'async'}
             // @ts-expect-error -- fetchpriority is valid HTML, not yet in React's types
