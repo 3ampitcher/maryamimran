@@ -124,21 +124,18 @@
   /* ---------- hero ---------- */
   /* a full-height opening: on a 16:9 laptop the statement, the ring and both
      buttons own the first screen, with a cue that there is more below */
-  .p-hero{
-    max-width:1200px;margin:0 auto;padding:56px 24px 40px;
-    min-height:calc(100svh - var(--nav-h) - 14px);
-    display:flex;flex-direction:column;justify-content:center;position:relative;
-  }
+  /* the statement starts just under the nav and runs the full width; the
+     figure sits beside the copy, not below it */
+  .p-hero{max-width:1320px;margin:0 auto;padding:98px 24px 84px;position:relative}
   .hero-h{
-    font-size:clamp(37px,5.5vw,76px);font-weight:700;letter-spacing:-.052em;line-height:1.01;
-    margin-top:28px;
+    font-size:clamp(40px,5.4vw,104px);font-weight:700;letter-spacing:-.055em;line-height:.92;
+    margin-top:30px;
   }
   /* every statement the brand makes ends on a lime period, the same one that
      closes the wordmark */
   .hero-h i{font-style:normal;color:var(--lime-deep)}
   .hero-sub{
-    margin-top:56px;max-width:44ch;
-    font-size:clamp(18px,1.75vw,22px);line-height:1.6;
+    max-width:700px;font-size:clamp(18px,1.45vw,21.5px);line-height:1.62;
     color:var(--muted);font-weight:500;
   }
 
@@ -146,7 +143,12 @@
      One ring, five equal arcs. Hiring is one fifth of it and you can see
      that without being told - which is the headline's argument, drawn.
      Light an arc and the centre says what that answer actually is. */
-  .hero-body{display:grid;grid-template-columns:1.85fr 1fr;gap:0 56px;align-items:center}
+  /* the copy starts straight under the headline; the ring centres itself in
+     the row so it sits level with that copy rather than well below it */
+  /* 60/40 as fr, not percentages: 60% + 40% + a 40px gap is 100% + 40px, and
+     the row pushed the ring past the viewport edge */
+  .hero-body{display:grid;grid-template-columns:1.5fr 1fr;gap:0 40px;align-items:start;margin-top:34px}
+  .hero-say{align-self:start;padding-top:8px}
   .hero-say .hero-sub{margin-top:0}
   .eq-note{margin-top:24px;font-size:14px;font-weight:600;color:var(--faint);max-width:44ch}
   .eq-note b{color:var(--ink);font-weight:700}
@@ -154,34 +156,51 @@
   /* ---------- the dial ----------
      One ring, five equal arcs. Hiring is visibly a fifth of it, which is
      the headline's claim drawn rather than illustrated. */
-  .dial{position:relative;width:100%;max-width:300px;aspect-ratio:1/1}
+  .dial{position:relative;width:min(100%,var(--ring,380px));aspect-ratio:1/1}
+  @media(min-width:1600px){ .dial{--ring:420px} }
+  /* below 1200 the labels start reaching past the container */
+  @media(max-width:1200px){ .dial{--ring:330px} }
   .dial svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .arc{
-    fill:none;stroke:#D3D3CB;stroke-width:9.5;
-    transition:stroke .4s var(--ease),stroke-width .4s var(--ease);
+  /* the rotation lives on the circle's own transform attribute, which already
+     carries its centre - putting a CSS transform-origin on the same element
+     compounds with it and throws every arc off the ring, so the push-out
+     scale goes on the wrapping <g> instead */
+  .seg{
+    transform-box:view-box;transform-origin:50px 50px;
+    transition:transform .45s var(--ease);
   }
-  .hit{fill:none;stroke:transparent;stroke-width:18;cursor:pointer}
-  .dial.on .seg.sel .arc{stroke:var(--lime-deep);stroke-width:11}
+  .arc{
+    fill:none;stroke:#CBCBC3;stroke-width:3.6;
+    transition:stroke .45s var(--ease),opacity .45s var(--ease);
+  }
+  .hit{fill:none;stroke:transparent;stroke-width:6;cursor:pointer}
+  /* the arcs draw themselves in once, clockwise, then never move again */
+  .dial.drawing .arc{transition:stroke-dashoffset .62s var(--ease)}
+  .dial.on .arc{opacity:.55}
+  .dial.on .seg.sel{transform:scale(calc(1 + 8 / var(--r, 160)))}
+  .dial.on .seg.sel .arc{stroke:var(--lime-deep);opacity:1}
 
   .dial-core{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:60%;text-align:center;
   }
+  .dial-core{width:64%}
   .dial-core .ask{
-    font-size:16px;line-height:1.35;font-weight:700;letter-spacing:-.02em;color:var(--ink);
+    font-size:19px;line-height:1.32;font-weight:700;letter-spacing:-.025em;color:var(--ink);
   }
   .dial-core .k{
-    font-size:11.5px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:var(--lime-deep);
+    font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-deep);
   }
   .dial-core .v{
-    margin-top:9px;font-size:19px;line-height:1.25;font-weight:700;letter-spacing:-.025em;color:var(--ink);
+    margin-top:10px;font-size:20px;line-height:1.28;font-weight:700;letter-spacing:-.028em;color:var(--ink);
   }
 
   .dl{
-    position:absolute;white-space:nowrap;transform:translate(0,-50%);
-    background:none;border:none;padding:6px 0;cursor:pointer;font-family:var(--sans);
-    font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
-    color:var(--ink);transition:color .35s var(--ease);
+    position:absolute;white-space:nowrap;
+    background:none;border:none;padding:7px 0;cursor:pointer;font-family:var(--sans);
+    font-size:13px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+    color:#6E7178;
+    transition:color .35s var(--ease),transform .45s var(--ease);
   }
   .dl em{display:none}
   .dl i{font-style:normal;position:relative;display:inline-block;padding-bottom:5px}
@@ -191,26 +210,26 @@
     transition:transform .3s var(--ease);
   }
   .dl:hover i::after,.dl:focus-visible i::after,.dl.sel i::after{transform:scaleX(1)}
+  .dl{transform:translate(0,-50%)}
   .dl.lft{transform:translate(-100%,-50%)}
-  .dial.on .dl{color:#A5A8AD}
-  .dial.on .dl.sel{color:var(--lime-deep)}
+  .dial.on .dl.sel{transform:translate(6px,-50%)}
+  .dial.on .dl.sel.lft{transform:translate(calc(-100% - 6px),-50%)}
+  .dial.on .dl{color:#9EA1A7}
+  .dial.on .dl.sel{color:var(--ink)}
 
-  .dial-wrap{display:flex;flex-direction:column;align-items:center;align-self:center}
-  .dial-cap{
-    max-width:32ch;margin-bottom:30px;text-align:center;
-    font-size:16.5px;line-height:1.45;font-weight:600;color:var(--muted);letter-spacing:-.01em;
-  }
-  .dial-cap b{display:block;color:var(--ink);font-weight:700}
+  /* the ring rides up into the empty space beside the headline so it reads
+     level with the copy rather than hanging below it */
+  .dial-wrap{display:grid;justify-items:center;align-self:start;padding:22px 0;margin-top:-96px}
+  /* at 104px the headline reaches under the ring's column, so it only rides
+     up as far as the second line's baseline allows */
+  @media(min-width:1600px){ .dial-wrap{margin-top:-40px} }
 
   .dial-rows{display:none}
 
-  .hero-under{
-    grid-area:cta;display:flex;align-items:center;gap:32px;flex-wrap:wrap;
-    margin-top:46px;
-  }
-  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px}
   .hero-proof{
-    font-size:12.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+    margin-top:30px;font-size:12.5px;font-weight:700;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--muted);
   }
 
   /* ---------- 01 why ---------- */
@@ -762,6 +781,7 @@
   /* Two columns until the ring's labels run out of room beside the text,
      then one, with the figure between the claim and the buttons. */
   @media(max-width:1080px){
+    .dial-wrap{margin-top:0}
     .hero-left{display:contents}          /* so the four blocks can reorder */
     .hero-body{
       grid-template-columns:1fr;gap:0;
@@ -912,30 +932,24 @@
 </div>
 
 <header class="p-hero">
+  <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
+
+  <h1 class="hero-h lines rv" style="--d:.06s">
+    <span class="ln"><span>The people equation</span></span>
+    <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
+  </h1>
+
   <div class="hero-body">
-   <div class="hero-left">
-    <div class="hero-say">
-      <div class="eyebrow rv">Behind the equation</div>
-
-      <h1 class="hero-h lines rv" style="--d:.06s">
-        <span class="ln"><span>The people equation</span></span>
-        <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
-      </h1>
-
-      <p class="hero-sub rv" style="--d:.18s">We work with founders, leaders and investors to shape the people, capability and systems behind growing companies.</p>
-    </div>
-
-    <div class="hero-under rv" style="--d:.26s">
+    <div class="hero-say rv" style="--d:.26s">
+      <p class="hero-sub">We work with founders, leaders and investors to shape the people, capability and systems behind growing companies.</p>
       <div class="hero-cta">
         <a class="btn btn-dark" href="index.html#solver">Find what you need <span class="ar">&rarr;</span></a>
         <a class="btn btn-ghost" href="#services">See every service</a>
       </div>
       <p class="hero-proof">20+ years in GCC leadership</p>
     </div>
-   </div>
 
-    <div class="dial-wrap rv" style="--d:.3s">
-      <p class="dial-cap">Five ways to answer it.<b>Only one of them is a hire.</b></p>
+    <div class="dial-wrap rv" style="--d:.34s">
       <div class="dial" id="dial">
         <svg viewBox="0 0 100 100" aria-hidden="true"><g id="dialSegs"></g></svg>
         <div class="dial-core" id="dialCore"></div>
@@ -944,7 +958,6 @@
 
     <div class="dial-rows" id="dialRows"></div>
   </div>
-
 </header>
 
 <!-- ============ 01 WHY WE EXIST ============ -->
@@ -1760,11 +1773,11 @@ const CHAPTERS = [
    screens, where there is no hover and no room around a ring.
 ===================================================================== */
 const WAYS = [
-  ['Understand','Founders and teams'],
-  ['Find','The missing partner'],
-  ['Hire','The right leader'],
-  ['Step in','Capability when needed'],
-  ['Build','The technology'],
+  ['Understand','See the founders and team clearly.', '#founder-quotient'],
+  ['Find',      'Bring in the missing partner.',      '#founder-hunter'],
+  ['Hire',      'Appoint the right permanent leader.','#executive-search'],
+  ['Step in',   'Add experienced capability now.',    '#executive-on-demand'],
+  ['Build',     'Create the system behind growth.',   '#tech-grid'],
 ];
 
 (function dial(){
@@ -1775,16 +1788,17 @@ const WAYS = [
   if(!el || !segs || !core) return;
 
   const NS   = 'http://www.w3.org/2000/svg';
-  const R    = 40;
+  const R    = 38;
   const C    = 2 * Math.PI * R;
-  const GAP  = 9;                       // user units of blank between arcs
+  const GAP  = 8;                       // user units of blank between arcs
   const SEG  = C / WAYS.length - GAP;
   const STEP = 360 / WAYS.length;
   const ASK  = 'What does the company need next?';
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const segEls = [], labEls = [], rowEls = [];
+  const segEls = [], labEls = [], rowEls = [], arcs = [];
 
-  WAYS.forEach(([k,v],i)=>{
+  WAYS.forEach(([k,v,href],i)=>{
     const g = document.createElementNS(NS,'g');
     g.setAttribute('class','seg');
     const rot = `rotate(${-90 + STEP * i} 50 50)`;    // every arc starts at 12 o'clock
@@ -1794,21 +1808,22 @@ const WAYS = [
       c.setAttribute('cx','50'); c.setAttribute('cy','50'); c.setAttribute('r', R);
       c.setAttribute('stroke-dasharray', `${SEG} ${C - SEG}`);
       c.setAttribute('transform', rot);
+      if(cls === 'arc'){ c.setAttribute('stroke-dashoffset', still ? 0 : SEG); arcs.push(c); }
       g.appendChild(c);
     }
     segs.appendChild(g);
     segEls.push(g);
 
-    // the label is a button so the dial is reachable by keyboard, and it is
-    // HTML rather than <text> so it stays crisp and easy to align
+    // labels are HTML so they stay crisp, and buttons so the ring is operable
+    // by keyboard; each one is a real link target into the services section
     const mid = (-90 + STEP * (i + 0.5)) * Math.PI / 180;
     const lab = document.createElement('button');
     lab.type = 'button';
     lab.className = 'dl' + (Math.cos(mid) < -0.05 ? ' lft' : '');
-    lab.setAttribute('aria-pressed','false');
-    lab.innerHTML = `<i>${k}</i><em>${v}</em>`;
-    lab.style.left = (50 + Math.cos(mid) * 53) + '%';
-    lab.style.top  = (50 + Math.sin(mid) * 53) + '%';
+    lab.setAttribute('aria-label', k + ': ' + v);
+    lab.innerHTML = `<i>${k}</i>`;
+    lab.style.left = (50 + Math.cos(mid) * 50) + '%';
+    lab.style.top  = (50 + Math.sin(mid) * 50) + '%';
     el.appendChild(lab);
     labEls.push(lab);
   });
@@ -1825,66 +1840,62 @@ const WAYS = [
       : `<div class="k">${WAYS[n][0]}</div><div class="v">${WAYS[n][1]}</div>`;
   }
 
-  const bind = (node, i)=>{
-    // a tap fires pointerenter too, so hover is mouse-only and click covers the rest
-    node.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') paint(i); });
-    node.addEventListener('click', ()=>paint(i));
-  };
-  labEls.forEach(bind);
-  [...el.querySelectorAll('.hit')].forEach(bind);
-  labEls.forEach((l,i)=> l.addEventListener('focus', ()=>paint(i)));
+  const jump = i => { location.hash = WAYS[i][2]; };
+
+  labEls.forEach((l,i)=>{
+    l.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') paint(i); });
+    l.addEventListener('focus', ()=>paint(i));
+    l.addEventListener('click', ()=>{ paint(i); jump(i); });
+  });
+  [...el.querySelectorAll('.hit')].forEach((h,i)=>{
+    h.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') paint(i); });
+    h.addEventListener('click', ()=>{ paint(i); jump(i); });
+  });
   el.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') paint(null); });
+  el.addEventListener('focusout', e=>{ if(!el.contains(e.relatedTarget)) paint(null); });
 
   if(rows){
-    WAYS.forEach(([k,v],i)=>{
-      const b = document.createElement('button');
+    WAYS.forEach(([k,v,href],i)=>{
+      const b = document.createElement('a');
       b.className = 'dr';
-      b.type = 'button';
-      b.setAttribute('aria-pressed','false');
+      b.href = href;
       b.innerHTML = `<b>${k}</b><span>${v}</span>`;
       rows.appendChild(b);
       rowEls.push(b);
     });
   }
 
-  /* The ring cycles on its own so the mechanism is never a secret, and hands
-     over the moment a pointer arrives - hover holds it on the one you are on,
-     leaving picks the loop back up. It stops entirely off screen, on a tap
-     (a tap is touch's version of hover, so the choice sticks) and whenever the
-     browser asks for reduced motion. */
-  const CYCLE = 2200;
-  let at = 0, timer = null, held = false, seen = false;
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* the stroke scale that pushes the live arc 8px outward has to know the
+     radius in real pixels, which changes with the viewport */
+  function sizeVars(){
+    const w = el.getBoundingClientRect().width;
+    if(w) el.style.setProperty('--r', (w * R / 100) + '');
+  }
+  sizeVars();
+  window.addEventListener('resize', sizeVars);
 
-  function tick(){ at = (at + 1) % WAYS.length; paint(at); }
-  function play(){ if(timer || held || still || !seen) return; timer = setInterval(tick, CYCLE); }
-  function halt(){ clearInterval(timer); timer = null; }
+  paint(null);
 
-  function hold(n){ held = true; halt(); at = n; paint(n); }
-  function release(){ held = false; play(); }
-
-  labEls.forEach((l,i)=>{
-    l.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') hold(i); });
-    l.addEventListener('focus', ()=>hold(i));
-  });
-  [...el.querySelectorAll('.hit')].forEach((h,i)=>{
-    h.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') hold(i); });
-  });
-  el.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') release(); });
-  el.addEventListener('focusout', e=>{ if(!el.contains(e.relatedTarget)) release(); });
-
-  // a tap or a click is a decision: stop cycling and leave it where they put it
-  const pick = i => ()=>{ held = true; halt(); at = i; paint(i); };
-  labEls.forEach((l,i)=> l.addEventListener('click', pick(i)));
-  [...el.querySelectorAll('.hit')].forEach((h,i)=> h.addEventListener('click', pick(i)));
-  rowEls.forEach((r,i)=> r.addEventListener('click', pick(i)));
-
-  paint(0);
+  /* One pass on first sight: the five arcs draw in clockwise, then the first
+     answer lights so the ring is never a dead diagram. Nothing loops. */
+  if(still){ el.classList.add('drawn'); return; }
+  let played = false;
+  function play(){
+    if(played) return;
+    played = true;
+    el.classList.add('drawing');   // not 'draw': brand.css owns that one
+    arcs.forEach((c,i)=> setTimeout(()=>{ c.style.strokeDashoffset = '0'; }, i * 130));
+    setTimeout(()=>{
+      el.classList.add('drawn');
+      if(!el.matches(':hover')) paint(0);
+      setTimeout(()=>{ if(!el.matches(':hover') && !el.contains(document.activeElement)) paint(null); }, 1900);
+    }, 130 * arcs.length + 620);
+  }
   if('IntersectionObserver' in window){
-    new IntersectionObserver(es=>{ seen = es[0].isIntersecting; seen ? play() : halt(); },
-      {threshold:.25}).observe(el);
-  } else { seen = true; play(); }
-  document.addEventListener('visibilitychange', ()=> document.hidden ? halt() : play());
+    const io = new IntersectionObserver(es=>{ if(es[0].isIntersecting){ io.disconnect(); setTimeout(play, 420); } },
+      {threshold:.3});
+    io.observe(el);
+  } else { play(); }
 })();
 
 /* =====================================================================
