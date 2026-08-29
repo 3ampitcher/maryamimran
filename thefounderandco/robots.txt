@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://thefounderandco.com/sitemap.xml
+Sitemap: https://thefounderand.co/sitemap.xml

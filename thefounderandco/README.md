@@ -59,7 +59,7 @@ following question or `{terminal:'...'}` to finish.
 
 ## Before launch
 
-- Point `thefounderandco.com` at the host. The canonical URLs, sitemap and
+- Point `thefounderand.co` at the host. The canonical URLs, sitemap and
   social cards already assume that domain.
 - Set `SITE.formEndpoint` so the solver captures rather than discards.
 - Name the form processor in `privacy.html`, under "Who else is involved".

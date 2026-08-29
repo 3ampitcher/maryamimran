@@ -8,10 +8,10 @@ const SITE = {
   email:        'imran@thefounderand.co',
   phoneDisplay: '+966 50 778 4932',
   whatsapp:     '966507784932',          // digits only, country code first
-  website:      'thefounderandco.com',
+  website:      'thefounderand.co',
   linkedin:     'https://ae.linkedin.com/in/middleeastleadership',
   location:     'GCC · MENA',
-  domain:       'https://thefounderandco.com',
+  domain:       'https://thefounderand.co',
 
   // ---------------------------------------------------------------
   // WHERE SOLVER SUBMISSIONS GO.  Two minutes, once, then the solver
