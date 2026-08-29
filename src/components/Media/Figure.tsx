@@ -44,18 +44,24 @@ export function Figure({
     >
       <div className="figure__frame">
         {status !== 'missing' && (
-          <img
-            className="figure__img"
-            src={media.src}
-            alt={media.alt}
-            sizes={sizes}
-            loading={priority ? 'eager' : 'lazy'}
-            decoding={priority ? 'sync' : 'async'}
-            // @ts-expect-error -- fetchpriority is valid HTML, not yet in React's types
-            fetchpriority={priority ? 'high' : undefined}
-            onLoad={() => setStatus('loaded')}
-            onError={() => setStatus('missing')}
-          />
+          <picture>
+            {/* npm run images writes a WebP beside every JPEG — roughly half
+                the bytes wherever the browser supports it. If only the JPEG
+                exists the source is skipped and the img still resolves. */}
+            <source type="image/webp" srcSet={media.src.replace(/\.[^./]+$/, '.webp')} />
+            <img
+              className="figure__img"
+              src={media.src}
+              alt={media.alt}
+              sizes={sizes}
+              loading={priority ? 'eager' : 'lazy'}
+              decoding={priority ? 'sync' : 'async'}
+              // @ts-expect-error -- fetchpriority is valid HTML, not yet in React's types
+              fetchpriority={priority ? 'high' : undefined}
+              onLoad={() => setStatus('loaded')}
+              onError={() => setStatus('missing')}
+            />
+          </picture>
         )}
 
         {status === 'missing' && <Placeholder label={label ?? media.alt} />}

@@ -106,3 +106,10 @@
 .surface-dark .figph__mark {
   color: var(--white-45);
 }
+
+/* <picture> is inline by default; the img inside needs a sized parent. */
+.figure picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
