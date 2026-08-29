@@ -202,30 +202,66 @@
   .hero-meta div b{display:block;font-size:26px;letter-spacing:-.02em;text-transform:none;color:var(--ink);margin-bottom:4px}
 
   /* ---------- 01 why ---------- */
-  .why-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:70px;align-items:start}
-  .why-left{position:sticky;top:130px}
-  .why-left .disp{max-width:14ch}
-  .why-note{margin-top:28px;font-size:15.5px;line-height:1.7;color:var(--muted);max-width:38ch;font-weight:500}
-  .why-blocks{display:flex;flex-direction:column;gap:2px}
+  .why-head{max-width:780px;margin-bottom:72px}
+  .why-head .disp{margin-top:24px}
+  .why-kicker{
+    font-family:var(--serif);font-style:italic;font-weight:300;color:var(--lime);
+    font-size:clamp(26px,3.4vw,44px);line-height:1.15;letter-spacing:-.01em;margin-top:14px;
+  }
+
+  .why-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
   .wb{
-    position:relative;padding:38px 34px 38px 0;border-top:1px solid var(--line);
-    transition:padding-left .45s var(--ease);
+    padding:34px 34px 30px 0;position:relative;
+    border-top:1px solid var(--line-dark);
+    display:flex;flex-direction:column;
   }
-  .wb:last-child{border-bottom:1px solid var(--line)}
-  .wb-num{
-    font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--faint);margin-bottom:14px;
-    transition:color .35s;
+  .wb + .wb{padding-left:34px}
+  .wb + .wb::before{
+    content:"";position:absolute;left:0;top:34px;bottom:30px;width:1px;background:var(--line-dark);
   }
-  .wb h3{font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px}
-  .wb p{font-size:16px;line-height:1.68;color:var(--muted);font-weight:500;max-width:48ch}
-  .wb::before{
-    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;
-    background:var(--lime);transform:scaleY(0);transform-origin:50% 0;
-    transition:transform .45s var(--ease);
+  .wb-n{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--lime);margin-bottom:20px}
+  .wb h3{
+    font-size:clamp(21px,2.2vw,27px);font-weight:700;letter-spacing:-.03em;
+    line-height:1.14;margin-bottom:14px;color:#fff;max-width:15ch;
   }
-  .wb:hover{padding-left:26px}
-  .wb:hover::before{transform:scaleY(1)}
-  .wb:hover .wb-num{color:var(--lime-deep)}
+  .wb p{font-size:16px;line-height:1.62;color:#9AA0AB;font-weight:500;max-width:34ch}
+
+  /* the figures carry the point the sentence only states */
+  .fig{margin-top:auto;padding-top:38px}
+  .fig svg{width:100%;height:auto;display:block;overflow:visible}
+  .fig .base{stroke:#2A2E37;stroke-width:1.5}
+  .fig .fl{
+    font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.17em;
+    text-transform:uppercase;fill:#797D85;
+  }
+  .fig .stagekey text{
+    font-family:var(--sans);font-size:9.5px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;fill:#797D85;text-anchor:middle;
+  }
+  .fig .ticks line{stroke-width:3;stroke-linecap:round}
+  .fig .ticks.slow line{stroke:#9AA0AB}
+  .fig .ticks.fast line{stroke:var(--lime)}
+  .fig .box{fill:none;stroke:#2A2E37;stroke-width:1.5;stroke-dasharray:5 6}
+  .fig .dots circle{fill:#3A404B}
+  .fig .arrow{stroke:#4A505B;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .fig .fig-halo{fill:none;stroke:#2A2E37;stroke-width:1.5}
+  .fig .lime{fill:var(--lime)}
+  .fig .orgs g circle{fill:#4A505B}
+  .fig .orgs g line{stroke:#2F353F;stroke-width:1.5}
+  .fig .orgs g.lit circle{fill:var(--lime)}
+  .fig .orgs g.lit line{stroke:var(--lime-deep)}
+
+  .fig .a{opacity:0;transform:scale(.55);transform-origin:center;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+  .wb.in .fig .a:nth-of-type(1){opacity:1;transform:none;transition-delay:0.235s}
+  .wb.in .fig .a:nth-of-type(2){opacity:1;transform:none;transition-delay:0.290s}
+  .wb.in .fig .a:nth-of-type(3){opacity:1;transform:none;transition-delay:0.345s}
+  .wb.in .fig .a:nth-of-type(4){opacity:1;transform:none;transition-delay:0.400s}
+  .wb.in .fig .a:nth-of-type(5){opacity:1;transform:none;transition-delay:0.455s}
+  .wb.in .fig .a:nth-of-type(6){opacity:1;transform:none;transition-delay:0.510s}
+  .wb.in .fig .a:nth-of-type(7){opacity:1;transform:none;transition-delay:0.565s}
+  .wb.in .fig .a:nth-of-type(8){opacity:1;transform:none;transition-delay:0.620s}
+  .wb.in .fig .a:nth-of-type(9){opacity:1;transform:none;transition-delay:0.675s}
+  .wb.in .fig .a:nth-of-type(10){opacity:1;transform:none;transition-delay:0.730s}
 
   /* ---------- 02 services: one index, three chapters ---------- */
   .svc-lead{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:end;margin-bottom:74px}
@@ -239,7 +275,17 @@
     padding:44px 0 20px;
   }
   .si-chapter:first-child{padding-top:30px}
+  .ch-id{display:flex;align-items:center;gap:20px}
   .si-chapter h3{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.035em;line-height:1}
+  .ch-mark{
+    width:58px;height:58px;flex:0 0 auto;overflow:visible;
+    transition:transform .6s var(--ease);
+  }
+  .ch-mark circle,.ch-mark rect{fill:#ADADA5;transition:fill .4s}
+  .ch-mark line{stroke:#C2C2BA;stroke-width:2;transition:stroke .4s}
+  .si-chapter:hover .ch-mark circle,.si-chapter:hover .ch-mark rect{fill:#8C8C84}
+  .ch-mark .lit{fill:var(--lime-deep)}
+  .si-chapter:hover .ch-mark{transform:rotate(45deg)}
   .si-chapter p{font-size:14.5px;line-height:1.6;color:var(--muted);font-weight:500;max-width:46ch}
 
   /* the row */
@@ -587,6 +633,12 @@
   }
   @media(max-width:1000px){
     .hero-grid{grid-template-columns:1fr;gap:40px}
+    .why-cols{grid-template-columns:1fr;gap:0}
+    .wb{padding:30px 0 28px}
+    .wb + .wb{padding-left:0}
+    .wb + .wb::before{display:none}
+    .wb p{max-width:none}
+    .fig{max-width:420px}
     .p-hero h1{max-width:none}
     .svc-lead{grid-template-columns:1fr;gap:24px;margin-bottom:52px}
     .si-short{display:none}
@@ -602,12 +654,11 @@
   @media(max-width:900px){
     .sec{padding:76px 20px}
     .band{padding:76px 0}
-    .why-grid{grid-template-columns:1fr;gap:40px}
-    .why-left{position:static}
     .stage-body{grid-template-columns:1fr}
     .stage-left{padding:32px 24px}
     .stage-right{border-left:none;border-top:1px solid var(--line-dark);padding:28px}
     .stage-cols{grid-template-columns:1fr;gap:28px}
+    .why-head{margin-bottom:44px}
     .si-chapter{padding:34px 0 16px}
     .si-head{
       grid-template-columns:40px 1fr 30px;gap:6px 14px;padding:24px 0;
@@ -674,7 +725,7 @@
     <div class="hero-copy">
       <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
       <h1 class="lines rv"><span class="ln"><span>We build the team</span></span><span class="ln"><span>your <span class="hl">next stage</span></span></span><span class="ln"><span>needs.</span></span></h1>
-      <p class="lead rv" style="--d:.2s">Seven services in three groups, and one thread running through all of them: the stage your company is in decides which capability you need next, and how you should access it.</p>
+      <p class="lead rv" style="--d:.2s">Your stage decides what the company needs next, and how you should get it. Everything here follows from that.</p>
       <div class="hero-cta rv" style="--d:.28s">
         <a class="btn btn-dark" href="index.html#solver">Run the solver <span class="ar">&rarr;</span></a>
         <a class="btn btn-ghost" href="#services">See what we do</a>
@@ -720,29 +771,88 @@
 </header>
 
 <!-- ============ 01 WHY WE EXIST ============ -->
-<section class="sec" id="why">
-  <div class="why-grid">
-    <div class="why-left">
-      <div class="eyebrow rv">01 &nbsp;/&nbsp; Why we exist</div>
-      <h2 class="disp rv" style="--d:.08s;margin-top:22px">Startups do not have a hiring problem.<br><span class="soft">They have a capability problem.</span></h2>
-      <p class="why-note rv" style="--d:.16s">Three ideas sit under everything on this page. If you disagree with them, we are probably not the right firm for you.</p>
+<section class="band" id="why">
+  <div class="sec">
+    <div class="why-head">
+      <div class="eyebrow on-dark rv">01 &nbsp;/&nbsp; Why we exist</div>
+      <h2 class="disp rv" style="--d:.06s">Startups do not have<br><span class="soft">a hiring problem.</span></h2>
+      <p class="why-kicker rv" style="--d:.14s">They have a capability problem.</p>
     </div>
-    <div class="why-blocks">
-      <div class="wb rv">
-        <div class="wb-num">01</div>
+
+    <div class="why-cols">
+      <article class="wb rv">
+        <div class="wb-n">01</div>
         <h3>A startup is not a small corporate.</h3>
-        <p>A corporate reorganises every five years. You reinvent every six months. A structure engineered for stability was never built to survive that rate of change &mdash; and neither was the hiring process bolted to it.</p>
-      </div>
-      <div class="wb rv" style="--d:.1s">
-        <div class="wb-num">02</div>
+        <p>A corporate reorganises every five years. You reinvent every six months.</p>
+        <figure class="fig" aria-hidden="true">
+          <svg viewBox="0 0 320 132">
+            <text class="fl" x="0" y="20">Corporate</text>
+            <line class="base" x1="0" y1="44" x2="320" y2="44"/>
+            <g class="ticks slow">
+              <line class="a" x1="52"  y1="32" x2="52"  y2="56"/>
+              <line class="a" x1="188" y1="32" x2="188" y2="56"/>
+            </g>
+            <text class="fl" x="0" y="96">You</text>
+            <line class="base" x1="0" y1="120" x2="320" y2="120"/>
+            <g class="ticks fast">
+              <line class="a" x1="16"  y1="108" x2="16"  y2="132"/>
+              <line class="a" x1="50"  y1="108" x2="50"  y2="132"/>
+              <line class="a" x1="84"  y1="108" x2="84"  y2="132"/>
+              <line class="a" x1="118" y1="108" x2="118" y2="132"/>
+              <line class="a" x1="152" y1="108" x2="152" y2="132"/>
+              <line class="a" x1="186" y1="108" x2="186" y2="132"/>
+              <line class="a" x1="220" y1="108" x2="220" y2="132"/>
+              <line class="a" x1="254" y1="108" x2="254" y2="132"/>
+              <line class="a" x1="288" y1="108" x2="288" y2="132"/>
+            </g>
+          </svg>
+        </figure>
+      </article>
+
+      <article class="wb rv" style="--d:.1s">
+        <div class="wb-n">02</div>
         <h3>Build capabilities, not departments.</h3>
-        <p>You may need the capability of a CFO. You rarely need the department. The stage decides how you access it, at what commitment, and for how long &mdash; full time is one answer out of eight.</p>
-      </div>
-      <div class="wb rv" style="--d:.2s">
-        <div class="wb-num">03</div>
+        <p>You need the capability of a CFO. You rarely need the department.</p>
+        <figure class="fig" aria-hidden="true">
+          <svg viewBox="0 0 320 132">
+            <text class="fl" x="0" y="20">Department</text>
+            <rect class="box" x="1" y="34" width="150" height="86" rx="12"/>
+            <g class="dots">
+              <circle class="a" cx="34"  cy="60"  r="7"/><circle class="a" cx="66"  cy="60"  r="7"/>
+              <circle class="a" cx="98"  cy="60"  r="7"/><circle class="a" cx="130" cy="60"  r="7"/>
+              <circle class="a" cx="34"  cy="94"  r="7"/><circle class="a" cx="66"  cy="94"  r="7"/>
+              <circle class="a" cx="98"  cy="94"  r="7"/><circle class="a" cx="130" cy="94"  r="7"/>
+            </g>
+            <path class="arrow" d="M172 77 H222"/>
+            <path class="arrow" d="M214 70 L222 77 L214 84"/>
+            <text class="fl" x="248" y="20">Capability</text>
+            <circle class="fig-halo" cx="276" cy="77" r="30"/>
+            <circle class="lime a" cx="276" cy="77" r="15"/>
+          </svg>
+        </figure>
+      </article>
+
+      <article class="wb rv" style="--d:.2s">
+        <div class="wb-n">03</div>
         <h3>Every stage changes the equation.</h3>
-        <p>What won you seed will quietly break your Series B. The expensive mistake is rarely the wrong person; it is running the last stage's playbook one stage too long.</p>
-      </div>
+        <p>What won you seed will quietly break your Series B.</p>
+        <figure class="fig" aria-hidden="true">
+          <svg viewBox="0 0 320 150">
+            <g class="orgs">
+              <g class="a"><circle cx="24" cy="86" r="7"/></g>
+              <g class="a"><line x1="72" y1="86" x2="104" y2="86"/><circle cx="72" cy="86" r="7"/><circle cx="104" cy="86" r="7"/></g>
+              <g class="a"><line x1="152" y1="62" x2="136" y2="92"/><line x1="152" y1="62" x2="168" y2="92"/><circle cx="152" cy="62" r="7"/><circle cx="136" cy="92" r="7"/><circle cx="168" cy="92" r="7"/></g>
+              <g class="a"><line x1="216" y1="48" x2="200" y2="80"/><line x1="216" y1="48" x2="232" y2="80"/><line x1="200" y1="80" x2="200" y2="104"/><circle cx="216" cy="48" r="7"/><circle cx="200" cy="80" r="7"/><circle cx="232" cy="80" r="7"/><circle cx="200" cy="104" r="7"/></g>
+              <g class="a lit"><line x1="288" y1="40" x2="266" y2="74"/><line x1="288" y1="40" x2="310" y2="74"/><line x1="266" y1="74" x2="266" y2="104"/><line x1="310" y1="74" x2="310" y2="104"/><circle cx="288" cy="40" r="7"/><circle cx="266" cy="74" r="7"/><circle cx="310" cy="74" r="7"/><circle cx="266" cy="104" r="7"/><circle cx="310" cy="104" r="7"/></g>
+            </g>
+            <line class="base" x1="0" y1="124" x2="320" y2="124"/>
+            <g class="stagekey">
+              <text x="24"  y="144">Pre-seed</text><text x="88"  y="144">Seed</text>
+              <text x="152" y="144">A</text><text x="216" y="144">B</text><text x="288" y="144">C+</text>
+            </g>
+          </svg>
+        </figure>
+      </article>
     </div>
   </div>
 </section>
@@ -755,7 +865,7 @@
       <h2 class="disp lines rv" style="--d:.06s;margin-top:22px"><span class="ln"><span>Founder.</span></span><span class="ln"><span>Leadership.</span></span><span class="ln"><span>Engine.</span></span></h2>
     </div>
     <div class="rv" style="--d:.16s">
-      <p class="lead">Three parts of the same people equation. Seven services in one index &mdash; scan the whole thing in ten seconds, then open the one that is yours.</p>
+      <p class="lead">Three parts of the same people equation. Scan all seven in ten seconds, then open the one that is yours.</p>
     </div>
   </div>
 
@@ -1068,7 +1178,8 @@ const nameOf = id => (SERVICES.find(s=>s.id===id)||{}).name || id;
 const CHAPTERS = [
   {
     name:'Founder',
-    note:'Form the founding combination, then keep reading it honestly as the company changes shape underneath you.',
+    note:'Form the founding combination, and keep reading it honestly.',
+    mark:'<circle cx="44" cy="14" r="6"/><circle cx="18" cy="52" r="6"/><circle class="lit" cx="58" cy="48" r="8"/><line x1="44" y1="14" x2="18" y2="52"/><line x1="44" y1="14" x2="58" y2="48"/><line x1="18" y1="52" x2="58" y2="48"/>',
     items:[
       {
         name:'Founder Quotient',
@@ -1119,7 +1230,8 @@ const CHAPTERS = [
   },
   {
     name:'Leadership',
-    note:'Staff the C-suite, permanently or on demand. The same market map sits under both; what changes is the commitment your stage can carry.',
+    note:'Staff the C-suite, permanently or on demand.',
+    mark:'<circle class="lit" cx="38" cy="12" r="8"/><circle cx="14" cy="52" r="6"/><circle cx="38" cy="52" r="6"/><circle cx="62" cy="52" r="6"/><line x1="38" y1="12" x2="14" y2="52"/><line x1="38" y1="12" x2="38" y2="52"/><line x1="38" y1="12" x2="62" y2="52"/>',
     items:[
       {
         name:'Executive Search',
@@ -1155,7 +1267,8 @@ const CHAPTERS = [
   },
   {
     name:'Engine',
-    note:'The hiring and technology capacity under the hood. Turn it up and down with the curve instead of carrying it and hoping the curve agrees.',
+    note:'Hiring and technology capacity that flexes with the curve.',
+    mark:'<rect x="8" y="10" width="13" height="13" rx="3"/><rect x="30" y="10" width="13" height="13" rx="3"/><rect class="lit" x="52" y="10" width="13" height="13" rx="3"/><rect x="8" y="32" width="13" height="13" rx="3"/><rect class="lit" x="30" y="32" width="13" height="13" rx="3"/><rect x="52" y="32" width="13" height="13" rx="3"/><rect class="lit" x="8" y="54" width="13" height="13" rx="3"/><rect x="30" y="54" width="13" height="13" rx="3"/><rect x="52" y="54" width="13" height="13" rx="3"/>',
     items:[
       {
         name:'TA Powerhouse',
@@ -1207,7 +1320,9 @@ const CHAPTERS = [
   CHAPTERS.forEach(ch=>{
     const head = document.createElement('div');
     head.className = 'si-chapter';
-    head.innerHTML = `<h3>${ch.name}</h3><p>${ch.note}</p>`;
+    head.innerHTML =
+      `<div class="ch-id"><svg class="ch-mark" viewBox="0 0 76 76" aria-hidden="true">${ch.mark}</svg>` +
+      `<h3>${ch.name}</h3></div><p>${ch.note}</p>`;
     root.appendChild(head);
 
     ch.items.forEach(it=>{
@@ -1642,7 +1757,7 @@ document.getElementById('waBtn').href  = `https://wa.me/${SITE.whatsapp}?text=${
 const rail = document.getElementById('railIndex');
 const railLinks = [...rail.querySelectorAll('a')];
 const sections = railLinks.map(a=>document.querySelector(a.getAttribute('href')));
-const band = document.getElementById('stages');
+const bands = [...document.querySelectorAll('.band')];
 
 let raf = false;
 function onScroll(){
@@ -1650,8 +1765,8 @@ function onScroll(){
   let active = 0;
   sections.forEach((s,i)=>{ if(s && s.getBoundingClientRect().top <= mid + 40) active = i; });
   railLinks.forEach((a,i)=>a.classList.toggle('on', i===active));
-  const b = band.getBoundingClientRect();
-  rail.classList.toggle('on-dark', b.top <= mid && b.bottom >= mid);
+  rail.classList.toggle('on-dark',
+    bands.some(el=>{ const b = el.getBoundingClientRect(); return b.top <= mid && b.bottom >= mid; }));
   drawWires();
   raf = false;
 }
