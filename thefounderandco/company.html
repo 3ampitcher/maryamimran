@@ -198,75 +198,89 @@
   .fig-web circle{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round}
 
   /* ---------- the dial ----------
-     Five nodes on one ring: the situations a company can be in. A single lime
-     arc travels round to whichever is live, so the movement is one object
-     going somewhere rather than five things lighting up. */
-  /* place-items:center on the figure makes this a shrink-to-fit grid item, and
-     everything inside the ring is absolutely positioned, so without a width of
-     its own it collapses to zero */
+     A five-part wheel: one wedge per situation, its icon and label sitting in
+     the band, the answer in the hub. A lime arc runs outside whichever wedge
+     is live and travels round to the next. */
   .dial-wrap{width:100%;display:grid;justify-items:center;position:relative;z-index:1}
-  .dial{position:relative;width:min(100%,var(--ring,440px));aspect-ratio:1/1}
-  @media(min-width:1500px){ .dial{--ring:500px} }
-  @media(min-width:1240px) and (max-width:1499px){ .dial{--ring:465px} }
+  .dial{position:relative;width:min(100%,var(--ring,460px));aspect-ratio:1/1}
+  @media(min-width:1500px){ .dial{--ring:520px} }
+  @media(min-width:1240px) and (max-width:1499px){ .dial{--ring:485px} }
   /* direct child only: the node buttons carry their own icons, and this rule
-     was absolutely positioning those into each node's top-left corner */
+     would otherwise absolutely position those into each node's corner */
   .dial > svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .disc{fill:#F1F1EC;stroke:none}
-  .track{fill:none;stroke:#CFCFC7;stroke-width:.7;stroke-dasharray:.9 3.4;stroke-linecap:round}
+
+  .wedge{
+    fill:#FAFAF7;stroke:#E9E9E2;stroke-width:.4;stroke-linejoin:round;
+    transition:fill .45s var(--ease),stroke .45s var(--ease);
+  }
+  .wedge.sel{fill:#fff;stroke:#DCDCD3}
+  .hub{fill:#F1F1EA;stroke:none}
+  .dial-core{}
+  .orbit{fill:none;stroke:#D6D6CE;stroke-width:.5;stroke-dasharray:1 3.8;stroke-linecap:round}
+  .tick{fill:none;stroke:#C7C7BE;stroke-width:.6;stroke-linecap:round;stroke-linejoin:round}
   .live{
-    fill:none;stroke:var(--lime-deep);stroke-width:2.8;stroke-linecap:round;
+    fill:none;stroke:var(--lime-deep);stroke-width:3.2;stroke-linecap:round;
     transform-box:view-box;transform-origin:50px 50px;
-    transition:transform .6s var(--ease),opacity .4s var(--ease);
+    transition:transform .62s var(--ease),opacity .4s var(--ease);
     opacity:0;
   }
   .dial.on .live{opacity:1}
-  .tick{fill:none;stroke:#D4D4CC;stroke-width:.55;stroke-linecap:round;stroke-linejoin:round}
 
   .nd{
     position:absolute;transform:translate(-50%,-50%);
-    width:var(--nd,58px);height:var(--nd,58px);border-radius:50%;
+    width:var(--nd,54px);height:var(--nd,54px);border-radius:50%;
     background:var(--card);border:1.5px solid var(--line);cursor:pointer;padding:0;
     display:flex;align-items:center;justify-content:center;
     transition:border-color .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease);
   }
-  .nd svg{width:22px;height:22px;display:block;flex:0 0 auto;color:var(--muted);transition:color .4s var(--ease)}
+  .nd svg{width:21px;height:21px;display:block;flex:0 0 auto;color:var(--muted);transition:color .4s var(--ease)}
   .nd-l{
-    position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);
-    white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:.17em;
-    text-transform:uppercase;color:var(--muted);transition:color .4s var(--ease);
+    position:absolute;transform:translate(-50%,-50%);pointer-events:none;
+    white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);text-align:center;
+    transition:color .4s var(--ease);
   }
+  .nd-l::after{
+    content:"";display:block;width:18px;height:2px;border-radius:2px;margin:8px auto 0;
+    background:var(--line);transition:background .4s var(--ease);
+  }
+  .nd-l.sel{color:var(--ink)}
+  .nd-l.sel::after{background:var(--lime-deep)}
   .nd.sel{
-    border-color:var(--lime-deep);transform:translate(-50%,-50%) scale(1.09);
+    border-color:var(--lime-deep);transform:translate(-50%,-50%) scale(1.08);
     box-shadow:0 0 0 6px rgba(147,181,24,.10);
   }
   .nd.sel svg{color:var(--lime-deep)}
-  .nd.sel .nd-l{color:var(--ink)}
   .nd:focus-visible{outline:2px solid var(--lime-deep);outline-offset:4px}
 
   .dial-core{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:52%;text-align:center;
+    width:36%;text-align:center;
   }
   .dial-core .ask{
-    font-size:17px;line-height:1.35;font-weight:600;letter-spacing:-.02em;color:var(--muted);
+    font-size:15px;line-height:1.35;font-weight:600;letter-spacing:-.02em;color:var(--muted);
   }
   .dial-core .k{
-    font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-deep);
+    font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-deep);
   }
   .dial-core .v{
-    margin-top:12px;font-size:19px;line-height:1.32;font-weight:700;
-    letter-spacing:-.028em;color:var(--ink);
+    margin-top:11px;font-size:16.5px;line-height:1.34;font-weight:700;
+    letter-spacing:-.025em;color:var(--ink);
   }
 
   /* the same five as rows on small screens, where there is no hover */
   .dial-rows{display:none}
 
   @media(max-width:1080px){
-    .dial{--ring:350px;--nd:50px}
-    .dial-core{width:56%}
-    .dial-core .v{font-size:16px}
-    .nd svg{width:19px;height:19px}
-    .nd-l{font-size:10px;letter-spacing:.14em}
+    .dial{--ring:360px;--nd:46px}
+    /* at this size the labels collide with their own discs and the answer
+       spills out of the hub; the five are named in full in the rows below */
+    .nd-l{display:none}
+    .dial-core{width:34%}
+    .dial-core .v{font-size:13.5px;margin-top:9px}
+    .dial-core .k{font-size:10px;letter-spacing:.14em}
+    .dial-core .ask{font-size:13px}
+    .nd svg{width:18px;height:18px}
   }
 
   /* ---------- 01 why ---------- */
@@ -1010,10 +1024,11 @@
     <div class="dial-wrap rv" style="--d:.34s">
       <div class="dial" id="dial">
         <svg viewBox="0 0 100 100" aria-hidden="true">
-          <circle class="disc" cx="50" cy="50" r="33"/>
-          <circle class="track" cx="50" cy="50" r="36"/>
-          <circle class="live" id="dialLive" cx="50" cy="50" r="36"/>
+          <g id="dialWedges"></g>
+          <circle class="hub" cx="50" cy="50" r="19"/>
+          <circle class="orbit" cx="50" cy="50" r="48.5"/>
           <g id="dialTicks"></g>
+          <circle class="live" id="dialLive" cx="50" cy="50" r="43"/>
         </svg>
         <div class="dial-core" id="dialCore"></div>
       </div>
@@ -1865,43 +1880,68 @@ const WAYS = [
 })();
 
 (function dial(){
-  const el    = document.getElementById('dial');
-  const live  = document.getElementById('dialLive');
-  const ticks = document.getElementById('dialTicks');
-  const core  = document.getElementById('dialCore');
-  const rows  = document.getElementById('dialRows');
-  if(!el || !live || !core) return;
+  const el     = document.getElementById('dial');
+  const wedges = document.getElementById('dialWedges');
+  const live   = document.getElementById('dialLive');
+  const ticks  = document.getElementById('dialTicks');
+  const core   = document.getElementById('dialCore');
+  const rows   = document.getElementById('dialRows');
+  if(!el || !wedges || !live || !core) return;
 
   const NS   = 'http://www.w3.org/2000/svg';
-  const R    = 36;
-  const C    = 2 * Math.PI * R;
   const STEP = 360 / WAYS.length;
-  const ARC  = C * 0.165;                // how much of the ring the live arc covers
+  const GAP  = 3.2;                      // degrees of blank between wedges
+  const RI   = 19, RO = 43;              // the band the wedges occupy
+  const RL   = 45.5;                     // where the live arc runs
+  const RT   = 48.5;                     // the dashed orbit
+  const RN   = 27;                       // where the icon discs sit
+  const RLB  = 36.5;                     // and their labels, further out
+  const CL   = 2 * Math.PI * RL;
+  const ARC  = CL * ((STEP - GAP) / 360); // the live arc covers one wedge
   const ASK  = 'Understand, Find, Hire, Step in or Build.';
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  live.setAttribute('stroke-dasharray', `${ARC} ${C - ARC}`);
-  live.setAttribute('stroke-dashoffset', ARC / 2);   // centre the arc on 12 o'clock
+  live.setAttribute('r', RL);
+  live.setAttribute('stroke-dasharray', `${ARC} ${CL - ARC}`);
+  live.setAttribute('stroke-dashoffset', ARC / 2);   // centre the arc on its start
 
+  // a point on a circle, measured clockwise from twelve o'clock
   const pt = (r, deg) => {
     const t = deg * Math.PI / 180;
     return [50 + r * Math.sin(t), 50 - r * Math.cos(t)];
   };
+  const f = n => n.toFixed(2);
 
-  // a small chevron on the ring between each pair, pointing the way round
-  WAYS.forEach((_, i)=>{
-    const a = STEP * i;                              // the boundary between nodes
-    const [x,y] = pt(R, a);
+  function wedgePath(a0, a1){
+    const [xo0,yo0] = pt(RO,a0), [xo1,yo1] = pt(RO,a1);
+    const [xi1,yi1] = pt(RI,a1), [xi0,yi0] = pt(RI,a0);
+    return `M${f(xo0)} ${f(yo0)} A${RO} ${RO} 0 0 1 ${f(xo1)} ${f(yo1)}`
+         + ` L${f(xi1)} ${f(yi1)} A${RI} ${RI} 0 0 0 ${f(xi0)} ${f(yi0)} Z`;
+  }
+
+  const wedgeEls = WAYS.map((_, i)=>{
     const p = document.createElementNS(NS,'path');
-    p.setAttribute('class','tick');
-    p.setAttribute('d','M-.7 -.85 L.65 0 L-.7 .85');
-    p.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${a})`);
-    ticks.appendChild(p);
+    p.setAttribute('class','wedge');
+    p.setAttribute('d', wedgePath(STEP * i + GAP / 2, STEP * (i + 1) - GAP / 2));
+    wedges.appendChild(p);
+    return p;
   });
 
+  // arrowheads on the dashed orbit, one between each pair, pointing the way round
+  WAYS.forEach((_, i)=>{
+    const a = STEP * i;
+    const [x,y] = pt(RT, a);
+    const t = document.createElementNS(NS,'path');
+    t.setAttribute('class','tick');
+    t.setAttribute('d','M-1.1 -1.3 L1 0 L-1.1 1.3');
+    t.setAttribute('transform', `translate(${f(x)} ${f(y)}) rotate(${a})`);
+    ticks.appendChild(t);
+  });
+
+  const labEls = [];
   const nodes = WAYS.map(([k,v,href,icon],i)=>{
-    const a = STEP * i + STEP / 2;                   // the node sits mid-segment
-    const [x,y] = pt(R, a);
+    const a = STEP * i + STEP / 2;                   // the node sits mid-wedge
+    const [x,y] = pt(RN, a);
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'nd';
@@ -1910,11 +1950,25 @@ const WAYS = [
     b.setAttribute('aria-label', k + ': ' + v);
     b.innerHTML =
       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg>
-       <span class="nd-l">${k}</span>`;
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg>`;
     el.appendChild(b);
+
+    /* The label sits further out along the same radius rather than simply below
+       the disc: for the two upper wedges "below" points at the hub, and the
+       words ended up on top of the answer in the middle. */
+    const [lx,ly] = pt(RLB, a);
+    const lab = document.createElement('span');
+    lab.className = 'nd-l';
+    lab.setAttribute('aria-hidden','true');
+    lab.textContent = k;
+    lab.style.left = lx + '%';
+    lab.style.top  = ly + '%';
+    el.appendChild(lab);
+    labEls.push(lab);
     return b;
   });
+
+  const rowEls = [];
 
   function paint(n){
     el.classList.toggle('on', n !== null);
@@ -1922,7 +1976,11 @@ const WAYS = [
       b.classList.toggle('sel', i === n);
       b.setAttribute('aria-pressed', i === n ? 'true' : 'false');
     });
-    if(rowEls) rowEls.forEach((r,i)=> r.classList.toggle('sel', i === n));
+    wedgeEls.forEach((w,i)=> w.classList.toggle('sel', i === n));
+    labEls.forEach((l,i)=> l.classList.toggle('sel', i === n));
+    rowEls.forEach((r,i)=> r.classList.toggle('sel', i === n));
+    // an SVG circle's path starts at three o'clock, so the arc needs a quarter
+    // turn taken off before it lands on the wedge it belongs to
     if(n !== null) live.style.transform = `rotate(${-90 + STEP * n + STEP / 2}deg)`;
     core.innerHTML = n === null
       ? `<p class="ask">${ASK}</p>`
@@ -1950,7 +2008,6 @@ const WAYS = [
   });
   el.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') release(); });
 
-  const rowEls = [];
   if(rows){
     WAYS.forEach(([k,v,href],i)=>{
       const a = document.createElement('a');
