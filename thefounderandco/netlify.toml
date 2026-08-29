@@ -1,0 +1,18 @@
+# TheFounder&Co. is a static site — there is nothing to build.
+#
+# It lives in this subfolder, not at the repo root. The root of this
+# repository is a separate Vite app (maryam-imran-portfolio), so if Netlify
+# is pointed at the repo root it auto-detects that package.json, runs the
+# Vite build and publishes the portfolio to thefounderand.co. Setting the
+# base directory to thefounderandco keeps Netlify inside this folder, where
+# there is no package.json to detect.
+#
+# In the Netlify UI, set Base directory to "thefounderandco" and leave the
+# build command and publish directory empty -- the values below win.
+
+[build]
+  publish = "."
+  command = ""
+
+[build.processing]
+  skip_processing = false
