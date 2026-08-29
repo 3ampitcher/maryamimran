@@ -80,12 +80,14 @@ const MECH = [
   ['Decision Quality', 4.0],
   ['Disciplined Execution', 4.2],
   ['Resource|Orchestration', 3.7],
-  ['Adaptive Resilience', 3.8],
+  ['Adaptive|Resilience', 3.8],
   ['Reality Contact', 3.2]
 ];
 
 function radar() {
-  const W = 404, H = 300, cx = 202, cy = 145, R = 82, LR = 98;
+  /* Sized to the widest column. LR is capped at 140: beyond it the
+     right-hand label runs past W. */
+  const W = 440, H = 386, cx = 220, cy = 196, R = 132, LR = 140;
   const n = MECH.length;
   const pt = (i, rad) => {
     const a = (Math.PI * 2 * i) / n - Math.PI / 2;
@@ -191,17 +193,17 @@ const html = `<!doctype html>
       <p class="colsub">Only three components create the score.</p>
 
       <div class="ringrow">
-        <div class="ringcell">${ring({ v: 82, size: 66, sw: 4.5, color: 'var(--brand)', num: 21 })}
+        <div class="ringcell">${ring({ v: 82, size: 70, sw: 4.5, color: 'var(--brand)', num: 22 })}
           <span class="ringcell__l">Founder Potential</span><span class="ringcell__w">60% weight</span></div>
-        <div class="ringcell">${ring({ v: 72, size: 66, sw: 4.5, color: 'var(--amber)', num: 21 })}
+        <div class="ringcell">${ring({ v: 72, size: 70, sw: 4.5, color: 'var(--amber)', num: 22 })}
           <span class="ringcell__l">Founder Experience</span><span class="ringcell__w">20% weight</span></div>
-        <div class="ringcell">${ring({ v: 85, size: 66, sw: 4.5, color: 'var(--ink)', num: 21 })}
+        <div class="ringcell">${ring({ v: 85, size: 70, sw: 4.5, color: 'var(--ink)', num: 22 })}
           <span class="ringcell__l">Founder&ndash;Venture Fit</span><span class="ringcell__w">20% weight</span></div>
       </div>
 
       <p class="formula">60% &times; 82 &nbsp;+&nbsp; 20% &times; 72 &nbsp;+&nbsp; 20% &times; 85 &nbsp;=&nbsp; <b>81</b></p>
 
-      <div class="sec">
+      <div class="sec sec--grow">
         <p class="k">Founder Potential &nbsp;·&nbsp; 8 mechanisms</p>
         <div class="radar">${radar()}</div>
       </div>
@@ -221,10 +223,10 @@ const html = `<!doctype html>
       <div class="colhead"><span class="colhead__n">2</span><span class="colhead__t">What the evidence proves</span></div>
       <p class="colsub">Building history and venture-specific advantage.</p>
 
-      <div class="ringside">
-        <div class="ringside__l">${ring({ v: 72, size: 62, sw: 4.5, color: 'var(--amber)', num: 20 })}
+      <div class="ringside ringside--grow">
+        <div class="ringside__l">${ring({ v: 72, size: 70, sw: 4.5, color: 'var(--amber)', num: 22 })}
           <span class="ringcell__l">Founder Experience</span></div>
-        <div class="ringside__b">
+        <div class="ringside__b spread">
           ${drow('Creation &amp; ownership', 4.3, true)}
           ${drow('External value &amp; outcomes', 3.0, true)}
           ${drow('Stage &amp; complexity', 3.3, true)}
@@ -237,10 +239,10 @@ const html = `<!doctype html>
 
       <div class="rule" style="margin:14px 0"></div>
 
-      <div class="ringside">
-        <div class="ringside__l">${ring({ v: 85, size: 62, sw: 4.5, color: 'var(--brand)', num: 20 })}
+      <div class="ringside ringside--grow">
+        <div class="ringside__l">${ring({ v: 85, size: 70, sw: 4.5, color: 'var(--brand)', num: 22 })}
           <span class="ringcell__l">Founder&ndash;Venture Fit</span></div>
-        <div class="ringside__b">
+        <div class="ringside__b spread">
           ${drow('Problem &amp; customer proximity', 4.5)}
           ${drow('Relevant knowledge', 4.2)}
           ${drow('Distinctive insight', 4.1)}
@@ -267,11 +269,13 @@ const html = `<!doctype html>
       <p class="k">Personality signature</p>
       <p style="font-size:15px;font-weight:500;letter-spacing:-0.02em;margin:6px 0 0">Exploratory &middot; independent &middot; emotionally steady</p>
 
-      ${bip('Openness', 'Conventional', 'Exploratory', 78)}
-      ${bip('Conscientiousness', 'Flexible', 'Structured', 68)}
-      ${bip('Extraversion', 'Reserved', 'Assertive', 54)}
-      ${bip('Agreeableness', 'Challenging', 'Accommodating', 42)}
-      ${bip('Emotional stability', 'Stress-sensitive', 'Steady', 74)}
+      <div class="bips">
+        ${bip('Openness', 'Conventional', 'Exploratory', 78)}
+        ${bip('Conscientiousness', 'Flexible', 'Structured', 68)}
+        ${bip('Extraversion', 'Reserved', 'Assertive', 54)}
+        ${bip('Agreeableness', 'Challenging', 'Accommodating', 42)}
+        ${bip('Emotional stability', 'Stress-sensitive', 'Steady', 74)}
+      </div>
 
       <div class="rule" style="margin:16px 0 13px"></div>
 
