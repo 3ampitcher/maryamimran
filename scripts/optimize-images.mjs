@@ -16,8 +16,10 @@ import { join, parse } from 'node:path';
 
 /** width -> which folder. Hero art needs more widths than a thumbnail. */
 const PROFILES = {
-  'maryam-portrait': { out: 'public/assets/portrait', widths: [800, 1200, 1672] },
-  'maryam-about': { out: 'public/assets/portrait', widths: [600, 900, 1200] },
+  /* The original's own width is always added as the largest step, so these
+     are just the smaller rungs of the ladder. */
+  'maryam-portrait': { out: 'public/assets/portrait', widths: [800, 1200] },
+  'maryam-about': { out: 'public/assets/portrait', widths: [600, 900] },
   default: { out: 'public/assets/portrait', widths: [800, 1200] },
 };
 
@@ -46,10 +48,13 @@ for (const file of files) {
   totalIn += statSync(input).size;
 
   const meta = await sharp(input).metadata();
-  // Never upscale: a 1672px original stays 1672px.
-  const widths = [...new Set(profile.widths.filter((w) => w <= meta.width).concat(
-    profile.widths.every((w) => w > meta.width) ? [meta.width] : [],
-  ))].sort((a, b) => a - b);
+  /* Never upscale, and always ship the original's own width as the largest
+     step — so swapping in a differently sized photo needs no config change
+     to keep full resolution. */
+  const widths = [...new Set([
+    ...profile.widths.filter((w) => w < meta.width),
+    meta.width,
+  ])].sort((a, b) => a - b);
 
   const made = [];
   for (const w of widths) {
@@ -71,6 +76,7 @@ for (const file of files) {
 
   console.log(`${file}  ${meta.width}x${meta.height}  ${kb(statSync(input).size)}`);
   made.forEach((m) => console.log(`   ${m}`));
+  console.log(`   -> site.ts widths: [${widths.join(', ')}]`);
 }
 
 console.log(`\noriginals ${kb(totalIn)} -> output ${kb(totalOut)}`);

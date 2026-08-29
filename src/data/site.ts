@@ -36,10 +36,10 @@ export const site = {
     aboutSrc: '/assets/portrait/maryam-about.jpg',
     /* Widths that exist on disk, smallest first. The browser picks one via
        srcset; `src` above is the fallback. Must match scripts/optimize-images.mjs. */
-    widths: [800, 1200, 1672],
+    widths: [800, 1200, 1796],
     /* Where the face sits in the frame, as x% y%. The hero crops hard on
        tall viewports and this is what keeps her in shot. */
-    focus: '56% 40%',
+    focus: '51% 34%',
   },
 
   /* --- Resume ----------------------------------------------------------
