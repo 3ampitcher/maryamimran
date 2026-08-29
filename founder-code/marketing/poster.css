@@ -314,60 +314,6 @@ body {
 }
 .maths__den { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; color: rgba(246,244,239,0.6); }
 
-/* --- Dashboard reproduction (poster 3) --------------------------------- */
-
-.mini {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.mini__panel {
-  background: var(--surface);
-  padding: 26px 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.mini__panel--hero {
-  background: var(--ink);
-  --text: var(--paper);
-  --text-2: rgba(246,244,239,0.76);
-  --text-3: rgba(246,244,239,0.6);
-  --accent: var(--signal);
-  --data-1: var(--signal);
-  --data-2: #e5a93a;
-  --data-3: #ef8577;
-  --rule: var(--paper-16);
-  --track: rgba(246,244,239,0.14);
-  color: var(--paper);
-}
-.mini__title {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-.mini .meter__name { font-size: 14px; }
-.mini .meter__value { font-size: 12px; }
-.mini .kv__row { font-size: 14px; }
-.mini .ladder__name { font-size: 14px; }
-.mini .ladder__level { font-size: 10px; min-width: 62px; }
-.mini .ladder__row { grid-template-columns: 82px 1fr auto; gap: 12px; }
-.mini .points li { font-size: 14px; }
-.span-3 { grid-column: span 3; }
-.span-4 { grid-column: span 4; }
-.span-5 { grid-column: span 5; }
-.span-6 { grid-column: span 6; }
-.span-7 { grid-column: span 7; }
-.span-8 { grid-column: span 8; }
-.span-12 { grid-column: span 12; }
-
 /* --- Faint axis field for ink grounds ---------------------------------- */
 
 .field {

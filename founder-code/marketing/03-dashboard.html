@@ -2,181 +2,254 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Founder Code — What the client receives</title>
+<title>Founder Code — Executive Intelligence Dashboard</title>
 <link rel="stylesheet" href="../assets/css/founder-code.css">
-<link rel="stylesheet" href="poster.css">
+<link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
-<div class="poster" id="poster">
-  <div class="plate">
-    <div class="plate__brand">
-      <svg class="plate__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0c1014"/><g fill="#f6f4ef" opacity="0.5"><circle cx="8.5" cy="8.5" r="1.9"/><circle cx="16" cy="8.5" r="1.9"/><circle cx="23.5" cy="8.5" r="1.9"/><circle cx="8.5" cy="16" r="1.9"/><circle cx="23.5" cy="16" r="1.9"/><circle cx="8.5" cy="23.5" r="1.9"/><circle cx="16" cy="23.5" r="1.9"/><circle cx="23.5" cy="23.5" r="1.9"/></g><circle cx="16" cy="16" r="3.4" fill="#35b7a4"/></svg>
+<!-- Layout and content are fixed by the supplied design; this file only
+     carries the Founder Code palette and typefaces.
+     GENERATED — edit marketing/03-dashboard.build.mjs and re-run it, not
+     this file. The rings, gauges and radar are computed geometry. -->
+
+<div class="dash-poster" id="poster">
+
+  <header class="dhead">
+    <div class="dhead__id">
+      <span class="fqmark">FQ</span>
+      <span class="dhead__bar"></span>
       <span>
-        <span class="plate__name">Founder Code</span>
-        <span class="plate__parent">A company of The Founder &amp; Co</span>
+        <p class="k">Founder Quotient</p>
+        <h1 class="dhead__title">Executive Intelligence Dashboard</h1>
       </span>
     </div>
-    <p class="plate__index">03 / 03 <b>What the client receives</b></p>
-  </div>
-
-  <!-- TITLE -->
-  <div class="band" style="border-top:0;padding-bottom:30px">
-    <h1 class="p-title p-title--sm">One page a decision-maker <em>can actually read.</em></h1>
-    <p class="p-sub" style="max-width:88ch;margin-top:20px">The Executive Intelligence Dashboard is the deliverable: a single visual page that answers six questions without anyone having to read a forty-page report.</p>
-
-    <div class="cols cols--3" style="margin-top:26px;gap:0;border-top:1px solid var(--rule)">
-      <div style="padding:16px 22px 0 0"><p class="box__key">01 &nbsp; What creates the score</p><p class="p-micro" style="margin-top:6px">Three weighted components, with the arithmetic on the page.</p></div>
-      <div style="padding:16px 22px 0"><p class="box__key">02 &nbsp; What the evidence proves</p><p class="p-micro" style="margin-top:6px">Experience evidence and confidence level, stated rather than implied.</p></div>
-      <div style="padding:16px 0 0 22px"><p class="box__key">03 &nbsp; Who the founder is</p><p class="p-micro" style="margin-top:6px">Archetype, personality signature, strengths, edges and risks.</p></div>
-      <div style="padding:14px 22px 0 0"><p class="box__key">04 &nbsp; How to deploy them</p><p class="p-micro" style="margin-top:6px">Leadership readiness, role-fit hypotheses, venture and stage fit.</p></div>
-      <div style="padding:14px 22px 0"><p class="box__key">05 &nbsp; What to diligence</p><p class="p-micro" style="margin-top:6px">The specific claims requiring verification before a decision.</p></div>
-      <div style="padding:14px 0 0 22px"><p class="box__key">06 &nbsp; Who to add</p><p class="p-micro" style="margin-top:6px">Co-founder requirements, team blueprint, primary team risk.</p></div>
+    <div class="dhead__meta">
+      <p class="k k--amber">Illustrative sample</p>
+      <p class="dhead__scope">Potential &middot; evidence &middot; personality &middot; leadership &middot; team design</p>
     </div>
-  </div>
+  </header>
+  <div class="accentrule"></div>
 
-  <!-- THE DASHBOARD -->
-  <div class="band band--alt band--grow" style="padding-top:32px">
-    <p class="band__label">The deliverable &nbsp;—&nbsp; <b>Executive Intelligence Dashboard</b> &nbsp;·&nbsp; illustrative sample</p>
+  <section class="idband">
+    <div>
+      <h2 class="idband__name">Maryam Imran</h2>
+      <p class="k k--muted idband__ctx">Pre-venture &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; Pre-idea / exploring</p>
+    </div>
+    <div class="scoredot"><b>81</b><span>/100</span></div>
+    <div class="rec">
+      <p class="k">Advance with targeted diligence</p>
+      <p>Strong founder signal. Verify commercial evidence, customer access and response to challenge.</p>
+    </div>
+    <div class="chips">
+      <div class="chip"><p class="chip__k">Evidence</p><p class="chip__v chip__v--amber">Moderate</p></div>
+      <div class="chip"><p class="chip__k">Character</p><p class="chip__v chip__v--brand">Clear</p></div>
+      <div class="chip"><p class="chip__k">Capacity</p><p class="chip__v chip__v--coral">Constrained</p></div>
+      <div class="chip"><p class="chip__k">Track</p><p class="chip__v chip__v--ink">First-time</p></div>
+      <div class="chip"><p class="chip__k">Ego / power</p><p class="chip__v chip__v--amber">Moderate</p></div>
+    </div>
+  </section>
 
-    <div class="mini">
-      <!-- headline -->
-      <div class="mini__panel mini__panel--hero span-8">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:26px">
-          <div>
-            <p class="mini__title">Founder Intelligence Profile</p>
-            <h3 style="font-size:29px;font-weight:500;letter-spacing:-0.03em;margin:8px 0 0">Sample Founder</h3>
-            <p class="p-micro" style="margin-top:4px">Pre-venture &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; Pre-idea, exploring</p>
-            <p class="box__key" style="margin-top:18px">Recommendation</p>
-            <p style="font-size:22px;letter-spacing:-0.02em;margin-top:5px">Advance with targeted diligence</p>
-            <p class="p-micro" style="margin-top:7px;max-width:44ch">Strong founder signal. Verify commercial evidence, customer access and response to challenge before committing.</p>
-          </div>
-          <div class="gauge" style="width:150px;flex:none">
-            <svg class="gauge__svg" viewBox="0 0 120 120" aria-hidden="true">
-              <circle class="gauge__track" cx="60" cy="60" r="54" stroke-width="9"></circle>
-              <circle class="gauge__arc" cx="60" cy="60" r="54" stroke-width="9" stroke-dasharray="339.292" stroke-dashoffset="64.47"></circle>
-            </svg>
-            <div class="gauge__center">
-              <span class="gauge__num" style="font-size:44px">81</span>
-              <span class="gauge__den" style="font-size:11px">FQ / 100</span>
-            </div>
-          </div>
-        </div>
+  <div class="dcols">
+
+    <!-- 1 -->
+    <div class="dcol">
+      <div class="colhead"><span class="colhead__n">1</span><span class="colhead__t">What creates FQ</span></div>
+      <p class="colsub">Only three components create the score.</p>
+
+      <div class="ringrow">
+        <div class="ringcell"><span class="ring" style="width:66px;height:66px"><svg width="66" height="66" viewBox="0 0 66 66"><circle cx="33" cy="33" r="29.8" fill="none" stroke="var(--rule)" stroke-width="4.5"/><circle cx="33" cy="33" r="29.8" fill="none" stroke="var(--brand)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="186.9" stroke-dashoffset="33.6"/></svg><span class="ring__c"><span class="ring__n" style="font-size:21px;color:var(--brand)">82</span><span class="ring__d">/100</span></span></span>
+          <span class="ringcell__l">Founder Potential</span><span class="ringcell__w">60% weight</span></div>
+        <div class="ringcell"><span class="ring" style="width:66px;height:66px"><svg width="66" height="66" viewBox="0 0 66 66"><circle cx="33" cy="33" r="29.8" fill="none" stroke="var(--rule)" stroke-width="4.5"/><circle cx="33" cy="33" r="29.8" fill="none" stroke="var(--amber)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="186.9" stroke-dashoffset="52.3"/></svg><span class="ring__c"><span class="ring__n" style="font-size:21px;color:var(--amber)">72</span><span class="ring__d">/100</span></span></span>
+          <span class="ringcell__l">Founder Experience</span><span class="ringcell__w">20% weight</span></div>
+        <div class="ringcell"><span class="ring" style="width:66px;height:66px"><svg width="66" height="66" viewBox="0 0 66 66"><circle cx="33" cy="33" r="29.8" fill="none" stroke="var(--rule)" stroke-width="4.5"/><circle cx="33" cy="33" r="29.8" fill="none" stroke="var(--ink)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="186.9" stroke-dashoffset="28.0"/></svg><span class="ring__c"><span class="ring__n" style="font-size:21px;color:var(--ink)">85</span><span class="ring__d">/100</span></span></span>
+          <span class="ringcell__l">Founder&ndash;Venture Fit</span><span class="ringcell__w">20% weight</span></div>
       </div>
 
-      <div class="mini__panel span-4">
-        <p class="mini__title">Headline status</p>
-        <div class="kv">
-          <div class="kv__row"><span class="kv__k">Evidence</span><span class="kv__v">Moderate</span></div>
-          <div class="kv__row"><span class="kv__k">Character</span><span class="kv__v">Clear</span></div>
-          <div class="kv__row"><span class="kv__k">Capacity</span><span class="kv__v">Constrained</span></div>
-          <div class="kv__row"><span class="kv__k">Track record</span><span class="kv__v">First-time</span></div>
-          <div class="kv__row"><span class="kv__k">Ego / power</span><span class="kv__v">Moderate</span></div>
-        </div>
-        <p class="p-micro" style="margin-top:auto;font-size:12px">Confidence is reported on every profile. The same score on thin evidence is a different decision.</p>
+      <p class="formula">60% &times; 82 &nbsp;+&nbsp; 20% &times; 72 &nbsp;+&nbsp; 20% &times; 85 &nbsp;=&nbsp; <b>81</b></p>
+
+      <div class="sec">
+        <p class="k">Founder Potential &nbsp;·&nbsp; 8 mechanisms</p>
+        <div class="radar"><svg width="404" height="300" viewBox="0 0 404 300"><polygon class="radar__grid" points="202.0,128.6 213.6,133.4 218.4,145.0 213.6,156.6 202.0,161.4 190.4,156.6 185.6,145.0 190.4,133.4"/><polygon class="radar__grid" points="202.0,112.2 225.2,121.8 234.8,145.0 225.2,168.2 202.0,177.8 178.8,168.2 169.2,145.0 178.8,121.8"/><polygon class="radar__grid" points="202.0,95.8 236.8,110.2 251.2,145.0 236.8,179.8 202.0,194.2 167.2,179.8 152.8,145.0 167.2,110.2"/><polygon class="radar__grid" points="202.0,79.4 248.4,98.6 267.6,145.0 248.4,191.4 202.0,210.6 155.6,191.4 136.4,145.0 155.6,98.6"/><polygon class="radar__grid" points="202.0,63.0 260.0,87.0 284.0,145.0 260.0,203.0 202.0,227.0 144.0,203.0 120.0,145.0 144.0,87.0"/><line class="radar__axis" x1="202" y1="145" x2="202.0" y2="63.0"/><line class="radar__axis" x1="202" y1="145" x2="260.0" y2="87.0"/><line class="radar__axis" x1="202" y1="145" x2="284.0" y2="145.0"/><line class="radar__axis" x1="202" y1="145" x2="260.0" y2="203.0"/><line class="radar__axis" x1="202" y1="145" x2="202.0" y2="227.0"/><line class="radar__axis" x1="202" y1="145" x2="144.0" y2="203.0"/><line class="radar__axis" x1="202" y1="145" x2="120.0" y2="145.0"/><line class="radar__axis" x1="202" y1="145" x2="144.0" y2="87.0"/><polygon class="radar__area" points="202.0,74.5 246.1,100.9 269.2,145.0 248.4,191.4 202.0,213.9 159.1,187.9 139.7,145.0 164.9,107.9"/><circle class="radar__pt" cx="202.0" cy="74.5" r="2.6"/><text class="radar__lbl" x="202.0" y="41.0" text-anchor="middle"><tspan x="202.0" dy="0">Calibrated Agency</tspan></text><text class="radar__val" x="202.0" y="52.0" text-anchor="middle">4.3</text><circle class="radar__pt" cx="246.1" cy="100.9" r="2.6"/><text class="radar__lbl" x="271.3" y="75.7" text-anchor="start"><tspan x="271.3" dy="0">Opportunity Insight</tspan></text><text class="radar__val" x="271.3" y="86.7" text-anchor="start">3.8</text><circle class="radar__pt" cx="269.2" cy="145.0" r="2.6"/><text class="radar__lbl" x="300.0" y="145.0" text-anchor="start"><tspan x="300.0" dy="0">Venture Learning</tspan><tspan x="300.0" dy="10">Velocity</tspan></text><text class="radar__val" x="300.0" y="166.0" text-anchor="start">4.1</text><circle class="radar__pt" cx="248.4" cy="191.4" r="2.6"/><text class="radar__lbl" x="271.3" y="214.3" text-anchor="start"><tspan x="271.3" dy="0">Decision Quality</tspan></text><text class="radar__val" x="271.3" y="225.3" text-anchor="start">4.0</text><circle class="radar__pt" cx="202.0" cy="213.9" r="2.6"/><text class="radar__lbl" x="202.0" y="253.0" text-anchor="middle"><tspan x="202.0" dy="0">Disciplined Execution</tspan></text><text class="radar__val" x="202.0" y="264.0" text-anchor="middle">4.2</text><circle class="radar__pt" cx="159.1" cy="187.9" r="2.6"/><text class="radar__lbl" x="132.7" y="214.3" text-anchor="end"><tspan x="132.7" dy="0">Resource</tspan><tspan x="132.7" dy="10">Orchestration</tspan></text><text class="radar__val" x="132.7" y="235.3" text-anchor="end">3.7</text><circle class="radar__pt" cx="139.7" cy="145.0" r="2.6"/><text class="radar__lbl" x="104.0" y="145.0" text-anchor="end"><tspan x="104.0" dy="0">Adaptive Resilience</tspan></text><text class="radar__val" x="104.0" y="156.0" text-anchor="end">3.8</text><circle class="radar__pt radar__pt--watch" cx="164.9" cy="107.9" r="2.6"/><text class="radar__lbl" x="132.7" y="75.7" text-anchor="end"><tspan x="132.7" dy="0">Reality Contact</tspan></text><text class="radar__val radar__val--watch" x="132.7" y="86.7" text-anchor="end">3.2</text></svg></div>
       </div>
 
-      <!-- score -->
-      <div class="mini__panel span-5">
-        <p class="mini__title">What creates the FQ score</p>
-        <div class="meter"><div class="meter__head"><span class="meter__name">Founder Potential <span class="mono" style="font-size:11px;color:var(--text-3)">· 60%</span></span><span class="meter__value">82/100</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.82"></span></div></div>
-        <div class="meter meter--amber"><div class="meter__head"><span class="meter__name">Founder Experience <span class="mono" style="font-size:11px;color:var(--text-3)">· 20%</span></span><span class="meter__value">72/100</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.72"></span></div></div>
-        <div class="meter meter--quiet"><div class="meter__head"><span class="meter__name">Founder&ndash;Venture Fit <span class="mono" style="font-size:11px;color:var(--text-3)">· 20%</span></span><span class="meter__value">85/100</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.85"></span></div></div>
-        <p class="mono" style="font-size:12px;color:var(--text-3);margin-top:auto;padding-top:10px;border-top:1px solid var(--rule)">60% &times; 82 + 20% &times; 72 + 20% &times; 85 = <b style="color:var(--accent)">81</b> &nbsp;·&nbsp; personality adds no points</p>
-      </div>
-
-      <!-- potential -->
-      <div class="mini__panel span-7">
-        <p class="mini__title">Founder Potential Index &nbsp;·&nbsp; eight mechanisms, out of 5</p>
-        <div class="cols cols--2" style="gap:10px 26px">
-          <div class="meter"><div class="meter__head"><span class="meter__name">Calibrated Agency</span><span class="meter__value">4.3</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.86"></span></div></div>
-          <div class="meter"><div class="meter__head"><span class="meter__name">Opportunity Insight</span><span class="meter__value">3.8</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.76"></span></div></div>
-          <div class="meter"><div class="meter__head"><span class="meter__name">Disciplined Execution</span><span class="meter__value">4.2</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.84"></span></div></div>
-          <div class="meter"><div class="meter__head"><span class="meter__name">Adaptive Resilience</span><span class="meter__value">3.8</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.76"></span></div></div>
-          <div class="meter"><div class="meter__head"><span class="meter__name">Venture Learning Velocity</span><span class="meter__value">4.1</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.82"></span></div></div>
-          <div class="meter"><div class="meter__head"><span class="meter__name">Resource Orchestration</span><span class="meter__value">3.7</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.74"></span></div></div>
-          <div class="meter"><div class="meter__head"><span class="meter__name">Decision Quality</span><span class="meter__value">4.0</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.80"></span></div></div>
-          <div class="meter meter--coral"><div class="meter__head"><span class="meter__name">Reality Contact <span class="pill pill--coral" style="font-size:9px;padding:2px 7px;margin-left:4px">Watch</span></span><span class="meter__value">3.2</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.64"></span></div></div>
-        </div>
-      </div>
-
-      <!-- style -->
-      <div class="mini__panel span-4">
-        <p class="mini__title">Style &amp; operating signature</p>
-        <div style="display:flex;align-items:baseline;gap:12px">
-          <span class="mono" style="font-size:26px;font-weight:500;letter-spacing:.14em;color:var(--accent)">VIM</span>
-          <span style="font-size:19px;letter-spacing:-0.02em">The Inventor</span>
-        </div>
-        <p class="p-micro" style="font-size:12px">Exploratory, independent and emotionally steady</p>
-        <div class="axis"><div class="axis__labels" style="font-size:9px"><span><b>Vision</b></span><span>Ground</span></div><div class="axis__track"><span class="axis__marker" style="--at:37%"></span></div></div>
-        <div class="axis"><div class="axis__labels" style="font-size:9px"><span>Outward</span><span><b>Inward</b></span></div><div class="axis__track"><span class="axis__marker" style="--at:54%"></span></div></div>
-        <div class="axis"><div class="axis__labels" style="font-size:9px"><span><b>Momentum</b></span><span>Rigour</span></div><div class="axis__track"><span class="axis__marker" style="--at:37%"></span></div></div>
-        <p class="p-micro" style="font-size:12px;margin-top:auto">Style adds no points to the FQ score.</p>
-      </div>
-
-      <!-- stage fit -->
-      <div class="mini__panel span-4">
-        <p class="mini__title">Venture-stage fit</p>
-        <div class="ladder">
-          <div class="ladder__row" data-level="medium"><span class="ladder__name">Discover</span><span class="ladder__bar"><i style="--w:62%"></i></span><span class="ladder__level">Medium</span></div>
-          <div class="ladder__row" data-level="high"><span class="ladder__name">Validate</span><span class="ladder__bar"><i style="--w:100%"></i></span><span class="ladder__level">High</span></div>
-          <div class="ladder__row" data-level="medium"><span class="ladder__name">Build</span><span class="ladder__bar"><i style="--w:62%"></i></span><span class="ladder__level">Medium</span></div>
-          <div class="ladder__row" data-level="medium"><span class="ladder__name">Sell</span><span class="ladder__bar"><i style="--w:62%"></i></span><span class="ladder__level">Medium</span></div>
-          <div class="ladder__row" data-level="low"><span class="ladder__name">Scale</span><span class="ladder__bar"><i style="--w:28%"></i></span><span class="ladder__level">Low</span></div>
-          <div class="ladder__row" data-level="low"><span class="ladder__name">Steward</span><span class="ladder__bar"><i style="--w:28%"></i></span><span class="ladder__level">Low</span></div>
-        </div>
-        <p class="p-micro" style="font-size:12px;margin-top:auto">Best suited to Validate, strong through Build with operating support.</p>
-      </div>
-
-      <!-- roles + blueprint -->
-      <div class="mini__panel span-4">
-        <p class="mini__title">Role hypotheses &amp; team blueprint</p>
-        <div class="meter"><div class="meter__head"><span class="meter__name">CPO / Venture Builder</span><span class="meter__value">86</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.86"></span></div></div>
-        <div class="meter"><div class="meter__head"><span class="meter__name">CEO</span><span class="meter__value">82</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.82"></span></div></div>
-        <div class="meter meter--amber"><div class="meter__head"><span class="meter__name">COO</span><span class="meter__value">75</span></div><div class="meter__track"><span class="meter__fill" style="--fill:.75"></span></div></div>
-        <div class="kv" style="margin-top:6px;padding-top:10px;border-top:1px solid var(--rule)">
-          <div class="kv__row"><span class="kv__k">Commercial / GTM</span><span class="kv__v">Collaborator</span></div>
-          <div class="kv__row"><span class="kv__k">Operating discipline</span><span class="kv__v">Strong</span></div>
-          <div class="kv__row"><span class="kv__k">Reality Contact</span><span class="kv__v">High</span></div>
-        </div>
-      </div>
-
-      <!-- decision -->
-      <div class="mini__panel mini__panel--hero span-12">
-        <div class="cols cols--4" style="gap:34px">
-          <div>
-            <p class="mini__title">Decision recommendation</p>
-            <p style="font-size:25px;letter-spacing:-0.025em;margin-top:8px">Advance with targeted diligence</p>
-          </div>
-          <div>
-            <p class="box__key">Verify before committing</p>
-            <ul class="points points--tight" style="margin-top:8px"><li>Commercial claims and revenue claims</li><li>Customer evidence and customer access</li><li>Response to challenge</li><li>Transferability of claimed advantages</li></ul>
-          </div>
-          <div>
-            <p class="box__key">Team design</p>
-            <ul class="points points--tight" style="margin-top:8px"><li>Strong GTM capability</li><li>Independent reality testing</li><li>Operating support</li><li>Specialist risk and regulatory coverage</li></ul>
-          </div>
-          <div>
-            <p class="box__key" style="color:var(--data-3)">Primary team risk</p>
-            <p style="font-size:19px;line-height:1.25;letter-spacing:-0.02em;margin-top:8px;color:var(--data-3)">Speed may outrun challenge and evidence.</p>
-            <p class="p-micro" style="font-size:12px;margin-top:8px">Manageable by design, not by hope.</p>
-          </div>
+      <div class="callout">
+        <p class="k">Strongest signal</p>
+        <p class="strong">Agency &middot; learning velocity &middot; disciplined execution</p>
+        <div class="callout__split">
+          <p class="k k--coral">Primary watch</p>
+          <p>Reality Contact requires external verification.</p>
         </div>
       </div>
     </div>
 
-    <div class="cols cols--4" style="margin-top:26px;gap:26px">
-      <div><p class="box__key">Delivered as</p><p class="p-micro" style="margin-top:6px">One visual page, the supporting detail behind it, and a debrief.</p></div>
-      <div><p class="box__key">Also on the profile</p><p class="p-micro" style="margin-top:6px">Founder edges, development roadmap, co-founder blueprint, evidence confidence.</p></div>
-      <div><p class="box__key">Built to be argued with</p><p class="p-micro" style="margin-top:6px">Watch areas are marked at the same size as strengths, never buried.</p></div>
-      <div><p class="box__key">Ends in an action</p><p class="p-micro" style="margin-top:6px">What to verify, who to add, and what could derail it.</p></div>
+    <!-- 2 -->
+    <div class="dcol">
+      <div class="colhead"><span class="colhead__n">2</span><span class="colhead__t">What the evidence proves</span></div>
+      <p class="colsub">Building history and venture-specific advantage.</p>
+
+      <div class="ringside">
+        <div class="ringside__l"><span class="ring" style="width:62px;height:62px"><svg width="62" height="62" viewBox="0 0 62 62"><circle cx="31" cy="31" r="27.8" fill="none" stroke="var(--rule)" stroke-width="4.5"/><circle cx="31" cy="31" r="27.8" fill="none" stroke="var(--amber)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="174.4" stroke-dashoffset="48.8"/></svg><span class="ring__c"><span class="ring__n" style="font-size:20px;color:var(--amber)">72</span><span class="ring__d">/100</span></span></span>
+          <span class="ringcell__l">Founder Experience</span></div>
+        <div class="ringside__b">
+          <div class="drow drow--amber"><span class="drow__n">Creation &amp; ownership</span><span class="dots dots--amber"><i></i><i></i><i></i><i></i><i style="opacity:0.3"></i></span><span class="drow__v">4.3/5</span></div>
+          <div class="drow drow--amber"><span class="drow__n">External value &amp; outcomes</span><span class="dots dots--amber"><i></i><i></i><i></i><i class="is-off"></i><i class="is-off"></i></span><span class="drow__v">3/5</span></div>
+          <div class="drow drow--amber"><span class="drow__n">Stage &amp; complexity</span><span class="dots dots--amber"><i></i><i></i><i></i><i style="opacity:0.3"></i><i class="is-off"></i></span><span class="drow__v">3.3/5</span></div>
+          <div class="drow drow--amber"><span class="drow__n">Resources &amp; organisation</span><span class="dots dots--amber"><i></i><i></i><i></i><i style="opacity:0.8"></i><i class="is-off"></i></span><span class="drow__v">3.8/5</span></div>
+          <div class="drow drow--amber"><span class="drow__n">Personal attribution</span><span class="dots dots--amber"><i></i><i></i><i></i><i style="opacity:0.8"></i><i class="is-off"></i></span><span class="drow__v">3.8/5</span></div>
+          <div class="drow drow--amber"><span class="drow__n">Durability &amp; repetition</span><span class="dots dots--amber"><i></i><i></i><i></i><i style="opacity:0.1"></i><i class="is-off"></i></span><span class="drow__v">3.1/5</span></div>
+        </div>
+      </div>
+      <p class="note-i">Meaningful zero-to-one exposure; commercial proof remains early.</p>
+
+      <div class="rule" style="margin:14px 0"></div>
+
+      <div class="ringside">
+        <div class="ringside__l"><span class="ring" style="width:62px;height:62px"><svg width="62" height="62" viewBox="0 0 62 62"><circle cx="31" cy="31" r="27.8" fill="none" stroke="var(--rule)" stroke-width="4.5"/><circle cx="31" cy="31" r="27.8" fill="none" stroke="var(--brand)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="174.4" stroke-dashoffset="26.2"/></svg><span class="ring__c"><span class="ring__n" style="font-size:20px;color:var(--brand)">85</span><span class="ring__d">/100</span></span></span>
+          <span class="ringcell__l">Founder&ndash;Venture Fit</span></div>
+        <div class="ringside__b">
+          <div class="drow"><span class="drow__n">Problem &amp; customer proximity</span><span class="dots "><i></i><i></i><i></i><i></i><i style="opacity:0.5"></i></span><span class="drow__v">4.5/5</span></div>
+          <div class="drow"><span class="drow__n">Relevant knowledge</span><span class="dots "><i></i><i></i><i></i><i></i><i style="opacity:0.2"></i></span><span class="drow__v">4.2/5</span></div>
+          <div class="drow"><span class="drow__n">Distinctive insight</span><span class="dots "><i></i><i></i><i></i><i></i><i style="opacity:0.1"></i></span><span class="drow__v">4.1/5</span></div>
+          <div class="drow"><span class="drow__n">Access advantage</span><span class="dots "><i></i><i></i><i></i><i style="opacity:0.8"></i><i class="is-off"></i></span><span class="drow__v">3.8/5</span></div>
+          <div class="drow"><span class="drow__n">Capability relevance</span><span class="dots "><i></i><i></i><i></i><i></i><i style="opacity:0.5"></i></span><span class="drow__v">4.5/5</span></div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="k">Unfair advantage</p>
+        <p class="strong">Strong problem proximity and product relevance.</p>
+        <div class="callout__split">
+          <p class="k k--coral">Proof needed</p>
+          <p>Verify customer access, revenue claims and transferability.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="dcol">
+      <div class="colhead"><span class="colhead__n">3</span><span class="colhead__t">Who this founder is</span></div>
+      <p class="colsub">Personality explains behaviour; it does not add FQ points.</p>
+
+      <p class="k">Personality signature</p>
+      <p style="font-size:15px;font-weight:500;letter-spacing:-0.02em;margin:6px 0 0">Exploratory &middot; independent &middot; emotionally steady</p>
+
+      <div class="bip"><p class="bip__t">Openness</p><div class="bip__r"><span class="bip__a">Conventional</span><span class="bip__track"><i class="bip__m" style="--at:78%"></i><b class="bip__p" style="--at:78%">78%</b></span><span class="bip__a bip__a--r">Exploratory</span></div></div>
+      <div class="bip"><p class="bip__t">Conscientiousness</p><div class="bip__r"><span class="bip__a">Flexible</span><span class="bip__track"><i class="bip__m" style="--at:68%"></i><b class="bip__p" style="--at:68%">68%</b></span><span class="bip__a bip__a--r">Structured</span></div></div>
+      <div class="bip"><p class="bip__t">Extraversion</p><div class="bip__r"><span class="bip__a">Reserved</span><span class="bip__track"><i class="bip__m" style="--at:54%"></i><b class="bip__p" style="--at:54%">54%</b></span><span class="bip__a bip__a--r">Assertive</span></div></div>
+      <div class="bip"><p class="bip__t">Agreeableness</p><div class="bip__r"><span class="bip__a">Challenging</span><span class="bip__track"><i class="bip__m" style="--at:42%"></i><b class="bip__p" style="--at:42%">42%</b></span><span class="bip__a bip__a--r">Accommodating</span></div></div>
+      <div class="bip"><p class="bip__t">Emotional stability</p><div class="bip__r"><span class="bip__a">Stress-sensitive</span><span class="bip__track"><i class="bip__m" style="--at:74%"></i><b class="bip__p" style="--at:74%">74%</b></span><span class="bip__a bip__a--r">Steady</span></div></div>
+
+      <div class="rule" style="margin:16px 0 13px"></div>
+
+      <p class="k">Founder style &amp; archetype</p>
+      <div class="arch">
+        <span class="arch__n">The Inventor</span>
+        <span><span class="tag tag--brand">VIM</span> <span class="tag tag--ink">Independent</span></span>
+      </div>
+      <div class="gauges">
+        <div class="gauge3"><p class="gauge3__k">Horizon</p><div class="gauge3__w"><svg width="54" height="54" viewBox="0 0 54 54" style="transform:rotate(135deg)"><circle class="gauge3__t" cx="27" cy="27" r="23.5" stroke-width="5" stroke-dasharray="110.7 147.7"/><circle class="gauge3__a" cx="27" cy="27" r="23.5" stroke-width="5" stroke-dasharray="69.8 147.7"/></svg><span class="gauge3__p">63%</span></div><p class="gauge3__l">Vision</p></div>
+        <div class="gauge3"><p class="gauge3__k">Arena</p><div class="gauge3__w"><svg width="54" height="54" viewBox="0 0 54 54" style="transform:rotate(135deg)"><circle class="gauge3__t" cx="27" cy="27" r="23.5" stroke-width="5" stroke-dasharray="110.7 147.7"/><circle class="gauge3__a" cx="27" cy="27" r="23.5" stroke-width="5" stroke-dasharray="59.8 147.7"/></svg><span class="gauge3__p">54%</span></div><p class="gauge3__l">Inward</p></div>
+        <div class="gauge3"><p class="gauge3__k">Mode</p><div class="gauge3__w"><svg width="54" height="54" viewBox="0 0 54 54" style="transform:rotate(135deg)"><circle class="gauge3__t" cx="27" cy="27" r="23.5" stroke-width="5" stroke-dasharray="110.7 147.7"/><circle class="gauge3__a" cx="27" cy="27" r="23.5" stroke-width="5" stroke-dasharray="69.8 147.7"/></svg><span class="gauge3__p">63%</span></div><p class="gauge3__l">Momentum</p></div>
+      </div>
+
+      <div class="rule" style="margin:14px 0 12px"></div>
+
+      <div class="sechead">
+        <p class="k">Team conduct</p>
+        <span class="num" style="font-size:15px;font-weight:500;color:var(--amber)">75/100</span>
+      </div>
+      <div class="badges">
+        <div class="badge badge--amber"><span class="badge__b">REL</span><span><span class="badge__n">Reliability</span><br><span class="badge__v">4.3/5</span></span></div>
+        <div class="badge badge--amber"><span class="badge__b">CAN</span><span><span class="badge__n">Candour</span><br><span class="badge__v">4/5</span></span></div>
+        <div class="badge badge--amber"><span class="badge__b">C&amp;R</span><span><span class="badge__n">Conflict &amp; repair</span><br><span class="badge__v">3.4/5</span></span></div>
+        <div class="badge badge--amber"><span class="badge__b">OWN</span><span><span class="badge__n">Shared ownership</span><br><span class="badge__v">4.1/5</span></span></div>
+        <div class="badge badge--amber"><span class="badge__b">D&amp;T</span><span><span class="badge__n">Delegation &amp; trust</span><br><span class="badge__v">3.5/5</span></span></div>
+        <div class="badge badge--coral"><span class="badge__b">RTC</span><span><span class="badge__n">Response to challenge</span><br><span class="badge__v">3.2/5</span></span></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="dcol">
+      <div class="colhead"><span class="colhead__n">4</span><span class="colhead__t">How to deploy them</span></div>
+      <p class="colsub">Readiness, role and complementary coverage.</p>
+
+      <div class="ringside">
+        <div class="ringside__l"><span class="ring" style="width:62px;height:62px"><svg width="62" height="62" viewBox="0 0 62 62"><circle cx="31" cy="31" r="27.8" fill="none" stroke="var(--rule)" stroke-width="4.5"/><circle cx="31" cy="31" r="27.8" fill="none" stroke="var(--brand)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="174.4" stroke-dashoffset="36.6"/></svg><span class="ring__c"><span class="ring__n" style="font-size:20px;color:var(--brand)">79</span><span class="ring__d">/100</span></span></span>
+          <span class="ringcell__l">Leadership readiness</span></div>
+        <div class="ringside__b">
+          <div class="badges">
+            <div class="badge"><span class="badge__b">DIR</span><span><span class="badge__n">Direction setting</span><br><span class="badge__v">4.3/5</span></span></div>
+            <div class="badge"><span class="badge__b">DEC</span><span><span class="badge__n">Decision ownership</span><br><span class="badge__v">4.2/5</span></span></div>
+            <div class="badge"><span class="badge__b">TAL</span><span><span class="badge__n">Talent judgment</span><br><span class="badge__v">3.8/5</span></span></div>
+            <div class="badge"><span class="badge__b">DEL</span><span><span class="badge__n">Delegation</span><br><span class="badge__v">3.4/5</span></span></div>
+            <div class="badge"><span class="badge__b">ACC</span><span><span class="badge__n">Accountability</span><br><span class="badge__v">4/5</span></span></div>
+            <div class="badge"><span class="badge__b">CON</span><span><span class="badge__n">Difficult conversations</span><br><span class="badge__v">3.5/5</span></span></div>
+            <div class="badge"><span class="badge__b">REG</span><span><span class="badge__n">Emotional regulation</span><br><span class="badge__v">4.1/5</span></span></div>
+            <div class="badge"><span class="badge__b">STK</span><span><span class="badge__n">Stakeholder leadership</span><br><span class="badge__v">3.8/5</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule" style="margin:14px 0 12px"></div>
+
+      <p class="k">Role hypotheses</p>
+      <div class="ringrow" style="margin-top:9px">
+        <div class="ringcell"><span class="ring" style="width:54px;height:54px"><svg width="54" height="54" viewBox="0 0 54 54"><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--rule)" stroke-width="4"/><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--brand)" stroke-width="4" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="21.1"/></svg><span class="ring__c"><span class="ring__n" style="font-size:17px;color:var(--brand)">86</span></span></span>
+          <span class="ringcell__l">CPO / Venture Builder</span></div>
+        <div class="ringcell"><span class="ring" style="width:54px;height:54px"><svg width="54" height="54" viewBox="0 0 54 54"><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--rule)" stroke-width="4"/><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--brand)" stroke-width="4" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="27.1"/></svg><span class="ring__c"><span class="ring__n" style="font-size:17px;color:var(--brand)">82</span></span></span>
+          <span class="ringcell__l">CEO</span></div>
+        <div class="ringcell"><span class="ring" style="width:54px;height:54px"><svg width="54" height="54" viewBox="0 0 54 54"><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--rule)" stroke-width="4"/><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--amber)" stroke-width="4" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="37.7"/></svg><span class="ring__c"><span class="ring__n" style="font-size:17px;color:var(--amber)">75</span></span></span>
+          <span class="ringcell__l">COO</span></div>
+        <div class="ringcell"><span class="ring" style="width:54px;height:54px"><svg width="54" height="54" viewBox="0 0 54 54"><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--rule)" stroke-width="4"/><circle cx="27" cy="27" r="24.0" fill="none" stroke="var(--text-3)" stroke-width="4" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="48.3"/></svg><span class="ring__c"><span class="ring__n" style="font-size:17px;color:var(--text-3)">68</span></span></span>
+          <span class="ringcell__l">CCO</span></div>
+      </div>
+
+      <div class="sechead" style="margin-top:13px">
+        <p class="k k--muted">Founder edge</p>
+        <span style="font-size:15px;font-weight:500;letter-spacing:-0.02em">Product + Strategic</span>
+      </div>
+
+      <div class="sec">
+        <p class="k">Founder stage fit</p>
+        <div class="stages" style="margin-top:8px">
+          <div class="stage stage--med"><p class="stage__n">Discover</p><p class="stage__l">Medium</p></div>
+          <div class="stage stage--high"><p class="stage__n">Validate</p><p class="stage__l">High</p></div>
+          <div class="stage stage--med"><p class="stage__n">Build</p><p class="stage__l">Medium</p></div>
+          <div class="stage stage--med"><p class="stage__n">Sell</p><p class="stage__l">Medium</p></div>
+          <div class="stage stage--low"><p class="stage__n">Scale</p><p class="stage__l">Low</p></div>
+          <div class="stage stage--low"><p class="stage__n">Steward</p><p class="stage__l">Low</p></div>
+        </div>
+        <p style="margin:8px 0 0;font-size:11.5px;color:var(--text-3)">Best fit: Validate &middot; strong through Build with operating support</p>
+      </div>
+
+      <div class="sec">
+        <p class="k">Complementary team blueprint</p>
+        <div class="bp" style="margin-top:6px">
+          <div class="bp__r"><span class="bp__n">Commercial / GTM</span><span class="bp__v">Collaborator</span></div>
+          <div class="bp__r"><span class="bp__n">Operating discipline</span><span class="bp__v">Strong</span></div>
+          <div class="bp__r"><span class="bp__n">Reality Contact</span><span class="bp__v">High</span></div>
+          <div class="bp__r"><span class="bp__n">Risk / regulatory</span><span class="bp__v">Specialist coverage</span></div>
+        </div>
+      </div>
+
+      <div class="riskbar">
+        <span class="k k--coral" style="flex:none">Team risk</span>
+        <p>Speed may outrun challenge and evidence.</p>
+      </div>
     </div>
   </div>
 
-  <div class="baseplate">
-    <p><b style="color:var(--data-2)">ILLUSTRATIVE SAMPLE</b> &nbsp;—&nbsp; every figure is fictional, shown only to demonstrate the format</p>
-    <p>Structured hypotheses for expert verification &nbsp;·&nbsp; not a pass-or-fail judgement</p>
+  <div class="decision">
+    <p class="k k--paper">Decision</p>
+    <p class="lead">Advance with targeted diligence</p>
+    <p class="k k--paper">Verify</p>
+    <p>Commercial claims &middot; customer evidence &middot; response to challenge</p>
+    <p class="k k--paper">Team design</p>
+    <p>Add GTM strength and independent reality testing</p>
   </div>
+
+  <p class="signoff">Founder Quotient</p>
 </div>
 
 </body>

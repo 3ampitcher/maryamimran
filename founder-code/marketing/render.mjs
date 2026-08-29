@@ -20,8 +20,9 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
-/* Canvas. Change these two and the posters reflow to the new format. */
-const W = 1600, H = 2000, SCALE = 2;
+/* Canvas per poster. 01 and 02 are 4:5 portrait; 03 is the landscape
+   dashboard. Change a pair here and in the matching stylesheet. */
+const SCALE = 2;
 
 const OUT = process.argv[2] || 'marketing/exports';
 const only = process.argv[3];
@@ -46,9 +47,9 @@ const server = createServer(async (req, res) => {
 });
 await new Promise((r) => server.listen(PORT, '127.0.0.1', r));
 const POSTERS = [
-  ['01-why', 'founder-code-01-why'],
-  ['02-how', 'founder-code-02-how-it-works'],
-  ['03-dashboard', 'founder-code-03-what-you-receive']
+  ['01-why', 'founder-code-01-why', 1600, 2000],
+  ['02-how', 'founder-code-02-how-it-works', 1600, 2000],
+  ['03-dashboard', 'founder-code-03-dashboard', 2000, 1130]
 ].filter(([src]) => !only || src === only);
 
 mkdirSync(OUT, { recursive: true });
@@ -56,7 +57,7 @@ const browser = await chromium.launch(
   process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}
 );
 const ctx = await browser.newContext({
-  viewport: { width: W + 80, height: H + 80 },
+  viewport: { width: 2100, height: 2100 },
   deviceScaleFactor: SCALE,
   reducedMotion: 'reduce'
 });
@@ -65,13 +66,16 @@ const errs = [];
 page.on('pageerror', e => errs.push('pageerror: ' + e.message));
 page.on('response', r => { if (r.status() >= 400) errs.push(`HTTP ${r.status()} ${r.url()}`); });
 
-for (const [src, name] of POSTERS) {
+for (const [src, name, W, H] of POSTERS) {
+  await page.setViewportSize({ width: W + 80, height: Math.min(H + 80, 2100) });
   await page.goto(`http://127.0.0.1:${PORT}/marketing/${src}.html`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(200);
   const box = await page.evaluate(() => {
     const p = document.getElementById('poster');
-    return { w: p.offsetWidth, h: p.offsetHeight, sh: p.scrollHeight };
+    return { w: p.offsetWidth, h: p.offsetHeight, sh: p.scrollHeight, sw: p.scrollWidth };
   });
+  if (box.w !== W || box.h !== H) errs.push(`${src}: canvas is ${box.w}x${box.h}, expected ${W}x${H}`);
+  if (box.sw > box.w + 1) errs.push(`${src}: content overflows canvas by ${box.sw - box.w}px horizontally`);
   if (box.sh > box.h + 1) errs.push(`${src}: content overflows canvas by ${box.sh - box.h}px`);
   await page.locator('#poster').screenshot({ path: `${OUT}/${name}.png` });
   console.log(`${name}.png  ${box.w}x${box.h} css -> ${box.w * SCALE}x${box.h * SCALE} px${box.sh > box.h + 1 ? '  OVERFLOW ' + (box.sh - box.h) : ''}`);

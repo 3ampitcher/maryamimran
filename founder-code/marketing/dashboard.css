@@ -1,0 +1,365 @@
+/* ============================================================
+   POSTER 03 — EXECUTIVE INTELLIGENCE DASHBOARD
+   ------------------------------------------------------------
+   Landscape 2000 x 1130, rendered at 2x.
+
+   Layout and content are fixed by the supplied design. This file
+   only re-skins it: the Founder Code palette and the two Founder
+   Code typefaces, so it sits with posters 01 and 02.
+
+   Colour roles, mapped once and applied throughout:
+     brand teal   structure, headings, positive/strong signals
+     amber        evidence, moderate levels, sample marking
+     coral        risk and watch areas only
+     ink          neutral weight — dark chips, dark bars, low levels
+
+   Sizes are in px, not rem: this poster runs far denser than the
+   other two and must not inherit their scaled-up root size.
+   ============================================================ */
+
+html { font-size: 16px; }
+
+body {
+  margin: 0;
+  background: #8d8f8a;
+  display: grid;
+  justify-items: center;
+  padding: 40px 0;
+}
+
+.dash-poster {
+  position: relative;
+  width: 2000px;
+  height: 1130px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0 30px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* --- Shared atoms ----------------------------------------------------- */
+
+.k {                                   /* mono key / eyebrow */
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.k--muted { color: var(--text-3); }
+.k--amber { color: var(--amber); }
+.k--coral { color: var(--coral); }
+.k--paper { color: rgba(246, 244, 239, 0.62); }
+
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.val { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-2); }
+
+.rule { height: 1px; background: var(--rule-soft); }
+
+/* --- Masthead --------------------------------------------------------- */
+
+.dhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 22px 0 20px;
+}
+.dhead__id { display: flex; align-items: center; gap: 20px; }
+.fqmark {
+  width: 60px; height: 60px;
+  display: grid; place-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 3px;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.dhead__bar { width: 2px; height: 54px; background: var(--brand); }
+.dhead__title { font-size: 31px; font-weight: 500; letter-spacing: -0.03em; margin: 3px 0 0; }
+.dhead__meta { text-align: right; }
+.dhead__meta p { margin: 0; }
+.dhead__scope { margin-top: 7px !important; font-size: 12.5px; color: var(--text-3); }
+
+.accentrule { height: 2px; background: var(--brand); }
+
+/* --- Identity band ---------------------------------------------------- */
+
+.idband {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 30px;
+  padding: 18px 0 16px;
+}
+.idband__name { font-size: 27px; font-weight: 500; letter-spacing: -0.03em; margin: 0; }
+.idband__ctx { margin: 6px 0 0; }
+
+.scoredot {
+  width: 74px; height: 74px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  line-height: 1;
+}
+.scoredot b { font-family: var(--font-mono); font-size: 26px; font-weight: 500; letter-spacing: -0.03em; }
+.scoredot span { font-family: var(--font-mono); font-size: 9px; color: rgba(246, 244, 239, 0.6); display: block; margin-top: 3px; }
+
+.rec p { margin: 6px 0 0; font-size: 13px; line-height: 1.45; color: var(--text-2); max-width: 62ch; }
+
+.chips { display: flex; gap: 10px; }
+.chip { text-align: center; }
+.chip__k {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.chip__v {
+  margin-top: 6px;
+  min-width: 122px;
+  padding: 7px 12px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+.chip__v--amber { background: var(--amber); }
+.chip__v--brand { background: var(--brand); }
+.chip__v--coral { background: var(--coral); }
+.chip__v--ink   { background: var(--ink); }
+
+/* --- Four columns ----------------------------------------------------- */
+
+.dcols {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+  min-height: 0;
+}
+.dcol { padding: 16px 22px 12px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; }
+.dcol:first-child { border-left: 0; padding-left: 0; }
+.dcol:last-child { padding-right: 0; }
+
+.colhead { display: flex; align-items: center; gap: 11px; }
+.colhead__n {
+  width: 21px; height: 21px;
+  flex: none;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  place-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+}
+.colhead__t { font-size: 19px; font-weight: 500; letter-spacing: -0.025em; }
+.colsub { margin: 6px 0 14px; font-size: 11.5px; color: var(--text-3); }
+
+.sec { margin-top: 13px; }
+.sec--top { margin-top: 0; }
+.sechead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
+
+/* --- Rings ------------------------------------------------------------ */
+
+.ring { position: relative; display: grid; place-items: center; flex: none; }
+.ring svg { display: block; transform: rotate(-90deg); }
+.ring__c { position: absolute; text-align: center; line-height: 1; }
+.ring__n { font-family: var(--font-mono); font-weight: 500; letter-spacing: -0.03em; }
+.ring__d { font-family: var(--font-mono); font-size: 8px; color: var(--text-3); display: block; margin-top: 2px; }
+
+.ringrow { display: flex; gap: 14px; }
+.ringcell { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+.ringcell__l { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; line-height: 1.3; }
+.ringcell__w { font-size: 10px; color: var(--text-3); margin-top: -5px; }
+
+.formula {
+  margin-top: 12px;
+  padding: 9px 12px;
+  background: var(--paper-1);
+  border-radius: 3px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--text-2);
+}
+.formula b { color: var(--brand); font-weight: 500; }
+
+/* Ring paired with a list, as in columns 2 and 4. */
+.ringside { display: flex; align-items: flex-start; gap: 16px; }
+.ringside__l { width: 92px; flex: none; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.ringside__b { flex: 1; min-width: 0; }
+
+/* --- Dot ratings ------------------------------------------------------- */
+
+.drow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 5px 0; }
+.drow__n { font-size: 12.5px; color: var(--text-2); line-height: 1.25; }
+.dots { display: flex; gap: 5px; }
+.dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--dot, var(--brand)); }
+.dots i.is-off { background: var(--rule); }
+.drow__v { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--dot, var(--brand)); min-width: 34px; text-align: right; }
+.dots--amber, .drow--amber { --dot: var(--amber); }
+
+.note-i { margin: 9px 0 0; font-family: var(--font-serif); font-style: italic; font-size: 12.5px; color: var(--text-3); }
+
+/* --- Callout boxes ----------------------------------------------------- */
+
+.callout {
+  margin-top: auto;
+  padding: 12px 14px;
+  background: var(--paper-1);
+  border-radius: 4px;
+}
+.callout + .callout { margin-top: 10px; }
+.callout p { margin: 5px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--text-2); }
+.callout p.strong { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+.callout__split { margin-top: 11px; padding-top: 11px; border-top: 1px solid var(--rule-soft); }
+
+/* --- Radar ------------------------------------------------------------- */
+
+.radar { margin: 4px 0 0; display: grid; place-items: center; }
+.radar svg { display: block; }
+.radar__grid { fill: none; stroke: var(--rule-soft); }
+.radar__axis { stroke: var(--rule-soft); }
+.radar__area { fill: rgba(14, 79, 71, 0.13); stroke: var(--brand); stroke-width: 1.5; stroke-linejoin: round; }
+.radar__pt { fill: var(--brand); }
+.radar__pt--watch { fill: var(--coral); }
+.radar__lbl { font-family: var(--font-sans); font-size: 9px; fill: var(--text-3); }
+.radar__val { font-family: var(--font-mono); font-size: 9.5px; font-weight: 500; fill: var(--brand); }
+.radar__val--watch { fill: var(--coral); }
+
+/* --- Bipolar personality sliders ---------------------------------------- */
+
+.bip { margin-top: 15px; }
+.bip__t { text-align: center; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+.bip__r { display: grid; grid-template-columns: 74px minmax(0, 1fr) 74px; align-items: center; gap: 10px; }
+.bip__a { font-size: 10.5px; color: var(--text-3); }
+.bip__a--r { text-align: right; }
+.bip__track { position: relative; height: 3px; border-radius: 999px; background: var(--rule); }
+.bip__m { position: absolute; top: 50%; left: var(--at); width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--brand); }
+.bip__p { position: absolute; top: 9px; left: var(--at); transform: translateX(-50%); font-family: var(--font-mono); font-size: 9.5px; font-weight: 500; color: var(--brand); }
+
+/* --- Archetype --------------------------------------------------------- */
+
+.arch { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px; }
+.arch__n { font-size: 22px; font-weight: 500; letter-spacing: -0.03em; }
+.tag {
+  padding: 5px 12px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+.tag--brand { background: var(--brand); }
+.tag--ink { background: var(--ink); }
+
+.gauges { display: flex; gap: 12px; margin-top: 12px; }
+.gauge3 { flex: 1; text-align: center; }
+.gauge3__k { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+.gauge3__w { position: relative; display: grid; place-items: center; }
+.gauge3 svg { display: block; }
+.gauge3__t { fill: none; stroke: var(--rule); }
+.gauge3__a { fill: none; stroke: var(--brand); stroke-linecap: round; }
+.gauge3__p { position: absolute; font-family: var(--font-mono); font-size: 15px; font-weight: 500; letter-spacing: -0.03em; }
+.gauge3__l { margin-top: 4px; font-size: 11.5px; color: var(--text-2); }
+
+/* --- Badge lists (team conduct, leadership) ------------------------------ */
+
+.badges { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.badge { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.badge__b {
+  width: 30px; height: 30px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  background: var(--brand);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.badge--amber .badge__b { background: var(--amber); }
+.badge--coral .badge__b { background: var(--coral); }
+.badge__n { font-size: 11.5px; line-height: 1.25; color: var(--text-2); }
+.badge__v { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--ink); }
+
+/* --- Stage fit ---------------------------------------------------------- */
+
+.stages { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+.stage { padding: 8px 4px; border-radius: 3px; text-align: center; border: 1px solid var(--rule-soft); }
+.stage__n { font-size: 11px; font-weight: 500; }
+.stage__l { margin-top: 3px; font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; }
+.stage--high { background: var(--brand); border-color: var(--brand); color: var(--paper); }
+.stage--med { background: rgba(176, 114, 8, 0.1); border-color: rgba(176, 114, 8, 0.34); color: var(--amber); }
+.stage--med .stage__n { color: var(--text); }
+.stage--low { color: var(--text-3); }
+
+/* --- Blueprint ---------------------------------------------------------- */
+
+.bp { display: grid; }
+.bp__r { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--rule-soft); }
+.bp__r:last-child { border-bottom: 0; }
+.bp__n { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text-2); }
+.bp__n::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--amber); flex: none; }
+.bp__v { font-size: 12.5px; font-weight: 500; }
+
+.riskbar {
+  margin-top: 11px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 13px;
+  background: rgba(178, 58, 46, 0.09);
+  border-radius: 4px;
+}
+.riskbar p { margin: 0; font-size: 12.5px; font-weight: 500; }
+
+/* --- Decision bar ------------------------------------------------------- */
+
+.decision {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 22px;
+  margin: 12px 0 0;
+  padding: 15px 24px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 4px;
+}
+.decision p { margin: 0; font-size: 13.5px; }
+/* .lead is a site class carrying a dark text colour; on the ink bar it has
+   to take the bar's own foreground. */
+.decision .lead { color: var(--paper); font-weight: 500; font-size: 15px; }
+
+.signoff {
+  padding: 7px 0 14px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}

@@ -9,7 +9,7 @@ all three posters follow.
 |---|---|
 | `01-why.html` | **Why / big picture** — the problem IQ and EQ leave, the FQ + Hunter lockup, who uses it, the value, the evidence base. Ink ground. |
 | `02-how.html` | **How it works** — assessment inputs, the three-part weighted score, the six FQ dimensions, the three axes and eight styles. |
-| `03-dashboard.html` | **What the client receives** — the Executive Intelligence Dashboard as the tangible output, clearly labelled illustrative. |
+| `03-dashboard.html` | **Executive Intelligence Dashboard** — the four-column landscape dashboard, in the Founder Code palette and typefaces. **Generated**: edit `03-dashboard.build.mjs` and re-run it, never the HTML. |
 
 ## Rendering
 
@@ -29,19 +29,28 @@ either cut the copy or take the space from a band's padding.
 
 ## Format
 
-Canvas is **1600 × 2000 CSS px (4:5)**, rendered at 2× to **3200 × 4000 PNG** —
-right for LinkedIn, a PDF one-pager, or printing at roughly A4.
+| Poster | Canvas | Export |
+|---|---|---|
+| 01, 02 | 1600 × 2000 (4:5 portrait) | 3200 × 4000 |
+| 03 | 2000 × 1130 (landscape) | 4000 × 2260 |
 
-To change format, edit `W` and `H` in `render.mjs` and the matching `.poster`
-width/height in `poster.css`. The bands reflow; expect to re-tune padding, and
-the renderer will tell you if anything no longer fits.
+Sizes live in the `POSTERS` table in `render.mjs`, paired with the `.poster`
+width/height in `poster.css` (01, 02) and `.dash-poster` in `dashboard.css`
+(03). Change a pair and the bands reflow; expect to re-tune padding, and the
+renderer will tell you if anything no longer fits.
 
 ## Editing copy
 
-Poster HTML is hand-authored and deliberately literal — no templating, so what
-you read is what renders. Structural pieces (`.band`, `.box`, `.maths`,
-`.mini`, `.lockup`) live in `poster.css`; everything else is a site component
-(`.meter`, `.pill`, `.points`, `.kv`, `.ladder`, `.axis`, `.gauge`) reused as-is.
+Posters 01 and 02 are hand-authored and deliberately literal — no templating, so
+what you read is what renders. Structural pieces (`.band`, `.box`, `.maths`,
+`.lockup`) live in `poster.css`; everything else is a site component (`.meter`,
+`.pill`, `.points`, `.kv`, `.ladder`, `.axis`) reused as-is.
+
+Poster 03 is generated. Its layout and content are fixed by the supplied
+design — only the palette and the two typefaces are Founder Code's. Colour roles
+are mapped once, at the top of `dashboard.css`: brand teal for structure and
+strong signals, amber for evidence and moderate levels, coral for risk and watch
+areas only, ink for neutral weight.
 
 The illustrative dashboard uses **"Sample Founder"** and states on the poster
 that every figure is fictional. Swapping in a real name attaches invented
