@@ -121,68 +121,59 @@
   .rail-index.on-dark a.on i{background:var(--lime)}
   @media(min-width:1460px){.rail-index{display:flex}}
 
-  /* ---------- hero: the headline is the control ---------- */
-  .p-hero{max-width:1200px;margin:0 auto;padding:76px 24px 40px}
+  /* ---------- hero ---------- */
+  .p-hero{max-width:1200px;margin:0 auto;padding:64px 24px 40px}
   .hero-h{
-    font-size:clamp(40px,8.2vw,116px);font-weight:700;letter-spacing:-.05em;line-height:.98;
-    margin-top:30px;
+    font-size:clamp(42px,7.6vw,106px);font-weight:700;letter-spacing:-.052em;line-height:.97;
+    margin-top:24px;
+  }
+  /* every statement the brand makes ends on a lime period, the same one that
+     closes the wordmark */
+  .hero-h i{font-style:normal;color:var(--lime-deep)}
+  .hero-sub{
+    margin-top:26px;max-width:56ch;
+    font-size:clamp(17px,1.75vw,21px);line-height:1.58;color:var(--muted);font-weight:500;
   }
 
-  /* the stage token: a button that reads as part of the sentence */
-  .tk{
-    position:relative;display:inline-block;vertical-align:baseline;
-    font:inherit;color:inherit;letter-spacing:inherit;
-    background:none;border:none;padding:0;margin:0;cursor:pointer;
-    width:var(--tw,auto);text-align:left;
-    transition:width .55s var(--ease);
-    white-space:nowrap;z-index:0;
+  /* ---------- the five ways ---------- */
+  .ways{margin-top:46px}
+  .ways-rule{position:relative;height:2px;background:var(--line);border-radius:2px}
+  .ways-mark{
+    position:absolute;top:0;left:0;height:2px;width:100%;border-radius:2px;
+    background:var(--lime-deep);
+    transition:left .55s var(--ease),width .55s var(--ease);
   }
-  .tk::after{
-    content:"";position:absolute;left:-.03em;right:-.03em;bottom:.17em;height:.18em;
-    background:var(--lime);border-radius:6px;transform:rotate(-1deg);z-index:-1;
-    transition:background .3s;
+  .ways-row{display:grid;grid-template-columns:repeat(5,1fr)}
+  .way{
+    padding:20px 26px 22px 0;cursor:default;
+    transition:opacity .4s var(--ease),transform .4s var(--ease);
   }
-  .tk:hover::after,.tk:focus-visible::after{background:#D6F95C}
-  .tk:focus-visible{outline:none}
-  .tk:focus-visible .tk-mask{outline:2px solid var(--lime-deep);outline-offset:6px;border-radius:4px}
-  /* same as .lines .ln - the mask must clear the descenders in "Every stage" */
-  .tk-mask{display:block;overflow:hidden;padding-bottom:.17em;margin-bottom:-.17em}
-  .tk-txt{display:block;transition:transform .45s var(--ease),opacity .45s var(--ease)}
-  .tk-txt.out{transform:translateY(-112%);opacity:0}
-  .tk-txt.in{transform:translateY(112%);opacity:0;transition:none}
+  .way + .way{padding-left:26px;border-left:1px solid var(--line)}
+  .way b{
+    display:block;font-size:clamp(15px,1.45vw,19px);font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;line-height:1.2;
+    transition:color .35s var(--ease);
+  }
+  .way span{
+    display:block;margin-top:11px;font-size:15px;line-height:1.45;
+    color:var(--muted);font-weight:500;letter-spacing:-.01em;
+  }
+  /* dim the set, lift the one you are on - the offer stays legible either way */
+  .ways.hot .way{opacity:.4}
+  .ways.hot .way.on{opacity:1}
+  .ways.hot .way.on b{color:var(--lime-deep)}
+  .ways-note{
+    margin-top:20px;font-size:13.5px;font-weight:600;color:var(--faint);letter-spacing:.01em;
+  }
 
   .hero-under{
-    display:flex;align-items:flex-end;justify-content:space-between;gap:48px;flex-wrap:wrap;
-    margin-top:44px;
+    display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
+    margin-top:38px;
   }
-  .hero-left{flex:1 1 460px;min-width:0}
-  .hero-ticks{display:flex;gap:8px;max-width:340px}
-  .hero-ticks button{
-    flex:1 1 auto;height:4px;border-radius:2px;border:none;padding:0;cursor:pointer;
-    background:#D3D3CB;transition:background .3s;
-  }
-  .hero-ticks button:hover{background:#A8A8A0}
-  .hero-ticks button.on{background:var(--lime-deep)}
-  .hero-resolve{
-    margin-top:22px;font-size:19px;line-height:1.55;color:var(--muted);font-weight:500;max-width:50ch;
-    transition:opacity .35s var(--ease);
-  }
-  .hero-resolve.swap{opacity:0}
-  .hero-resolve b{color:var(--ink);font-weight:700}
-  .hero-resolve a{
-    color:var(--ink);font-weight:700;text-decoration:none;
-    border-bottom:1.5px solid var(--line);padding-bottom:2px;
-    transition:border-color .3s;white-space:nowrap;
-  }
-  .hero-resolve a:hover{border-color:var(--lime-deep)}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
-
-  .hero-meta{
-    display:flex;flex-wrap:wrap;gap:12px 34px;margin-top:60px;padding-top:26px;
-    border-top:1px solid var(--line);
+  .hero-proof{
+    font-size:12.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
   }
-  .hero-meta div{font-size:12.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
-  .hero-meta div b{display:block;font-size:26px;letter-spacing:-.02em;text-transform:none;color:var(--ink);margin-bottom:4px}
 
   /* ---------- 01 why ---------- */
   .why-head{max-width:780px;margin-bottom:72px}
@@ -768,20 +759,22 @@
     .q-list li{font-size:17.5px;padding-left:40px}
     .creed{grid-template-columns:1fr;gap:28px;padding:40px 28px}
     .contact-card{grid-template-columns:1fr;gap:34px;padding:40px 28px}
-    .hero-meta div b{font-size:22px}
-    .p-hero{padding:52px 20px 30px}
+    .p-hero{padding:52px 20px 34px}
     .hero-h{letter-spacing:-.045em}
-    .hero-under{flex-direction:column;align-items:stretch;margin-top:34px;gap:28px}
-    .hero-left{flex:0 1 auto}
-    .hero-ticks{max-width:none}
-    .hero-resolve{font-size:17px}
-    .hero-meta{margin-top:40px}
-  }
-  @media(max-width:700px){
-    /* four figures packed by natural width wrapped into a ragged block -
-       an even pair of columns reads as a table instead of an accident */
-    .hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:26px 18px}
-    .hero-meta div{font-size:11.5px;letter-spacing:.1em}
+    .hero-sub{margin-top:24px}
+    .ways{margin-top:44px}
+    /* five columns will not fit; the same five read as rows, verb left,
+       what it covers right */
+    .ways-row{grid-template-columns:1fr}
+    .way{
+      display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+      padding:16px 0;border-bottom:1px solid var(--line);
+    }
+    .way + .way{padding-left:0;border-left:none}
+    .way b{font-size:14px;flex:0 0 auto}
+    .way span{margin-top:0;text-align:right;font-size:14px;max-width:56%}
+    .ways-note{margin-top:20px}
+    .hero-under{flex-direction:column;align-items:stretch;margin-top:34px;gap:22px}
   }
 </style>
 </head>
@@ -818,27 +811,36 @@
   <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
 
   <h1 class="hero-h lines rv" style="--d:.06s">
-    <span class="ln"><span>We build the team</span></span>
-    <span class="ln"><span>your <button class="tk" id="stageToken" type="button"
-        aria-live="polite"><span class="tk-mask"><span class="tk-txt" id="tkTxt">Pre-Seed</span></span></button> needs.</span></span>
+    <span class="ln"><span>Build what the</span></span>
+    <span class="ln"><span>next stage needs<i>.</i></span></span>
   </h1>
 
-  <div class="hero-under rv" style="--d:.24s">
-    <div class="hero-left">
-      <div class="hero-ticks" id="stageTicks" role="group" aria-label="Choose a stage"></div>
-      <p class="hero-resolve" id="heroResolve"></p>
+  <p class="hero-sub rv" style="--d:.16s">
+    Sometimes it is a stronger founding team. Sometimes a leader, extra capability,
+    a complete talent function or the technology itself.
+  </p>
+
+  <!-- Five ways in, not five steps. One lime line spans all of them at rest and
+       narrows to whichever one you are on, so the set reads as a single offer
+       you can enter at any point. -->
+  <div class="ways rv" id="ways" style="--d:.24s" aria-label="Five ways we help">
+    <div class="ways-rule"><span class="ways-mark" id="waysMark"></span></div>
+    <div class="ways-row">
+      <div class="way"><b>Understand</b><span>Founders and teams</span></div>
+      <div class="way"><b>Find</b><span>The missing partner</span></div>
+      <div class="way"><b>Hire</b><span>The right leader</span></div>
+      <div class="way"><b>Step in</b><span>On-demand capability and talent</span></div>
+      <div class="way"><b>Build</b><span>The technology</span></div>
     </div>
-    <div class="hero-cta">
-      <a class="btn btn-dark" href="index.html#solver">Run the solver <span class="ar">&rarr;</span></a>
-      <a class="btn btn-ghost" href="#services">See what we do</a>
-    </div>
+    <p class="ways-note">Separate ways to work with us &mdash; not five compulsory steps.</p>
   </div>
 
-  <div class="hero-meta rv" style="--d:.34s">
-    <div><b>20+</b>Years in GCC leadership</div>
-    <div><b>7</b>Services, 3 groups</div>
-    <div><b>5</b>Stages mapped</div>
-    <div><b>1</b>Thread through all of it</div>
+  <div class="hero-under rv" style="--d:.32s">
+    <div class="hero-cta">
+      <a class="btn btn-dark" href="index.html#solver">Find what you need <span class="ar">&rarr;</span></a>
+      <a class="btn btn-ghost" href="#services">See every service</a>
+    </div>
+    <p class="hero-proof">20+ years in GCC leadership</p>
   </div>
 </header>
 
@@ -1614,120 +1616,44 @@ const CHAPTERS = [
 })();
 
 /* =====================================================================
-   The hero headline is the control
-   Reads the same STAGES data as the stage map, so the sentence in the
-   headline can never disagree with the section below it.
+   The five ways
+   One lime line spans the whole set at rest and narrows to whichever way
+   you are on, so five parallel offers read as one thing you can enter at
+   any point - never as five steps in an order.
 ===================================================================== */
-(function heroStage(){
-  const token   = document.getElementById('stageToken');
-  const txt     = document.getElementById('tkTxt');
-  const ticks   = document.getElementById('stageTicks');
-  const resolve = document.getElementById('heroResolve');
-  if(!token) return;
+(function ways(){
+  const wrap = document.getElementById('ways');
+  const mark = document.getElementById('waysMark');
+  if(!wrap || !mark) return;
+  const items = [...wrap.querySelectorAll('.way')];
+  const wide  = () => window.matchMedia('(min-width:901px)').matches;
 
-  const LIVE = STAGES.filter(st => st.key !== 'Every stage');   // five real stages
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let i = 0, timer = null, touched = false;
+  function spanAll(){
+    mark.style.left = '0%';
+    mark.style.width = '100%';
+  }
+  function spanOne(el){
+    const w = wrap.getBoundingClientRect(), r = el.getBoundingClientRect();
+    mark.style.left  = ((r.left - w.left) / w.width * 100) + '%';
+    mark.style.width = (r.width / w.width * 100) + '%';
+  }
+  function clear(){
+    wrap.classList.remove('hot');
+    items.forEach(el=>el.classList.remove('on'));
+    spanAll();
+  }
 
-  const slugify = t => t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-
-  /* measure each label once so the sentence can reflow smoothly rather
-     than snapping the rest of the line sideways */
-  const widths = [];
-  const h1 = token.closest('h1');
-  function measure(){
-    const held = txt.textContent;
-    token.style.width = 'auto';
-    LIVE.forEach((st,n)=>{ txt.textContent = st.key; widths[n] = token.getBoundingClientRect().width; });
-    token.style.width = '';
-    txt.textContent = held;
-
-    /* A longer stage name can rewrap the headline, which would change the
-       height of the page every few seconds while somebody is reading further
-       down it. Reserve the tallest arrangement so nothing below ever moves. */
-    h1.style.minHeight = '';
-    let tallest = 0;
-    LIVE.forEach((st,n)=>{
-      token.style.setProperty('--tw', Math.ceil(widths[n]) + 2 + 'px');
-      txt.textContent = st.key;
-      tallest = Math.max(tallest, h1.offsetHeight);
+  items.forEach(el=>{
+    el.addEventListener('pointerenter', ()=>{
+      if(!wide()) return;                    // rows on small screens, no dimming
+      wrap.classList.add('hot');
+      items.forEach(o=>o.classList.toggle('on', o === el));
+      spanOne(el);
     });
-    h1.style.minHeight = tallest + 'px';
-    txt.textContent = LIVE[i].key;
-    token.style.setProperty('--tw', Math.ceil(widths[i]) + 2 + 'px');
-
-    // the resolve line rewraps between stages for the same reason
-    resolve.style.minHeight = '';
-    let deepest = 0;
-    LIVE.forEach(st=>{ resolve.innerHTML = resolveHTML(st); deepest = Math.max(deepest, resolve.offsetHeight); });
-    resolve.style.minHeight = deepest + 'px';
-    resolve.innerHTML = resolveHTML(LIVE[i]);
-  }
-
-  function resolveHTML(st){
-    const svc = nameOf(st.bring[0]);
-    const need = st.code.replace(/\.$/,'');
-    return `At ${st.key}, that means <b>${need}</b>. We start with ` +
-           `<a href="company.html#${slugify(svc)}">${svc} &rarr;</a>`;
-  }
-
-  function paint(n, first){
-    i = n;
-    const st = LIVE[n];
-
-    token.style.setProperty('--tw', Math.ceil(widths[n]) + 2 + 'px');
-    [...ticks.children].forEach((t,k)=>{
-      t.classList.toggle('on', k===n);
-      t.setAttribute('aria-current', k===n ? 'true':'false');
-    });
-
-    const html = resolveHTML(st);
-
-    if(first || reduced){ txt.textContent = st.key; resolve.innerHTML = html; return; }
-
-    txt.classList.add('out');
-    resolve.classList.add('swap');
-    setTimeout(()=>{
-      txt.textContent = st.key;
-      txt.classList.remove('out'); txt.classList.add('in');
-      requestAnimationFrame(()=> requestAnimationFrame(()=> txt.classList.remove('in')));
-      resolve.innerHTML = html;
-      resolve.classList.remove('swap');
-    }, 260);
-  }
-
-  LIVE.forEach((st,n)=>{
-    const t = document.createElement('button');
-    t.type = 'button';
-    t.setAttribute('aria-label', st.key);
-    t.addEventListener('click', ()=>{ stop(); paint(n); });
-    ticks.appendChild(t);
   });
-
-  const next = ()=> paint((i + 1) % LIVE.length);
-  function start(){ if(!reduced && !touched) timer = setInterval(next, 4200); }
-  function stop(){ touched = true; clearInterval(timer); timer = null; }
-
-  token.addEventListener('click', ()=>{ stop(); next(); });
-  token.addEventListener('mouseenter', ()=> clearInterval(timer));
-  token.addEventListener('mouseleave', ()=>{ if(!touched) start(); });
-  document.addEventListener('visibilitychange', ()=>{
-    if(document.hidden) clearInterval(timer); else if(!touched) start();
-  });
-
-  measure();
-  paint(0, true);
-  window.addEventListener('resize', measure);
-  if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-
-  // nothing to see once the hero has scrolled away, so stop running
-  if('IntersectionObserver' in window){
-    new IntersectionObserver(es=>{
-      if(es[0].isIntersecting){ if(!touched) start(); }
-      else clearInterval(timer);
-    }, {threshold:0}).observe(h1);
-  }
-  setTimeout(start, 1800);
+  wrap.addEventListener('pointerleave', clear);
+  window.addEventListener('resize', ()=>{ if(!wrap.classList.contains('hot')) spanAll(); });
+  spanAll();
 })();
 
 /* =====================================================================
