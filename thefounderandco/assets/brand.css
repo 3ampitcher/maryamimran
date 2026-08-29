@@ -66,6 +66,12 @@ a{color:inherit}
   content:"";width:26px;height:2px;background:var(--lime);flex:0 0 auto;border-radius:2px;
 }
 .eyebrow.no-rule::before{display:none}
+/* .2em tracking pushed a long kicker onto two lines on phones, stranding a
+   syllable under a left-aligned rule */
+@media(max-width:520px){
+  .eyebrow{font-size:10px;letter-spacing:.14em;gap:10px}
+  .eyebrow::before{width:20px}
+}
 .eyebrow.on-dark{color:#8D939E}
 
 .hl{position:relative;display:inline-block;white-space:nowrap;z-index:0}
@@ -108,12 +114,84 @@ a{color:inherit}
 .nav-cta{
   background:var(--lime);color:var(--ink);text-decoration:none;
   font-size:14.5px;font-weight:700;padding:12px 22px;border-radius:999px;
-  display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
   transition:transform .25s var(--ease),background .2s;
 }
 .nav-cta:hover{transform:translateY(-1px);background:#D6F95C}
 .nav-cta .ar{transition:transform .25s var(--ease)}
 .nav-cta:hover .ar{transform:translateX(3px)}
+
+/* ---------- mobile menu ---------- */
+/* Under 720px the inline links do not fit beside the wordmark and the CTA,
+   so they move into a sheet. The sheet is built from the page's own
+   .nav-link elements, so every page gets its real links with no duplication. */
+.nav-menu{
+  display:none;width:42px;height:42px;flex:0 0 auto;border:none;padding:0;cursor:pointer;
+  background:#1E222B;border-radius:999px;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.nav-menu:hover{background:#282D37}
+.nav-menu i{
+  display:block;position:relative;width:16px;height:2px;border-radius:2px;background:#fff;
+  transition:background .2s var(--ease),transform .3s var(--ease);
+}
+.nav-menu i::before,.nav-menu i::after{
+  content:"";position:absolute;left:0;width:16px;height:2px;border-radius:2px;background:#fff;
+  transition:transform .3s var(--ease),top .3s var(--ease);
+}
+.nav-menu i::before{top:-5px}
+.nav-menu i::after{top:5px}
+.nav-menu[aria-expanded="true"] i{background:transparent}
+.nav-menu[aria-expanded="true"] i::before{top:0;transform:rotate(45deg);background:var(--lime)}
+.nav-menu[aria-expanded="true"] i::after{top:0;transform:rotate(-45deg);background:var(--lime)}
+
+.nav-sheet{
+  position:fixed;inset:0;z-index:290;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:calc(var(--nav-h) + 34px) 26px 40px;
+  overflow-y:auto;overscroll-behavior:contain;
+  opacity:0;transition:opacity .34s var(--ease);
+}
+.nav-sheet.open{opacity:1}
+.nav-sheet .sheet-h{
+  font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:#797D85;margin-bottom:22px;
+}
+.sheet-links{display:flex;flex-direction:column;border-top:1px solid #23262E}
+.sheet-links a{
+  display:flex;align-items:baseline;gap:16px;text-decoration:none;color:#fff;
+  font-size:clamp(27px,8vw,38px);font-weight:700;letter-spacing:-.035em;
+  padding:22px 0;border-bottom:1px solid #23262E;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease),color .2s;
+}
+.nav-sheet.open .sheet-links a{opacity:1;transform:none}
+.sheet-links a:nth-child(1){transition-delay:.06s}
+.sheet-links a:nth-child(2){transition-delay:.12s}
+.sheet-links a:nth-child(3){transition-delay:.18s}
+.sheet-links a:nth-child(4){transition-delay:.24s}
+.sheet-links a em{
+  font-family:var(--sans);font-style:normal;font-size:11px;font-weight:700;
+  letter-spacing:.14em;color:#8A8F98;flex:0 0 auto;
+}
+.sheet-links a:active{color:var(--lime)}
+.sheet-foot{
+  margin-top:32px;display:flex;flex-direction:column;gap:9px;
+  font-size:14px;font-weight:600;color:#9AA0AB;
+  opacity:0;transition:opacity .5s var(--ease) .3s;
+}
+.nav-sheet.open .sheet-foot{opacity:1}
+.sheet-foot a{color:#C3C8D0;text-decoration:none;width:fit-content}
+body.nav-open{overflow:hidden}
+/* the sheet is the same ink as the nav pill, so the pill would read as a
+   smudge floating on it; drop its own surface while the sheet is open */
+body.nav-open .nav-outer > nav{background:transparent;box-shadow:none}
+
+@media(prefers-reduced-motion:reduce){
+  .nav-sheet,.sheet-links a,.sheet-foot{transition:none}
+  .sheet-links a{opacity:1;transform:none}
+  .sheet-foot{opacity:1}
+}
 
 @media(min-width:1320px){.brand-tag{display:block}}
 @media(max-width:720px){
@@ -121,7 +199,20 @@ a{color:inherit}
   .nav-outer > nav{padding:10px 10px 10px 18px}
   .wordmark{font-size:17px}
   .nav-link{display:none}
+  .nav-menu{display:inline-flex}
   .nav-cta{font-size:13.5px;padding:11px 18px}
+}
+@media(max-width:420px){
+  /* wordmark + menu + CTA on a 360px screen: the arrow is the first thing
+     that can go, and the pill must never wrap to two lines */
+  .nav-outer > nav{padding:10px 8px 10px 15px;gap:10px}
+  .wordmark{font-size:16px}
+  .nav-menu{width:38px;height:38px}
+  .nav-cta{font-size:12.5px;padding:10px 15px}
+  .nav-cta .ar{display:none}
+}
+@media(min-width:721px){
+  .nav-sheet{display:none}
 }
 
 /* ---------- buttons ---------- */
@@ -174,7 +265,10 @@ a{color:inherit}
 .rv-l{opacity:0;transform:translateX(-22px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
 .rv-l.in{opacity:1;transform:none}
 
-.lines .ln{overflow:hidden;display:block}
+/* The mask has to sit below the baseline or it shears the tail off a
+   descender - the headlines run at .95 leading, so g/q/p hang outside
+   the line box. The negative margin gives the leading back. */
+.lines .ln{overflow:hidden;display:block;padding-bottom:.16em;margin-bottom:-.16em}
 .lines .ln > span{display:block;transform:translateY(110%);transition:transform 1s var(--ease);transition-delay:var(--d,0s)}
 .lines.in .ln > span{transform:none}
 

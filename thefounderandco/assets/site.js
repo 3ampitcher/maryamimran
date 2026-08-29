@@ -91,6 +91,73 @@ function wireSiteLinks(){
   });
 }
 
+/* ---------- mobile menu ---------- */
+/* The inline nav links are hidden under 720px. Rather than duplicate them in
+   every page's markup, build the sheet from whatever .nav-link elements the
+   page already has, so each page offers its own real navigation. */
+function initMobileNav(){
+  const nav = document.querySelector('.nav-outer > nav');
+  if(!nav) return;
+  const links = [...nav.querySelectorAll('.nav-link')];
+  const cta   = nav.querySelector('.nav-cta');
+  if(!links.length && !cta) return;
+
+  const btn = document.createElement('button');
+  btn.className = 'nav-menu';
+  btn.type = 'button';
+  btn.id = 'navMenu';
+  btn.setAttribute('aria-label', 'Open menu');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', 'navSheet');
+  btn.innerHTML = '<i></i>';
+  nav.querySelector('.nav-right').insertBefore(btn, cta);
+
+  const sheet = document.createElement('div');
+  sheet.className = 'nav-sheet';
+  sheet.id = 'navSheet';
+  sheet.hidden = true;
+  // the lime CTA stays visible on top of the sheet, so listing it again here
+  // would just be the same button twice; the sheet carries navigation only
+  const rows = links.map((a,n)=>
+    `<a href="${a.getAttribute('href')}"><em>0${n+1}</em>${a.textContent.trim()}</a>`);
+  sheet.innerHTML =
+    `<div class="sheet-h">Menu</div>
+     <nav class="sheet-links">${rows.join('')}</nav>
+     <div class="sheet-foot">
+       <a href="mailto:${SITE.email}">${SITE.email}</a>
+       <a href="tel:+${SITE.whatsapp}">${SITE.phoneDisplay}</a>
+       <span>${SITE.location}</span>
+     </div>`;
+  document.body.appendChild(sheet);
+
+  let open = false, hideTimer = null;
+  function setOpen(next){
+    if(next === open) return;
+    open = next;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('nav-open', open);
+    clearTimeout(hideTimer);
+    if(open){
+      sheet.hidden = false;
+      // one frame with the element laid out, so the fade actually runs
+      requestAnimationFrame(()=>sheet.classList.add('open'));
+    } else {
+      sheet.classList.remove('open');
+      hideTimer = setTimeout(()=>{ if(!open) sheet.hidden = true; }, 360);
+    }
+  }
+
+  btn.addEventListener('click', ()=>setOpen(!open));
+  // a same-page hash does not reload, so the sheet has to close itself
+  sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>setOpen(false)));
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape' && open){ setOpen(false); btn.focus(); }
+  });
+  // the sheet only exists under 720px; leaving that width must not strand it
+  window.addEventListener('resize', ()=>{ if(window.innerWidth > 720) setOpen(false); });
+}
+
 document.addEventListener('DOMContentLoaded', ()=>{
   wireSiteLinks();
   renderContact(document.getElementById('footContact'));
@@ -98,5 +165,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const yr = document.getElementById('yr');
   if(yr) yr.textContent = new Date().getFullYear();
   initProgress();
+  initMobileNav();
   initReveal();
 });

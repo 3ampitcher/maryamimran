@@ -145,7 +145,8 @@
   .tk:hover::after,.tk:focus-visible::after{background:#D6F95C}
   .tk:focus-visible{outline:none}
   .tk:focus-visible .tk-mask{outline:2px solid var(--lime-deep);outline-offset:6px;border-radius:4px}
-  .tk-mask{display:block;overflow:hidden;padding-bottom:.04em}
+  /* same as .lines .ln - the mask must clear the descenders in "Every stage" */
+  .tk-mask{display:block;overflow:hidden;padding-bottom:.17em;margin-bottom:-.17em}
   .tk-txt{display:block;transition:transform .45s var(--ease),opacity .45s var(--ease)}
   .tk-txt.out{transform:translateY(-112%);opacity:0}
   .tk-txt.in{transform:translateY(112%);opacity:0;transition:none}
