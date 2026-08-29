@@ -218,6 +218,16 @@
   .dossier .sep{color:#B4B4AC;margin:0 8px;}
   .ask-line{font-size:20px;font-weight:700;margin-top:14px;letter-spacing:-.015em;}
   .result-why{font-size:16.5px;line-height:1.68;color:#3C4046;margin-top:22px;font-weight:500;}
+  .result-more{
+    display:inline-flex;align-items:center;gap:10px;margin-top:20px;
+    font-size:15.5px;font-weight:700;color:var(--ink);text-decoration:none;
+    border-bottom:1.5px solid var(--line);padding-bottom:4px;
+    transition:border-color .3s,gap .3s var(--ease);
+  }
+  .result-more:hover{border-color:var(--lime-deep);gap:15px}
+  .result-more .ar{transition:transform .3s var(--ease)}
+  .result-more:hover .ar{transform:translateX(3px)}
+
   .straight{
     background:var(--ink);color:#E7E9E5;border-radius:20px;
     padding:28px 32px;margin-top:30px;
@@ -618,6 +628,11 @@ const NAMES = {
   search:'Executive Search',   ondemand:'Executive On-Demand',
   ta:'TA Powerhouse',          grid:'Tech Grid',
 };
+const SLUGS = {
+  quotient:'founder-quotient', hunter:'founder-hunter', circle:'founder-inner-circle',
+  search:'executive-search',   ondemand:'executive-on-demand',
+  ta:'ta-powerhouse',          grid:'tech-grid',
+};
 const GROUP_OF = {
   quotient:'Founder Code', hunter:'Founder Code', circle:'Founder Code',
   search:'Leadership',     ondemand:'Leadership',
@@ -676,7 +691,7 @@ const SERVICES = {
 const val = (v,s) => typeof v==='function' ? v(s) : v;
 const serviceOf = (t,s) => {
   const id = val(SERVICES[t].svc, s);
-  return {id, name:NAMES[id], group:GROUP_OF[id], why:val(SERVICES[t].why, s)};
+  return {id, name:NAMES[id], group:GROUP_OF[id], slug:SLUGS[id], why:val(SERVICES[t].why, s)};
 };
 
 /* stage-aware straight talk rules, evaluated in order, max two shown */
@@ -938,6 +953,7 @@ function solve(t){
     <div class="dossier">${dossier(s,t)}</div>
     <div class="ask-line">${askLine(s,t)}</div>
     <p class="result-why">${svc.why}</p>
+    <a class="result-more" href="company.html#${svc.slug}">How ${svc.name} works <span class="ar">&rarr;</span></a>
     ${straight.length?`
       <div class="straight">
         <div class="straight-label">Straight talk</div>

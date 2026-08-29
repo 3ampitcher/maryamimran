@@ -1202,6 +1202,8 @@ const CHAPTERS = [
       `<div class="cell${i>=from&&i<=to?' on':''}${i===from?' start':''}"></div>`).join('')}</div>` +
     `<div class="si-rail-key">${STAGE_KEY.map(k=>`<span>${k}</span>`).join('')}</div>`;
 
+  const slugify = t => t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
   CHAPTERS.forEach(ch=>{
     const head = document.createElement('div');
     head.className = 'si-chapter';
@@ -1210,10 +1212,13 @@ const CHAPTERS = [
 
     ch.items.forEach(it=>{
       n++;
-      const num = String(n).padStart(2,'0');
-      const id  = 'svc-' + num;
-      const row = document.createElement('div');
+      const num  = String(n).padStart(2,'0');
+      const slug = slugify(it.name);          // the row is its own anchor
+      const id   = 'panel-' + slug;
+      const row  = document.createElement('div');
       row.className = 'si-row';
+      row.id = slug;
+      row.dataset.slug = slug;
       row.innerHTML = `
         <button class="si-head" type="button" aria-expanded="false" aria-controls="${id}">
           <span class="si-num">${num}</span>
@@ -1244,6 +1249,14 @@ const CHAPTERS = [
   /* one open at a time, height animated so the page never jumps */
   const rows = [...root.querySelectorAll('.si-row')];
 
+  /* the open row is the URL, so any service can be linked to directly.
+     replaceState rather than pushState: the link is shareable without
+     turning every open and close into a back-button step. */
+  function setHash(slug){
+    const url = slug ? '#' + slug : location.pathname + location.search;
+    history.replaceState(null, '', url);
+  }
+
   function close(row){
     const panel = row.querySelector('.si-panel');
     panel.style.height = panel.offsetHeight + 'px';
@@ -1251,15 +1264,24 @@ const CHAPTERS = [
     row.classList.remove('open');
     row.querySelector('.si-head').setAttribute('aria-expanded','false');
   }
-  function open(row){
+
+  function open(row, instant){
     const panel = row.querySelector('.si-panel');
     const inner = panel.firstElementChild;
-    panel.style.height = inner.offsetHeight + 'px';
-    panel.addEventListener('transitionend', function done(e){
-      if(e.propertyName !== 'height') return;
-      panel.style.height = 'auto';                 // survive a window resize
-      panel.removeEventListener('transitionend', done);
-    });
+    if(instant){
+      // arriving on a link: already open, nothing to animate
+      panel.style.transition = 'none';
+      panel.style.height = 'auto';
+      panel.offsetHeight;
+      panel.style.transition = '';
+    } else {
+      panel.style.height = inner.offsetHeight + 'px';
+      panel.addEventListener('transitionend', function done(e){
+        if(e.propertyName !== 'height') return;
+        panel.style.height = 'auto';               // survive a window resize
+        panel.removeEventListener('transitionend', done);
+      });
+    }
     row.classList.add('open');
     row.querySelector('.si-head').setAttribute('aria-expanded','true');
   }
@@ -1268,9 +1290,41 @@ const CHAPTERS = [
     row.querySelector('.si-head').addEventListener('click', ()=>{
       const isOpen = row.classList.contains('open');
       rows.forEach(r=>{ if(r.classList.contains('open')) close(r); });
-      if(!isOpen) open(row);
+      if(isOpen){ setHash(null); }
+      else { open(row); setHash(row.dataset.slug); }
     });
   });
+
+  /* company.html#executive-search opens that row and lands on it */
+  function openFromHash(instant){
+    const want = decodeURIComponent(location.hash.slice(1));
+    const row  = rows.find(r => r.dataset.slug === want);
+    if(!row) return false;
+    // the index fades in on scroll; a linked arrival must not wait for that
+    root.classList.add('in');
+    rows.forEach(r=>{ if(r !== row && r.classList.contains('open')) close(r); });
+    if(!row.classList.contains('open')) open(row, instant);
+
+    /* Landing is always instant, the way an anchor link behaves. A smooth
+       scroll cannot be trusted here: the target keeps moving under it --
+       webfonts reflow the page by a couple of thousand pixels on first load,
+       and collapsing a row that sits above the target takes another few
+       hundred out. So re-land whenever the row's document position changes,
+       and stop once it has held still for a few frames. */
+    const land = ()=> row.scrollIntoView({block:'start', behavior:'instant'});
+    let last = null, stable = 0, frames = 0;
+    const settle = ()=>{
+      const pos = Math.round(row.getBoundingClientRect().top + window.scrollY);
+      if(pos === last){ stable++; }
+      else { last = pos; stable = 0; land(); }
+      if(stable < 6 && ++frames < 150) requestAnimationFrame(settle);
+    };
+    requestAnimationFrame(settle);
+    return true;
+  }
+
+  window.addEventListener('hashchange', ()=> openFromHash(false));
+  if(location.hash) requestAnimationFrame(()=> openFromHash(true));
 
   /* a tag rides the pointer while it is over the index */
   const cursor = document.getElementById('siCursor');
