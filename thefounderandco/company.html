@@ -122,17 +122,16 @@
   @media(min-width:1460px){.rail-index{display:flex}}
 
   /* ---------- hero ---------- */
-  .p-hero{max-width:1200px;margin:0 auto;padding:64px 24px 40px}
+  .p-hero{max-width:1200px;margin:0 auto;padding:74px 24px 64px}
   .hero-h{
-    font-size:clamp(34px,8.6vw,106px);font-weight:700;letter-spacing:-.052em;line-height:.97;
-    margin-top:24px;
+    font-size:clamp(34px,4.6vw,62px);font-weight:700;letter-spacing:-.05em;line-height:1.02;
+    margin-top:22px;
   }
   /* every statement the brand makes ends on a lime period, the same one that
      closes the wordmark */
   .hero-h i{font-style:normal;color:var(--lime-deep)}
-  .hero-rule{height:1px;background:var(--line);margin-top:40px}
   .hero-sub{
-    margin-top:0;max-width:30ch;
+    margin-top:34px;max-width:30ch;
     font-size:clamp(19px,1.9vw,24px);line-height:1.45;letter-spacing:-.02em;
     color:var(--muted);font-weight:600;
   }
@@ -142,7 +141,7 @@
      One ring, five equal arcs. Hiring is one fifth of it and you can see
      that without being told - which is the headline's argument, drawn.
      Light an arc and the centre says what that answer actually is. */
-  .hero-body{display:grid;grid-template-columns:1fr 1.05fr;gap:0 64px;margin-top:34px;align-items:center}
+  .hero-body{display:grid;grid-template-columns:1.3fr 1fr;gap:0 56px;align-items:center}
   .hero-say .hero-sub{margin-top:0}
   .eq-note{margin-top:24px;font-size:14px;font-weight:600;color:var(--faint);max-width:44ch}
   .eq-note b{color:var(--ink);font-weight:700}
@@ -191,29 +190,11 @@
   .dial.on .dl{color:#A5A8AD}
   .dial.on .dl.sel{color:var(--lime-deep)}
 
-  /* the figure has to say it can be touched, or nobody finds out */
-  .dial-hint{
-    margin-top:40px;display:inline-flex;align-items:center;gap:9px;
-    font-size:11.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);
-  }
-  .dial-hint::before{
-    content:"";width:7px;height:7px;border-radius:50%;background:var(--lime-deep);flex:0 0 auto;
-    animation:hintPulse 2.4s var(--ease) infinite;
-  }
-  .dial.done ~ .dial-hint::before{animation:none}
-  @keyframes hintPulse{
-    0%,70%,100%{transform:scale(1);opacity:1}
-    35%{transform:scale(1.55);opacity:.45}
-  }
-  @media(prefers-reduced-motion:reduce){ .dial-hint::before{animation:none} }
-
-  /* the same five as rows on small screens, where there is no hover and no
-     room for labels around a ring */
   .dial-rows{display:none}
 
   .hero-under{
     grid-area:cta;display:flex;align-items:center;gap:32px;flex-wrap:wrap;
-    margin-top:40px;
+    margin-top:38px;
   }
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
   .hero-proof{
@@ -681,6 +662,21 @@
     .sx-name{font-size:19px}
     .founder{grid-template-columns:300px 1fr;gap:44px}
   }
+  /* Two columns until the ring's labels run out of room beside the text,
+     then one, with the figure between the claim and the buttons. */
+  @media(max-width:1080px){
+    .hero-left{display:contents}          /* so the four blocks can reorder */
+    .hero-body{
+      grid-template-columns:1fr;gap:0;
+      grid-template-areas:"say" "dial" "rows" "cta";
+    }
+    .hero-say{grid-area:say}
+    .dial-wrap{grid-area:dial;margin-top:38px}
+    .hero-under{margin-top:38px}
+    .dl{display:none}
+    .dial-rows{display:block;grid-area:rows;margin-top:32px;border-top:2px solid var(--line)}
+  }
+
   @media(max-width:900px){
     .sx-grid{grid-template-columns:1fr}
     .sx-col{padding:26px 0 0}
@@ -726,17 +722,7 @@
     .hero-h{letter-spacing:-.045em}
     .hero-sub{margin-top:24px}
     /* the figure belongs above the buttons on a phone, not below them */
-    /* the wrapper dissolves so the four blocks can reorder on their own */
-    .hero-left{display:contents}
-    .hero-body{grid-template-columns:1fr;gap:0;margin-top:30px;
-      grid-template-areas:"say" "dial" "rows" "cta"}
-    .hero-say{grid-area:say}
-    .dial-wrap{grid-area:dial}
-    .dial-wrap{margin-top:34px}
     .dial{max-width:230px}
-    .dl{display:none}
-    .eq-note{margin-top:18px}
-    .dial-rows{display:block;grid-area:rows;margin-top:30px;border-top:2px solid var(--line)}
     .dr{
       display:flex;align-items:baseline;justify-content:space-between;gap:20px;width:100%;
       background:none;border:none;border-bottom:1px solid var(--line);cursor:pointer;
@@ -784,21 +770,20 @@
 </div>
 
 <header class="p-hero">
-  <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
-
-  <h1 class="hero-h lines rv" style="--d:.06s">
-    <span class="ln"><span>The people equation</span></span>
-    <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
-  </h1>
-
-  <div class="hero-rule rv" style="--d:.14s"></div>
-
   <div class="hero-body">
    <div class="hero-left">
-    <div class="hero-say rv" style="--d:.18s">
-      <p class="hero-sub">Five ways to answer it.<b>Only one of them is a hire.</b></p>
+    <div class="hero-say">
+      <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
+
+      <h1 class="hero-h lines rv" style="--d:.06s">
+        <span class="ln"><span>The people equation</span></span>
+        <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
+      </h1>
+
+      <p class="hero-sub rv" style="--d:.18s">Five ways to answer it.<b>Only one of them is a hire.</b></p>
     </div>
-    <div class="hero-under rv" style="--d:.32s">
+
+    <div class="hero-under rv" style="--d:.26s">
       <div class="hero-cta">
         <a class="btn btn-dark" href="index.html#solver">Find what you need <span class="ar">&rarr;</span></a>
         <a class="btn btn-ghost" href="#services">See every service</a>
@@ -807,12 +792,11 @@
     </div>
    </div>
 
-    <div class="dial-wrap rv" style="--d:.26s">
+    <div class="dial-wrap rv" style="--d:.3s">
       <div class="dial" id="dial">
         <svg viewBox="0 0 100 100" aria-hidden="true"><g id="dialSegs"></g></svg>
         <div class="dial-core" id="dialCore"></div>
       </div>
-      <p class="dial-hint" id="dialHint">Hover any of the five</p>
     </div>
 
     <div class="dial-rows" id="dialRows"></div>
@@ -1674,12 +1658,10 @@ const WAYS = [
 
   paint(null);
 
-  /* Nobody hovers a diagram they do not know is a control. The ring steps
+  /* Nobody hovers a diagram they do not know is a control, and a caption
+     saying "hover me" is a worse answer than showing it. The ring steps
      through all five once, the first time it is on screen, then stops and
      never runs again. Any real interaction cancels it on the spot. */
-  const hint = document.getElementById('dialHint');
-  if(hint && !matchMedia('(hover:hover)').matches) hint.textContent = 'Tap any of the five';
-
   let demo = null, taught = false;
   function stopDemo(){
     if(demo){ clearInterval(demo); demo = null; }
