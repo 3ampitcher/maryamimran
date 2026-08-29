@@ -39,7 +39,7 @@ export const site = {
     widths: [800, 1200, 1672],
     /* Where the face sits in the frame, as x% y%. The hero crops hard on
        tall viewports and this is what keeps her in shot. */
-    focus: '56% 30%',
+    focus: '56% 40%',
   },
 
   /* --- Resume ----------------------------------------------------------

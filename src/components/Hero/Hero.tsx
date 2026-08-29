@@ -33,10 +33,14 @@ export function Hero() {
 
   /* A slow drift on the image reads as depth; a faster one on the
      type makes the two feel like one composition compressing. */
-  const mediaY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
-  const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const mediaY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
+  const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
   const nameY = useTransform(scrollYProgress, [0, 1], ['0%', '-32%']);
-  const nameOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  /* The name is a continuous band of repeats; scrolling drags it sideways.
+     Two copies, each wider than the viewport, so any offset in this range
+     still covers the screen and the band never runs out. */
+  const nameX = useTransform(scrollYProgress, [0, 1], ['0%', '-32%']);
+  const nameOpacity = useTransform(scrollYProgress, [0.55, 1], [1, 0]);
   const railOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
 
   return (
@@ -58,6 +62,22 @@ export function Hero() {
       {/* Two soft scrims, not a blanket darkening. */}
       <div className="hero__scrim hero__scrim--top" aria-hidden="true" />
       <div className="hero__scrim hero__scrim--bottom" aria-hidden="true" />
+
+      {/* Self-contained dark pill: legible wherever the photograph is bright. */}
+      <div className="hero__located">
+        <span className="hero__located-text">
+          Located in
+          <br />
+          {site.location}
+        </span>
+        <span className="hero__located-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.25">
+            <circle cx="12" cy="12" r="9" />
+            <ellipse cx="12" cy="12" rx="4" ry="9" />
+            <path d="M3.2 9h17.6M3.2 15h17.6" />
+          </svg>
+        </span>
+      </div>
 
       {/* --- Everything else sits on the photograph --- */}
       <div className="hero__inner">
@@ -88,11 +108,20 @@ export function Hero() {
             <h1 className="sr-only">
               {site.name} — {site.positioning}
             </h1>
-            <span className="hero__name" aria-hidden="true">
-              <MaskRevealOnMount delay={0.08} innerClassName="hero__name-inner">
-                Maryam Imran
-              </MaskRevealOnMount>
-            </span>
+            <MaskRevealOnMount delay={0.08} innerClassName="hero__name-inner">
+              <motion.span
+                className="hero__marquee"
+                aria-hidden="true"
+                style={reduced ? undefined : { x: nameX }}
+              >
+                {[0, 1].map((i) => (
+                  <span className="hero__name" key={i}>
+                    {site.name}
+                    <span className="hero__name-dash">—</span>
+                  </span>
+                ))}
+              </motion.span>
+            </MaskRevealOnMount>
           </div>
         </motion.div>
 
@@ -106,13 +135,7 @@ export function Hero() {
             <span className="hero__cue-line" />
           </motion.span>
 
-          <p className="hero__context mono">
-            {site.location}
-            <span className="hero__context-sep" aria-hidden="true">
-              —
-            </span>
-            {site.discipline}
-          </p>
+          <p className="hero__context mono">{site.discipline}</p>
         </div>
       </div>
     </section>
