@@ -125,15 +125,15 @@
      Copy on the left, aligned to the page grid; the figure holds the whole
      right half and bleeds to the viewport edge. */
   .p-hero{
-    display:grid;grid-template-columns:1fr 1fr;align-items:stretch;
+    display:grid;grid-template-columns:1.12fr .88fr;align-items:stretch;
     max-width:none;margin:0;padding:0;position:relative;
   }
   .hero-left{
-    padding:96px 56px 88px max(24px, calc((100vw - 1272px) / 2));
+    padding:96px 40px 88px max(24px, calc((100vw - 1272px) / 2));
     display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
   }
   .hero-h{
-    font-size:clamp(38px,6.4vw,96px);font-weight:700;letter-spacing:-.055em;line-height:.94;
+    font-size:clamp(36px,4.8vw,72px);font-weight:700;letter-spacing:-.05em;line-height:.96;
     margin-top:26px;
   }
   .hero-h em{font-style:normal;color:var(--lime-deep)}
@@ -185,10 +185,10 @@
     position:relative;display:grid;place-items:center;padding:80px 32px;overflow:hidden;
   }
   .fig-web{
-    position:absolute;inset:-8%;width:116%;height:116%;pointer-events:none;
-    color:#C9C9C1;opacity:.75;
+    position:absolute;inset:-4%;width:108%;height:108%;pointer-events:none;
+    color:#BFBFB6;opacity:.5;
   }
-  .fig-web circle{fill:none;stroke:currentColor;stroke-width:1.1;stroke-linecap:round}
+  .fig-web circle{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round}
 
   /* ---------- the dial ----------
      One ring, five equal arcs. Hiring is one fifth of it and you can see
@@ -1019,12 +1019,12 @@
 
 <header class="p-hero">
   <div class="hero-left">
-    <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
+    <div class="eyebrow rv">Behind the equation</div>
 
     <h1 class="hero-h lines rv" style="--d:.06s">
-      <span class="ln"><span>We solve</span></span>
-      <span class="ln"><span>the <em>people</em></span></span>
-      <span class="ln"><span>equation<i>.</i></span></span>
+      <span class="ln"><span>The <em>people</em> equation</span></span>
+      <span class="ln"><span>is bigger</span></span>
+      <span class="ln"><span>than hiring<i>.</i></span></span>
     </h1>
 
     <ul class="hero-attrs rv" style="--d:.2s">
@@ -1891,13 +1891,16 @@ const WAYS = [
   const g = document.getElementById('figWeb');
   if(!g) return;
   const NS = 'http://www.w3.org/2000/svg';
-  for(let i = 0; i < 46; i++){
-    const r = 46 + i * 7.2;
+  for(let i = 0; i < 62; i++){
+    const r = 30 + i * 4.6;
     const c = document.createElementNS(NS,'circle');
     c.setAttribute('cx','300'); c.setAttribute('cy','300'); c.setAttribute('r', r.toFixed(1));
-    c.setAttribute('stroke-dasharray', `1.1 ${(7 + i * 0.42).toFixed(2)}`);
-    c.setAttribute('stroke-dashoffset', (i * 5.5).toFixed(1));
-    c.setAttribute('opacity', (0.95 - i * 0.014).toFixed(3));
+    // the gap grows with the radius so the dots line up as spokes, and a drift
+    // in the offset twists those spokes into the swirl; a gentle growth keeps
+    // them gathered round the ring rather than thinning out across the half
+    c.setAttribute('stroke-dasharray', `1 ${(r * 0.052).toFixed(2)}`);
+    c.setAttribute('stroke-dashoffset', (r * 0.05).toFixed(2));
+    c.setAttribute('opacity', (1 - i * 0.011).toFixed(3));
     g.appendChild(c);
   }
 })();
