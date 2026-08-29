@@ -15,8 +15,8 @@ export const education: EducationItem[] = [
     short: 'UBT',
     qualification: 'Business Analytics & Information Systems',
     results: [{ label: 'CGPA', value: '5.0 / 5.0' }],
-    detail: ['Jeddah, Saudi Arabia', 'College of Business Administration'],
-    year: '2023—NOW',
+    detail: ['Jeddah, Saudi Arabia', 'CGPA 5.0 / 5.0'],
+    year: '2024—NOW',
     order: 1,
   },
   {
@@ -29,7 +29,7 @@ export const education: EducationItem[] = [
       { label: 'Business', value: 'A*' },
       { label: 'Mathematics', value: 'A' },
     ],
-    year: '2023',
+    year: '2024',
     order: 2,
   },
 ];
@@ -40,7 +40,7 @@ export const recognition: RecognitionItem[] = [
     value: '5.0',
     title: 'CGPA',
     organization: 'University of Business & Technology',
-    year: '2023—NOW',
+    year: '2024—NOW',
     detail: 'Out of 5.0',
     verified: true,
     group: 'academic',
@@ -59,7 +59,7 @@ export const recognition: RecognitionItem[] = [
     id: 'outstanding-cambridge-learner',
     title: 'Outstanding Cambridge Learner',
     organization: 'Cambridge International',
-    year: '2023',
+    year: '2024',
     /* TODO(maryam): the "Top in Saudi Arabia — Economics" recognition goes here once
        you supply the exact certificate wording. Set verified: true to publish it. */
     verified: true,
@@ -70,7 +70,7 @@ export const recognition: RecognitionItem[] = [
     id: 'top-in-saudi-economics',
     title: 'Top in Saudi Arabia — Economics',
     organization: 'Cambridge International',
-    year: '2023',
+    year: '2024',
     /* TODO(maryam): add `detail` using the exact wording printed on the
        certificate, then set verified: true to publish this entry. */
     verified: false,
@@ -92,10 +92,9 @@ export const recognition: RecognitionItem[] = [
     id: 'moonshot-pirates-result',
     value: 'TOP 7',
     title: 'Moonshot Pirates',
-    year: '2024',
-    /* TODO(maryam): confirm the exact wording (Top 7 of 78), add it as
-       `detail`, then set verified: true to publish this entry. */
-    verified: false,
+    year: '2024–25',
+    detail: 'Global Sustainability Challenge — placed top 7 out of 78 teams',
+    verified: true,
     group: 'competition',
     order: 6,
   },
