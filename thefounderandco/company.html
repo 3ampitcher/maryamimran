@@ -541,105 +541,35 @@
   }
 
   /* ---------- the narrative ---------- */
-  .founder .lead{
-    font-size:clamp(21px,2.1vw,26px);line-height:1.42;letter-spacing:-.025em;
-    color:var(--ink);font-weight:700;max-width:34ch;
+  .bio-one{
+    font-size:clamp(18px,1.85vw,22px);line-height:1.55;color:var(--muted);font-weight:500;
+    letter-spacing:-.015em;max-width:50ch;
   }
-  .founder .lead em{font-style:normal;color:var(--muted);font-weight:600;display:block;margin-top:8px}
-  .bio{margin-top:32px;display:flex;flex-direction:column;gap:19px}
-  .bio p{font-size:17px;line-height:1.68;color:var(--muted);font-weight:500;max-width:62ch}
-  .bio p.turn{
-    color:var(--ink);font-weight:700;font-size:20px;line-height:1.4;letter-spacing:-.025em;
-    margin-top:4px;
-  }
+  .bio-one b{color:var(--ink);font-weight:700}
 
-  /* the reframe: the question everyone asks, struck out, and the four that
-     actually decide the outcome */
-  .qs{margin-top:36px;padding-top:28px;border-top:1px solid var(--line)}
-  .q-line{margin:10px 0 24px}
-  .q-old{
-    display:inline-block;position:relative;
-    font-family:var(--serif);font-style:italic;font-weight:300;color:var(--soft);
-    font-size:clamp(27px,3.3vw,40px);line-height:1.15;letter-spacing:-.015em;
+  /* ---------- at a glance ----------
+     Ten claims, all readable at once. Nothing hides behind a click; the only
+     thing hovering does is mark the one you are on. */
+  .idx{margin-top:40px;padding-top:32px;border-top:1px solid var(--line)}
+  .idx-h{margin-bottom:22px}
+  .idx-cols{column-count:2;column-gap:54px}
+  .idx-i{
+    break-inside:avoid;position:relative;padding:13px 0 15px 20px;
+    transition:padding-left .3s var(--ease);
   }
-  .q-old::after{
-    content:"";position:absolute;left:-.04em;right:-.04em;top:55%;height:.075em;
-    background:var(--lime-deep);border-radius:4px;
-    transform:rotate(-1.4deg) scaleX(0);transform-origin:0 50%;
-    transition:transform .75s var(--ease) .35s;
+  .idx-i:hover{padding-left:25px}
+  .idx-i::before{
+    content:"";position:absolute;left:0;top:15px;bottom:17px;width:2px;border-radius:2px;
+    background:var(--line);transition:background .35s var(--ease);
   }
-  .qs.in .q-old::after{transform:rotate(-1.4deg) scaleX(1)}
-  .q-list{list-style:none;border-top:1px solid var(--line)}
-  .q-list li{
-    position:relative;padding:14px 0 14px 46px;border-bottom:1px solid var(--line);
-    font-size:18.5px;font-weight:700;line-height:1.42;letter-spacing:-.022em;max-width:52ch;
+  .idx-i:hover::before{background:var(--lime-deep)}
+  .idx-i p{
+    font-size:15.5px;line-height:1.6;color:var(--muted);font-weight:500;letter-spacing:-.01em;
+    max-width:56ch;transition:color .35s var(--ease);
   }
-  .q-list li::before{
-    content:attr(data-n);position:absolute;left:0;top:18px;
-    font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--faint);
-  }
-  .bio-end{margin-top:28px;font-size:17px;line-height:1.68;color:var(--muted);font-weight:500;max-width:62ch}
-  .bio-end b{color:var(--ink);font-weight:700}
-
-  /* ---------- Imran at a glance ---------- */
-  .glance{margin-top:84px;padding-top:42px;border-top:1px solid var(--line)}
-  .roles{
-    margin-top:16px;font-size:clamp(16px,1.7vw,21px);font-weight:700;line-height:1.45;
-    letter-spacing:-.01em;text-transform:uppercase;max-width:44ch;
-  }
-  .roles span{white-space:nowrap}
-  .roles i{font-style:normal;color:var(--lime-deep)}
-
-  /* ---- the ledger: ten headlines you can scan, one body at a time ---- */
-  .ledger{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:44px;align-items:stretch}
-  .lg-list{border-top:1px solid var(--line)}
-  .lg-row{
-    display:flex;align-items:baseline;gap:15px;width:100%;text-align:left;cursor:pointer;
-    background:none;border:none;border-bottom:1px solid var(--line);font-family:var(--sans);
-    padding:15px 14px 15px 0;position:relative;
-    transition:padding-left .35s var(--ease),background .35s var(--ease);
-  }
-  .lg-row::before{
-    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;
-    background:var(--lime-deep);transform:scaleY(0);transform-origin:50% 0;
-    transition:transform .35s var(--ease);
-  }
-  .lg-row i{
-    font-style:normal;font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--faint);
-    flex:0 0 auto;transition:color .35s var(--ease);
-  }
-  .lg-row b{
-    font-size:13px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
-    color:var(--muted);transition:color .35s var(--ease);
-  }
-  .lg-row:hover,.lg-row.on{padding-left:18px;background:rgba(200,240,60,.13)}
-  .lg-row:hover::before,.lg-row.on::before{transform:scaleY(1)}
-  .lg-row:hover i,.lg-row.on i{color:var(--lime-deep)}
-  .lg-row:hover b,.lg-row.on b{color:var(--ink)}
-  .lg-body{display:none}
-
-  .lg-panel{
-    position:relative;overflow:hidden;
-    display:flex;flex-direction:column;justify-content:center;
-    background:var(--card);border:1px solid var(--line);
-    border-radius:22px;padding:40px 38px;
-  }
-  /* the index again, ghosted, so a three-line entry does not float in an
-     otherwise empty card */
-  .lg-panel::before{
-    content:attr(data-n);position:absolute;right:26px;top:-14px;pointer-events:none;
-    font-size:190px;font-weight:800;letter-spacing:-.055em;line-height:1;
-    color:var(--ink);opacity:.05;
-  }
-  .lg-panel > *{position:relative}
-  .lg-panel .n{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--lime-deep)}
-  .lg-panel h4{
-    margin-top:14px;font-size:clamp(22px,2.2vw,28px);font-weight:700;
-    letter-spacing:-.03em;line-height:1.15;
-  }
-  .lg-panel p{margin-top:14px;font-size:16.5px;line-height:1.62;color:var(--muted);font-weight:500}
-  .lg-swap{animation:fadeSwap .4s var(--ease)}
-
+  .idx-i:hover p{color:var(--ink)}
+  .idx-i b{color:var(--ink);font-weight:800;letter-spacing:-.005em}
+  .idx-i i{font-style:normal;color:var(--lime-deep)}
 
   .creed{
     margin-top:80px;background:var(--ink);color:#fff;border-radius:var(--r-lg);
@@ -744,19 +674,7 @@
     .founder{grid-template-columns:1fr;gap:32px}
     .p-col{position:static}
     .portrait{max-width:320px}
-    .glance{margin-top:60px}
-    /* no hover on touch, so the body opens inside the row it belongs to */
-    .ledger{grid-template-columns:1fr;gap:0}
-    .lg-panel{display:none}
-    .lg-row{flex-wrap:wrap}
-    .lg-body{
-      display:block;flex:1 0 100%;max-height:0;overflow:hidden;opacity:0;
-      font-size:15.5px;line-height:1.6;color:var(--muted);font-weight:500;letter-spacing:-.01em;
-      max-width:54ch;
-      transition:max-height .45s var(--ease),opacity .3s var(--ease),margin-top .45s var(--ease);
-    }
-    .lg-row.on .lg-body{max-height:260px;opacity:1;margin-top:11px}
-    .q-list li{font-size:17.5px;padding-left:40px}
+    .idx-cols{column-count:1}
     .creed{grid-template-columns:1fr;gap:28px;padding:40px 28px}
     .contact-card{grid-template-columns:1fr;gap:34px;padding:40px 28px}
     .p-hero{padding:52px 20px 34px}
@@ -1028,37 +946,23 @@
     </div>
 
     <div>
-      <p class="lead rv">I&rsquo;ve spent 20+ years watching people decisions make or break companies.<em>Now we&rsquo;ve turned that experience into a system.</em></p>
+      <p class="bio-one rv">For more than two decades I&rsquo;ve worked at the intersection of investors, founders, leadership and growth &mdash; advising on critical hires, building leadership teams, assessing and hunting founders, coaching CEOs. Then I crossed the table and became one: founder, investor, board member, built and exited a business. <b>That combination changed how I see talent.</b></p>
 
-      <div class="bio rv" style="--d:.06s">
-        <p>For more than two decades, I&rsquo;ve worked at the intersection of investors, founders, leadership, talent and growth &mdash; advising on critical hires, building leadership teams, assessing and hunting founders, coaching CEOs, and working alongside venture studios and some of the world&rsquo;s leading investors.</p>
-        <p>Along the way, I crossed the table myself. I became a founder, investor and board member, built and exited a business, and worked directly with founders and CEOs navigating the realities of building and scaling companies.</p>
-        <p class="turn">That combination changed how I see talent.</p>
+      <div class="idx">
+        <div class="eyebrow idx-h rv">Imran at a glance</div>
+        <div class="idx-cols">
+          <div class="idx-i rv"><p><b>20+ years<i>.</i></b> Executive search, leadership and talent advisory across MENA.</p></div>
+          <div class="idx-i rv" style="--d:.04s"><p><b>Built from the top<i>.</i></b> Former Middle East President of a world top-10 leadership advisory firm.</p></div>
+          <div class="idx-i rv" style="--d:.08s"><p><b>Founder and entrepreneur<i>.</i></b> Built and exited a company from idea to acquisition in 18 months.</p></div>
+          <div class="idx-i rv" style="--d:.12s"><p><b>Investor and board member<i>.</i></b> Working alongside founders and leadership teams as businesses build, grow and scale.</p></div>
+          <div class="idx-i rv" style="--d:.16s"><p><b>Founder and CEO coach<i>.</i></b> Coach and mentor to founders and CEOs of tech startups and scale-ups across the region.</p></div>
+          <div class="idx-i rv" style="--d:.2s"><p><b>Founder hunter<i>.</i></b> Worked with venture studios and some of the world&rsquo;s leading investors to identify, assess and hunt founders for new ventures.</p></div>
+          <div class="idx-i rv" style="--d:.24s"><p><b>Creator of FQ<i>.</i></b> Founder of Founder Quotient, a first-of-its-kind assessment built specifically to understand founder potential, fit and capability.</p></div>
+          <div class="idx-i rv" style="--d:.28s"><p><b>Trained in psychology<i>.</i></b> Degree in psychology from a top business school &mdash; the grounding under everything that follows.</p></div>
+          <div class="idx-i rv" style="--d:.32s"><p><b>Science and judgment<i>.</i></b> BPS-certified assessor bringing structured assessment and evidence-based thinking to founder and leadership decisions.</p></div>
+          <div class="idx-i rv" style="--d:.36s"><p><b>Both sides of the table<i>.</i></b> Recruiter, founder, investor, board member and CEO adviser, bringing a rare 360&deg; view of what makes founders, leaders and companies succeed.</p></div>
+        </div>
       </div>
-
-      <div class="qs rv" style="--d:.06s">
-        <div class="eyebrow">The biggest people question is rarely</div>
-        <p class="q-line"><span class="q-old">&ldquo;Who should we hire?&rdquo;</span></p>
-        <div class="eyebrow" style="margin-bottom:18px">It is</div>
-        <ul class="q-list">
-          <li data-n="01">What outcome are we trying to create?</li>
-          <li data-n="02">What capability will get us there?</li>
-          <li data-n="03">Who is the right person for this stage?</li>
-          <li data-n="04">And what is the smartest way to engage them?</li>
-        </ul>
-      </div>
-
-      <p class="bio-end rv"><b>That thinking became TheFounder&amp;Co.</b> We help founders and investors make better decisions about the people behind the company, from founder assessment and founder search to executive leadership, fractional talent and workforce architecture.</p>
-    </div>
-  </div>
-
-  <div class="glance">
-    <div class="eyebrow rv">Imran at a glance</div>
-    <p class="roles rv" style="--d:.06s"><span>Founder<i>.</i></span> <span>Investor<i>.</i></span> <span>Board member<i>.</i></span> <span>Recruiter<i>.</i></span> <span>Founder hunter<i>.</i></span> <span>Assessor<i>.</i></span> <span>Coach<i>.</i></span> <span>Mentor<i>.</i></span></p>
-
-    <div class="ledger rv" style="--d:.1s">
-      <div class="lg-list" id="lgList" role="tablist" aria-label="Imran at a glance"></div>
-      <div class="lg-panel" id="lgPanel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 
@@ -1853,84 +1757,6 @@ window.addEventListener('load', drawWires);
 if('ResizeObserver' in window) new ResizeObserver(drawWires).observe(treeEl);
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(drawWires);
 setTimeout(drawWires, 400);
-
-/* =====================================================================
-   05 — the glance ledger
-   Ten headlines you can scan in one pass; the body of whichever one you
-   are on shows in the panel beside it. On touch there is no hover, so the
-   row opens its own body inline instead (see the <=900px rules).
-===================================================================== */
-const GLANCE = [
-  ['20+ years',              'Executive search, leadership and talent advisory across MENA.'],
-  ['Built from the top',     'Former Middle East President of a world top-10 leadership advisory firm.'],
-  ['Founder &amp; entrepreneur', 'Built and exited a company from idea to acquisition in 18 months.'],
-  ['Investor &amp; board member','Working alongside founders and leadership teams as businesses build, grow and scale.'],
-  ['Founder &amp; CEO coach',    'Coach and mentor to founders and CEOs of tech startups and scale-ups across the region.'],
-  ['Founder hunter',         'Worked with venture studios and some of the world&rsquo;s leading investors to identify, assess and hunt founders for new ventures.'],
-  ['Creator of FQ',          'Founder of Founder Quotient (FQ), a first-of-its-kind assessment built specifically to understand founder potential, fit and capability.'],
-  ['Trained in psychology',  'Degree in psychology from a top business school &mdash; the grounding under everything that follows.'],
-  ['Science + judgment',     'BPS-certified assessor bringing structured assessment and evidence-based thinking to founder and leadership decisions.'],
-  ['Both sides of the table','Recruiter, founder, investor, board member and CEO adviser, bringing a rare 360&deg; view of what makes founders, leaders and companies succeed.'],
-];
-
-(function ledger(){
-  const list  = document.getElementById('lgList');
-  const panel = document.getElementById('lgPanel');
-  if(!list || !panel) return;
-
-  const pad = n => String(n + 1).padStart(2, '0');
-  const rows = GLANCE.map((g,n)=>{
-    const b = document.createElement('button');
-    b.className = 'lg-row';
-    b.type = 'button';
-    b.id = 'lg-' + n;
-    b.setAttribute('role','tab');
-    b.setAttribute('aria-selected','false');
-    b.tabIndex = -1;
-    b.innerHTML = `<i>${pad(n)}</i><b>${g[0]}</b><span class="lg-body">${g[1]}</span>`;
-    list.appendChild(b);
-    return b;
-  });
-
-  let at = -1;
-  function show(n){
-    if(n === at) return;
-    at = n;
-    rows.forEach((b,i)=>{
-      b.classList.toggle('on', i === n);
-      b.setAttribute('aria-selected', i === n ? 'true' : 'false');
-      b.tabIndex = i === n ? 0 : -1;      // one tab stop for the whole set
-    });
-    panel.dataset.n = pad(n);
-    panel.innerHTML = `<div class="n">${pad(n)}</div><h4>${GLANCE[n][0]}</h4><p>${GLANCE[n][1]}</p>`;
-    panel.setAttribute('aria-labelledby','lg-' + n);
-    panel.classList.remove('lg-swap');
-    void panel.offsetWidth;
-    panel.classList.add('lg-swap');
-  }
-
-  rows.forEach((b,n)=>{
-    b.addEventListener('mouseenter', ()=>show(n));
-    b.addEventListener('focus',      ()=>show(n));
-    // touch and keyboard both land here; on a phone this is what opens the row
-    b.addEventListener('click',      ()=>show(n));
-  });
-
-  list.addEventListener('keydown', e=>{
-    const last = rows.length - 1;
-    let next = null;
-    if(e.key==='ArrowDown' || e.key==='ArrowRight') next = at === last ? 0 : at + 1;
-    else if(e.key==='ArrowUp' || e.key==='ArrowLeft') next = at <= 0 ? last : at - 1;
-    else if(e.key==='Home') next = 0;
-    else if(e.key==='End') next = last;
-    if(next === null) return;
-    e.preventDefault();
-    show(next);
-    rows[next].focus();
-  });
-
-  show(0);
-})();
 
 /* =====================================================================
    06 — logo marquees (duplicated once so the loop is seamless)
