@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TheFounder&amp;Co. | We build the team your next stage needs.</title>
-<meta name="description" content="Startups do not have a hiring problem, they have a capability problem. Seven services in three groups, mapped to every stage from pre-seed to Series C+. Executive search, on-demand leadership and embedded capability across the GCC and MENA.">
-<meta property="og:title" content="TheFounder&amp;Co. — We build the team your next stage needs.">
-<meta property="og:description" content="Build capabilities, not departments. The stage map, the seven services, and the two decades of proof underneath them.">
+<title>TheFounder&amp;Co. | The people equation is bigger than hiring.</title>
+<meta name="description" content="Startups do not have a hiring problem, they have a capability problem. Seven services in three groups, mapped to every stage from pre-seed to Series C+. Executive search, on-demand leadership and embedded capability across the GCC.">
+<meta property="og:title" content="TheFounder&amp;Co. — The people equation is bigger than hiring.">
+<meta property="og:description" content="We help growing companies work out who they need, when they need them, and what needs to be built around them. Executive search, on-demand leadership and embedded capability across the GCC.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TheFounder&amp;Co.">
 <meta name="theme-color" content="#0E1015">
@@ -182,8 +182,10 @@
     position:relative;display:grid;place-items:center;padding:80px 32px;overflow:hidden;
   }
   /* the diagram sits on a soft disc rather than floating on the paper, and the
-     dotted texture is masked to that disc so it stops drifting across the half */
-  .hero-figure::before{
+     dotted texture is masked to that disc so it stops drifting across the half.
+     Both are anchored to .dial-wrap, which hugs the wheel — anchoring them to
+     the figure column put them below the wheel once the rows stacked under it. */
+  .dial-wrap::before{
     content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:min(94%,760px);aspect-ratio:1/1;border-radius:50%;pointer-events:none;
     background:radial-gradient(circle,#EBEBE3 0%,#ECECE5 44%,rgba(236,236,229,0) 79%);
@@ -228,14 +230,18 @@
 
   .nd{
     position:absolute;transform:translate(-50%,-50%);
+    background:none;border:none;cursor:pointer;padding:0;font-family:var(--sans);
+    display:flex;flex-direction:column;align-items:center;gap:11px;
+    transition:transform .4s var(--ease);
+  }
+  .nd-c{
     width:var(--nd,54px);height:var(--nd,54px);border-radius:50%;
-    background:var(--card);border:1.5px solid var(--line);cursor:pointer;padding:0;
+    background:var(--card);border:1.5px solid var(--line);
     display:flex;align-items:center;justify-content:center;
-    transition:border-color .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease);
+    transition:border-color .4s var(--ease),box-shadow .4s var(--ease);
   }
   .nd svg{width:21px;height:21px;display:block;flex:0 0 auto;color:var(--muted);transition:color .4s var(--ease)}
   .nd-l{
-    position:absolute;transform:translate(-50%,-50%);pointer-events:none;
     white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:.16em;
     text-transform:uppercase;color:var(--muted);text-align:center;
     transition:color .4s var(--ease);
@@ -244,14 +250,12 @@
     content:"";display:block;width:18px;height:2px;border-radius:2px;margin:8px auto 0;
     background:var(--line);transition:background .4s var(--ease);
   }
-  .nd-l.sel{color:var(--ink)}
-  .nd-l.sel::after{background:var(--lime-deep)}
-  .nd.sel{
-    border-color:var(--lime-deep);transform:translate(-50%,-50%) scale(1.08);
-    box-shadow:0 0 0 6px rgba(147,181,24,.10);
-  }
+  .nd.sel{transform:translate(-50%,-50%) scale(1.05)}
+  .nd.sel .nd-c{border-color:var(--lime-deep);box-shadow:0 0 0 6px rgba(147,181,24,.10)}
   .nd.sel svg{color:var(--lime-deep)}
-  .nd:focus-visible{outline:2px solid var(--lime-deep);outline-offset:4px}
+  .nd.sel .nd-l{color:var(--ink)}
+  .nd.sel .nd-l::after{background:var(--lime-deep)}
+  .nd:focus-visible{outline:2px solid var(--lime-deep);outline-offset:6px;border-radius:14px}
 
   .dial-core{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
@@ -273,8 +277,8 @@
 
   @media(max-width:1080px){
     .dial{--ring:360px;--nd:46px}
-    /* at this size the labels collide with their own discs and the answer
-       spills out of the hub; the five are named in full in the rows below */
+    /* at this size the labels crowd the hub and the answer spills out of it;
+       the five are named in full in the rows below */
     .nd-l{display:none}
     .dial-core{width:34%}
     .dial-core .v{font-size:13.5px;margin-top:9px}
@@ -840,8 +844,10 @@
   @media(max-width:1080px){
     .p-hero{grid-template-columns:1fr}
     .hero-left{padding:64px 24px 36px;align-items:stretch}
-    .hero-figure{padding:6px 24px 60px}
-    .fig-web{inset:-6% -34%;width:168%;height:112%}
+    .hero-figure{padding:24px 24px 60px}
+    /* stacked, the ground is sized to the wheel rather than the column, so it
+       does not spill over the rows underneath */
+    .fig-web, .dial-wrap::before{width:min(112%,540px)}
     .dial-rows{display:block;margin-top:34px;border-top:2px solid var(--line)}
   }
 
@@ -1020,8 +1026,8 @@
   </div>
 
   <div class="hero-figure">
-    <svg class="fig-web" viewBox="0 0 600 600" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><g id="figWeb"></g></svg>
     <div class="dial-wrap rv" style="--d:.34s">
+      <svg class="fig-web" viewBox="0 0 600 600" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><g id="figWeb"></g></svg>
       <div class="dial" id="dial">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <g id="dialWedges"></g>
@@ -1894,8 +1900,7 @@ const WAYS = [
   const RI   = 19, RO = 43;              // the band the wedges occupy
   const RL   = 45.5;                     // where the live arc runs
   const RT   = 48.5;                     // the dashed orbit
-  const RN   = 27;                       // where the icon discs sit
-  const RLB  = 36.5;                     // and their labels, further out
+  const RN   = 30;                       // where each icon-and-label pair sits
   const CL   = 2 * Math.PI * RL;
   const ARC  = CL * ((STEP - GAP) / 360); // the live arc covers one wedge
   const ASK  = 'Understand, Find, Hire, Step in or Build.';
@@ -1938,7 +1943,6 @@ const WAYS = [
     ticks.appendChild(t);
   });
 
-  const labEls = [];
   const nodes = WAYS.map(([k,v,href,icon],i)=>{
     const a = STEP * i + STEP / 2;                   // the node sits mid-wedge
     const [x,y] = pt(RN, a);
@@ -1948,23 +1952,15 @@ const WAYS = [
     b.style.left = x + '%';
     b.style.top  = y + '%';
     b.setAttribute('aria-label', k + ': ' + v);
+    /* icon and label are one stacked unit centred on the wedge's mid-radius,
+       so every label sits in the same relation to its own disc; positioning
+       them separately left each one at a different angle to its icon and the
+       set read as scattered */
     b.innerHTML =
-      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg>`;
+      `<span class="nd-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg></span>
+       <span class="nd-l">${k}</span>`;
     el.appendChild(b);
-
-    /* The label sits further out along the same radius rather than simply below
-       the disc: for the two upper wedges "below" points at the hub, and the
-       words ended up on top of the answer in the middle. */
-    const [lx,ly] = pt(RLB, a);
-    const lab = document.createElement('span');
-    lab.className = 'nd-l';
-    lab.setAttribute('aria-hidden','true');
-    lab.textContent = k;
-    lab.style.left = lx + '%';
-    lab.style.top  = ly + '%';
-    el.appendChild(lab);
-    labEls.push(lab);
     return b;
   });
 
@@ -1977,7 +1973,6 @@ const WAYS = [
       b.setAttribute('aria-pressed', i === n ? 'true' : 'false');
     });
     wedgeEls.forEach((w,i)=> w.classList.toggle('sel', i === n));
-    labEls.forEach((l,i)=> l.classList.toggle('sel', i === n));
     rowEls.forEach((r,i)=> r.classList.toggle('sel', i === n));
     // an SVG circle's path starts at three o'clock, so the arc needs a quarter
     // turn taken off before it lands on the wedge it belongs to
