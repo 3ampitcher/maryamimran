@@ -121,39 +121,81 @@
   .rail-index.on-dark a.on i{background:var(--lime)}
   @media(min-width:1460px){.rail-index{display:flex}}
 
-  /* ---------- hero ---------- */
-  /* a full-height opening: on a 16:9 laptop the statement, the ring and both
-     buttons own the first screen, with a cue that there is more below */
-  /* the statement starts just under the nav and runs the full width; the
-     figure sits beside the copy, not below it */
-  .p-hero{max-width:1320px;margin:0 auto;padding:98px 24px 84px;position:relative}
+  /* ---------- hero ----------
+     Copy on the left, aligned to the page grid; the figure holds the whole
+     right half and bleeds to the viewport edge. */
+  .p-hero{
+    display:grid;grid-template-columns:1fr 1fr;align-items:stretch;
+    max-width:none;margin:0;padding:0;position:relative;
+  }
+  .hero-left{
+    padding:96px 56px 88px max(24px, calc((100vw - 1272px) / 2));
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  }
   .hero-h{
-    font-size:clamp(38px,4.6vw,88px);font-weight:700;letter-spacing:-.05em;line-height:.95;
-    margin-top:30px;
+    font-size:clamp(38px,6.4vw,96px);font-weight:700;letter-spacing:-.055em;line-height:.94;
+    margin-top:26px;
   }
-  /* every statement the brand makes ends on a lime period, the same one that
-     closes the wordmark */
+  .hero-h em{font-style:normal;color:var(--lime-deep)}
   .hero-h i{font-style:normal;color:var(--lime-deep)}
-  .hero-sub{
-    max-width:620px;font-size:clamp(18px,1.45vw,21.5px);line-height:1.55;
-    color:var(--ink);font-weight:600;letter-spacing:-.015em;
+
+  /* the three things every engagement is judged on */
+  .hero-attrs{
+    list-style:none;display:flex;align-items:center;flex-wrap:wrap;gap:12px 20px;margin-top:34px;
   }
-  .hero-desc{
-    margin-top:16px;max-width:560px;font-size:15.5px;line-height:1.55;
+  .hero-attrs li{
+    display:flex;align-items:center;gap:11px;
+    font-size:15.5px;font-weight:600;letter-spacing:-.01em;color:var(--ink);
+  }
+  .hero-attrs li + li::before{
+    content:"";width:20px;height:2px;border-radius:2px;background:var(--lime-deep);
+    margin-right:9px;flex:0 0 auto;
+  }
+  .hero-attrs svg{width:21px;height:21px;flex:0 0 auto;color:var(--muted)}
+
+  .hero-sub{
+    margin-top:30px;max-width:44ch;font-size:clamp(16.5px,1.35vw,19px);line-height:1.6;
     color:var(--muted);font-weight:500;
   }
+
+  .hero-cta{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:36px}
+  .hero-link{
+    display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--muted);
+    font-size:15px;font-weight:700;letter-spacing:-.01em;
+    border-bottom:1.5px solid var(--line);padding-bottom:3px;
+    transition:color .3s var(--ease),border-color .3s var(--ease);
+  }
+  .hero-link:hover{color:var(--ink);border-color:var(--lime-deep)}
+  .hero-link .ar{transition:transform .3s var(--ease)}
+  .hero-link:hover .ar{transform:translateY(3px)}
+
+  .hero-proof{
+    margin-top:46px;list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;
+  }
+  .hero-proof li{
+    font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:20px;
+  }
+  .hero-proof li + li::before{
+    content:"";width:4px;height:4px;border-radius:50%;background:var(--lime-deep);flex:0 0 auto;
+  }
+
+  /* the figure half: a fine radial web behind the ring, nothing else */
+  .hero-figure{
+    position:relative;display:grid;place-items:center;padding:80px 32px;overflow:hidden;
+  }
+  .fig-web{
+    position:absolute;inset:-8%;width:116%;height:116%;pointer-events:none;
+    color:#C9C9C1;opacity:.75;
+  }
+  .fig-web circle{fill:none;stroke:currentColor;stroke-width:1.1;stroke-linecap:round}
 
   /* ---------- the dial ----------
      One ring, five equal arcs. Hiring is one fifth of it and you can see
      that without being told - which is the headline's argument, drawn.
      Light an arc and the centre says what that answer actually is. */
-  /* the copy starts straight under the headline; the ring centres itself in
-     the row so it sits level with that copy rather than well below it */
   /* 60/40 as fr, not percentages: 60% + 40% + a 40px gap is 100% + 40px, and
      the row pushed the ring past the viewport edge */
-  .hero-body{display:grid;grid-template-columns:1.5fr 1fr;gap:0 40px;align-items:start;margin-top:34px}
-  .hero-say{align-self:start;padding-top:8px}
-  .hero-say .hero-sub{margin-top:0}
   .eq-note{margin-top:24px;font-size:14px;font-weight:600;color:var(--faint);max-width:44ch}
   .eq-note b{color:var(--ink);font-weight:700}
 
@@ -163,8 +205,8 @@
   /* the labels ride the curve, so the figure is exactly as wide as the ring
      and can be big enough to hold the right half on its own */
   .dial{position:relative;width:min(100%,var(--ring,400px));aspect-ratio:1/1}
-  @media(min-width:1500px){ .dial{--ring:470px} }
-  @media(min-width:1240px) and (max-width:1499px){ .dial{--ring:430px} }
+  @media(min-width:1500px){ .dial{--ring:500px} }
+  @media(min-width:1240px) and (max-width:1499px){ .dial{--ring:460px} }
   @media(max-width:1080px){
     .dial{--ring:340px}
     .dial-core{width:62%}
@@ -235,14 +277,12 @@
 
   /* the ring rides up into the empty space beside the headline so it reads
      level with the copy rather than hanging below it */
-  .dial-wrap{display:grid;justify-items:center;align-self:start;padding:22px 0;margin-top:-96px}
-  .dial-kicker{
-    margin-bottom:20px;font-size:11.5px;font-weight:700;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--faint);text-align:center;
-  }
+  /* place-items:center on the figure makes this a shrink-to-fit grid item, and
+     everything inside the ring is absolutely positioned, so without a width of
+     its own it collapses to zero */
+  .dial-wrap{width:100%;display:grid;justify-items:center;position:relative;z-index:1}
   /* at 104px the headline reaches under the ring's column, so it only rides
      up as far as the second line's baseline allows */
-  @media(min-width:1600px){ .dial-wrap{margin-top:-40px} }
 
   .dial-rows{display:none}
 
@@ -822,19 +862,14 @@
     .sx-name{font-size:19px}
     .founder{grid-template-columns:300px 1fr;gap:44px}
   }
-  /* Two columns until the ring's labels run out of room beside the text,
-     then one, with the figure between the claim and the buttons. */
+  /* Two halves until the ring runs out of room beside the copy, then the
+     figure sits under it and the five become tappable rows. */
   @media(max-width:1080px){
-    .dial-wrap{margin-top:0}
-    .hero-left{display:contents}          /* so the four blocks can reorder */
-    .hero-body{
-      grid-template-columns:1fr;gap:0;
-      grid-template-areas:"say" "dial" "rows" "cta";
-    }
-    .hero-say{grid-area:say}
-    .dial-wrap{grid-area:dial;margin-top:38px}
-    .hero-under{margin-top:38px}
-    .dial-rows{display:block;grid-area:rows;margin-top:32px;border-top:2px solid var(--line)}
+    .p-hero{grid-template-columns:1fr}
+    .hero-left{padding:64px 24px 36px;align-items:stretch}
+    .hero-figure{padding:6px 24px 60px}
+    .fig-web{inset:-6% -34%;width:168%;height:112%}
+    .dial-rows{display:block;margin-top:34px;border-top:2px solid var(--line)}
   }
 
   @media(max-width:900px){
@@ -940,12 +975,16 @@
     .dr span{font-size:14px;color:var(--muted);font-weight:500;text-align:right;max-width:56%}
     .dr.sel{border-bottom-color:var(--lime-deep)}
     .dr.sel b{color:var(--lime-deep)}
-    .hero-under{flex-direction:column;align-items:stretch;margin-top:30px;gap:22px}
     /* three claims will not sit on one 390px line, and a marker that wraps to
        the start of the next one reads as a bullet nobody asked for */
+    /* neither the three claims nor the three attributes fit one 390px line,
+       and a separator that wraps to the start of the next reads as a stray
+       bullet nobody asked for */
     .hero-proof{flex-direction:column;align-items:flex-start;gap:9px}
     .hero-proof li + li::before{display:none}
-    .hero-cta{gap:22px}
+    .hero-attrs{flex-direction:column;align-items:flex-start;gap:13px}
+    .hero-attrs li + li::before{display:none}
+    .hero-cta{flex-direction:column;align-items:flex-start;gap:22px}
   }
 </style>
 </head>
@@ -979,36 +1018,52 @@
 </div>
 
 <header class="p-hero">
-  <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
+  <div class="hero-left">
+    <div class="eyebrow rv">Behind the equation &mdash; GCC &middot; MENA</div>
 
-  <h1 class="hero-h lines rv" style="--d:.06s">
-    <span class="ln"><span>The people equation</span></span>
-    <span class="ln"><span>is bigger than hiring<i>.</i></span></span>
-  </h1>
+    <h1 class="hero-h lines rv" style="--d:.06s">
+      <span class="ln"><span>We solve</span></span>
+      <span class="ln"><span>the <em>people</em></span></span>
+      <span class="ln"><span>equation<i>.</i></span></span>
+    </h1>
 
-  <div class="hero-body">
-    <div class="hero-say rv" style="--d:.26s">
-      <p class="hero-sub">We help growing companies work out who they need, when they need them, and what needs to be built around them.</p>
-      <p class="hero-desc">Executive search, on-demand leadership and embedded capability across the GCC.</p>
-      <div class="hero-cta">
-        <a class="btn btn-dark" href="index.html#solver">Find what you need <span class="ar">&rarr;</span></a>
-        <a class="hero-link" href="#services">Explore all services <span class="ar">&darr;</span></a>
-      </div>
-      <ul class="hero-proof">
-        <li>20+ years GCC leadership</li>
-        <li>Founder-built</li>
-        <li>GCC + MENA</li>
-      </ul>
+    <ul class="hero-attrs rv" style="--d:.2s">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".9" fill="currentColor" stroke="none"/></svg>
+        Right people
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.4l3.4 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Right time
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 18.5v-4M12 18.5v-8M19 18.5v-12"/></svg>
+        Right impact
+      </li>
+    </ul>
+
+    <p class="hero-sub rv" style="--d:.26s">Executive search, on-demand leadership, and embedded capability across the GCC &mdash; so growing companies build what&rsquo;s next.</p>
+
+    <div class="hero-cta rv" style="--d:.32s">
+      <a class="btn btn-dark" href="index.html#solver">Find what you need <span class="ar">&rarr;</span></a>
+      <a class="hero-link" href="#services">Explore all services <span class="ar">&darr;</span></a>
     </div>
 
+    <ul class="hero-proof">
+      <li>20+ years GCC leadership</li>
+      <li>Founder-built</li>
+      <li>GCC + MENA</li>
+    </ul>
+  </div>
+
+  <div class="hero-figure">
+    <svg class="fig-web" viewBox="0 0 600 600" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><g id="figWeb"></g></svg>
     <div class="dial-wrap rv" style="--d:.34s">
-      <p class="dial-kicker">Five situations a company can be in</p>
       <div class="dial" id="dial">
         <svg viewBox="0 0 100 100" aria-hidden="true"><g id="dialSegs"></g></svg>
         <div class="dial-core" id="dialCore"></div>
       </div>
     </div>
-
     <div class="dial-rows" id="dialRows"></div>
   </div>
 </header>
@@ -1829,6 +1884,23 @@ const WAYS = [
   ['Step in',   'Add experienced capability now.',    '#executive-on-demand'],
   ['Build',     'Create the system behind growth.',   '#tech-grid'],
 ];
+
+/* the fine radial web behind the ring: concentric dotted circles, each
+   nudged round a little, so it reads as a swirl without being a picture */
+(function web(){
+  const g = document.getElementById('figWeb');
+  if(!g) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  for(let i = 0; i < 46; i++){
+    const r = 46 + i * 7.2;
+    const c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx','300'); c.setAttribute('cy','300'); c.setAttribute('r', r.toFixed(1));
+    c.setAttribute('stroke-dasharray', `1.1 ${(7 + i * 0.42).toFixed(2)}`);
+    c.setAttribute('stroke-dashoffset', (i * 5.5).toFixed(1));
+    c.setAttribute('opacity', (0.95 - i * 0.014).toFixed(3));
+    g.appendChild(c);
+  }
+})();
 
 (function dial(){
   const el   = document.getElementById('dial');
