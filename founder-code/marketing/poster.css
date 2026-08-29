@@ -1,0 +1,430 @@
+/* ============================================================
+   FOUNDER CODE — marketing posters
+   ------------------------------------------------------------
+   Three fixed-canvas visuals, rendered to PNG by render.mjs.
+   They inherit the site's tokens wholesale (../assets/css/
+   founder-code.css) so the marketing set and the product cannot
+   drift apart; everything below is poster-specific composition.
+
+   Canvas: 1600 x 2000 (4:5). Rendered at 2x -> 3200 x 4000.
+   To change the format, edit CANVAS here and in render.mjs.
+   ============================================================ */
+
+html {
+  /* rem-based tokens scale up as a set for a poster-sized canvas. */
+  font-size: 18px;
+}
+
+body {
+  margin: 0;
+  background: #8d8f8a;         /* studio grey behind the artboard */
+  display: grid;
+  justify-items: center;
+  gap: 40px;
+  padding: 40px 0;
+}
+
+.poster {
+  --pad: 84px;
+  position: relative;
+  width: 1600px;
+  height: 2000px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+.poster--ink {
+  background: var(--ink);
+}
+
+/* --- Rules and bands ------------------------------------------------- */
+
+.band {
+  padding: 44px var(--pad);
+  border-top: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--text);
+}
+.band:first-of-type { border-top: 0; }
+.band--flush { padding-block: 30px; }
+.band--grow { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.band__label {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  margin-bottom: 22px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.band__label b { color: var(--accent); font-weight: 500; }
+.band__label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* --- Poster header and footer ---------------------------------------- */
+
+.plate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 40px var(--pad);
+  border-bottom: 1px solid var(--rule);
+}
+.plate__brand { display: flex; align-items: center; gap: 16px; }
+.plate__mark { width: 42px; height: 42px; }
+.plate__name {
+  display: block;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--text);
+}
+.plate__parent {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.plate__index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: right;
+}
+.plate__index b { display: block; color: var(--text); font-weight: 500; font-size: 15px; letter-spacing: 0.14em; margin-top: 6px; }
+
+.baseplate {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 28px var(--pad);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+}
+.baseplate p { margin: 0; }
+.baseplate p:last-child { white-space: nowrap; }
+
+/* --- Poster typography ------------------------------------------------ */
+
+.p-title {
+  font-size: 74px;
+  line-height: 1.03;
+  letter-spacing: -0.038em;
+  font-weight: 500;
+  margin: 0;
+  text-wrap: balance;
+}
+.p-title em { font-style: normal; color: var(--accent); }
+.p-title--sm { font-size: 58px; }
+.p-sub {
+  margin: 26px 0 0;
+  max-width: 46ch;
+  font-size: 23px;
+  line-height: 1.42;
+  letter-spacing: -0.012em;
+  color: var(--text-2);
+}
+.p-h {
+  margin: 0 0 12px;
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+}
+.p-h--sm { font-size: 21px; }
+.p-body { margin: 0; font-size: 17px; line-height: 1.5; color: var(--text-2); }
+.p-micro { margin: 0; font-size: 14px; line-height: 1.45; color: var(--text-3); }
+
+/* --- Poster grids ----------------------------------------------------- */
+
+.cols { display: grid; gap: 32px; }
+.cols--2 { grid-template-columns: repeat(2, 1fr); }
+.cols--3 { grid-template-columns: repeat(3, 1fr); }
+.cols--4 { grid-template-columns: repeat(4, 1fr); }
+.cols--5 { grid-template-columns: repeat(5, 1fr); }
+.cols--tight { gap: 20px; }
+.cols--split { grid-template-columns: 1.05fr 0.95fr; gap: 56px; }
+
+.box {
+  padding: 22px 26px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.box--quiet { background: transparent; }
+.box--lead {
+  background: var(--ink);
+  border-color: var(--ink);
+  --text: var(--paper);
+  --text-2: rgba(246, 244, 239, 0.76);
+  --text-3: rgba(246, 244, 239, 0.6);
+  --accent: var(--signal);
+  --rule: var(--paper-16);
+  color: var(--paper);
+}
+.box__key {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Ruled list used for the dense enumerations. */
+.rows { display: grid; align-content: start; gap: 0; }
+.rows li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+.rows li:last-child { border-bottom: 0; }
+.rows li b { color: var(--text); font-weight: 500; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags .pill { font-size: 10px; padding: 4px 9px; letter-spacing: 0.08em; }
+
+/* --- The equation lockup ---------------------------------------------- */
+
+.lockup {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.lockup b {
+  font-weight: 500;
+  color: var(--text);
+  padding: 13px 22px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--accent-quiet);
+}
+.lockup b.is-sum { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+.lockup span { font-size: 20px; opacity: 0.55; }
+
+/* --- Flow arrows between bands ---------------------------------------- */
+
+.flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin: 22px 0 0;
+}
+.flow__step { position: relative; }
+.flow__step + .flow__step::before {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 26px;
+  width: 12px;
+  height: 12px;
+  border-top: 1.5px solid var(--accent);
+  border-right: 1.5px solid var(--accent);
+  transform: rotate(45deg);
+}
+
+/* --- Score maths ------------------------------------------------------- */
+
+.maths {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.maths__term {
+  flex: 1;
+  padding: 18px 22px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.maths__op {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  border-right: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-3);
+}
+.maths__weight {
+  font-family: var(--font-mono);
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--accent);
+}
+.maths__name { font-size: 17px; font-weight: 500; letter-spacing: -0.015em; }
+.maths__eg { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; color: var(--text-3); }
+.maths__out {
+  width: 210px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 4px;
+  background: var(--ink);
+  color: var(--paper);
+}
+.maths__num {
+  font-family: var(--font-mono);
+  font-size: 62px;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--signal);
+}
+.maths__den { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; color: rgba(246,244,239,0.6); }
+
+/* --- Dashboard reproduction (poster 3) --------------------------------- */
+
+.mini {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.mini__panel {
+  background: var(--surface);
+  padding: 26px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mini__panel--hero {
+  background: var(--ink);
+  --text: var(--paper);
+  --text-2: rgba(246,244,239,0.76);
+  --text-3: rgba(246,244,239,0.6);
+  --accent: var(--signal);
+  --data-1: var(--signal);
+  --data-2: #e5a93a;
+  --data-3: #ef8577;
+  --rule: var(--paper-16);
+  --track: rgba(246,244,239,0.14);
+  color: var(--paper);
+}
+.mini__title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.mini .meter__name { font-size: 14px; }
+.mini .meter__value { font-size: 12px; }
+.mini .kv__row { font-size: 14px; }
+.mini .ladder__name { font-size: 14px; }
+.mini .ladder__level { font-size: 10px; min-width: 62px; }
+.mini .ladder__row { grid-template-columns: 82px 1fr auto; gap: 12px; }
+.mini .points li { font-size: 14px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-7 { grid-column: span 7; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+/* --- Faint axis field for ink grounds ---------------------------------- */
+
+.field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--paper-08) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-08) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(110% 70% at 82% 8%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(110% 70% at 82% 8%, #000 0%, transparent 70%);
+}
+
+/* --- Band and box variants -------------------------------------------- */
+
+.band--alt { background: var(--paper-1); }
+.band--alt .box { background: var(--paper); }
+
+.box--accent {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: var(--accent-quiet);
+}
+
+/* A single oversized figure, used in the value and evidence bands. */
+.stat { display: flex; flex-direction: column; gap: 6px; }
+.stat__num {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text);
+}
+.stat__label { font-size: 14px; line-height: 1.35; color: var(--text-3); }
+
+/* Each clause stays whole when the line wraps — the point of the chain is
+   that the three things are read as three things. */
+.chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+.chain > span { white-space: nowrap; }
+.chain > i {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--accent);
+}
+
+
+/* Poster 2 runs denser than the others; it takes a tighter band rhythm. */
+.poster--dense .band { padding-block: 32px; }
+.poster--dense .band__label { margin-bottom: 18px; }
