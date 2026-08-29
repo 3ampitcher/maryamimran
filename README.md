@@ -199,3 +199,16 @@ in both places, so the row total (51) is higher than the distinct record count
 - Don't invent metrics, dates, partnerships or outcomes. If something isn't
   confirmed, leave the field out or mark it `verified: false`.
 - Open TODOs are marked `TODO(maryam)` in the data files only — never in the UI.
+
+---
+
+## Also in this repository: `founder-code/`
+
+`/founder-code` is a **separate site for a separate brand** — Founder Code, a
+company of The Founder & Co. It shares nothing with the personal platform except
+the repository and the three self-hosted typefaces: no shared tokens, no shared
+components, no shared routing.
+
+It is plain HTML, CSS and JavaScript with no build step and no dependencies, so
+it is untouched by `npm run build` and deploys independently (its own host, its
+own domain). See `founder-code/README.md`.
