@@ -47,7 +47,7 @@ export function Contact() {
               >
                 <span className="contact__link-label mono">LinkedIn</span>
                 <span className="contact__link-value">
-                  /maryam-imran
+                  /{site.links.linkedin.replace(/\/$/, '').split('/').pop()}
                   <span className="contact__arrow" aria-hidden="true">
                     ↗
                   </span>

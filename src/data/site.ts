@@ -19,11 +19,10 @@ export const site = {
   description:
     'Personal portfolio of Maryam Imran, a Business Analytics & Information Systems student in Jeddah working across startups, technology, sustainability, analytics, leadership and emerging ideas.',
 
-  /* --- Contact ---------------------------------------------------------
-     TODO(maryam): replace with the address and profile URLs you want public. */
-  email: 'hello@mayamirman.com',
+  /* --- Contact --- */
+  email: 'emailmaryamimran@gmail.com',
   links: {
-    linkedin: 'https://www.linkedin.com/in/maryam-imran-/',
+    linkedin: 'https://www.linkedin.com/in/maryamimranksa/',
     substack: '', // TODO(maryam): add your Substack URL to show the link.
   },
 

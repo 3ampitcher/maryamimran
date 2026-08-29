@@ -11,50 +11,6 @@
   aspect-ratio: var(--portrait-ratio, 4 / 5);
 }
 
-/* Fill: the photograph is the surface, not an object on it.
-   It matches the container's HEIGHT exactly and overflows horizontally, so
-   the frame is never cut off top or bottom whatever the window shape.
-   --portrait-focus-x decides which part survives the horizontal crop. */
-.portrait--fill {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.portrait--fill .portrait__img {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  height: 100%;
-  width: auto;
-  max-width: none;
-  object-fit: fill;
-  /* Puts the focal point of the image at the centre of the container. */
-  transform: translateX(calc(-1 * var(--portrait-focus-x, 50%))) scale(1.03);
-  /* Self-adjusting edge: on a window narrower than the frame these edges sit
-     off-screen and nothing changes; on a very wide one, where matching the
-     height leaves the frame narrower than the viewport, they dissolve into
-     the ground instead of ending on a hard seam. */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 4%,
-    #000 96%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 4%,
-    #000 96%,
-    transparent 100%
-  );
-}
-
-.portrait--fill.portrait--loaded .portrait__img {
-  transform: translateX(calc(-1 * var(--portrait-focus-x, 50%))) scale(1);
-}
-
 /* <picture> is inline by default, so an img inside it has nothing for
    height:100% to resolve against and collapses to its intrinsic height. */
 .portrait picture {
@@ -75,29 +31,32 @@
   will-change: transform;
 }
 
-.portrait--loaded /* <picture> is inline by default, so an img inside it has nothing for
-   height:100% to resolve against and collapses to its intrinsic height. */
-.portrait picture {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.portrait__img {
+.portrait--loaded .portrait__img {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Frame: the lower edge dissolves, so it never reads as a photo card. */
-.portrait--frame /* <picture> is inline by default, so an img inside it has nothing for
-   height:100% to resolve against and collapses to its intrinsic height. */
-.portrait picture {
-  display: block;
-  width: 100%;
-  height: 100%;
+/* --- Fill: the photograph is the surface, not an object on it. ---
+   It covers the container, so there is never a gap or a faded edge at the
+   sides. The frame is 2.05:1 — wider than almost any window — so covering
+   still shows its full height nearly everywhere; only an unusually wide,
+   short window trims a little off the top and bottom. The focal point
+   decides what survives whichever crop applies. */
+
+.portrait--fill {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }
 
-.portrait__img {
+.portrait--fill .portrait__img {
+  position: absolute;
+  inset: 0;
+}
+
+/* --- Frame: the lower edge dissolves, so it never reads as a photo card. --- */
+
+.portrait--frame .portrait__img {
   -webkit-mask-image: linear-gradient(
     to bottom,
     #000 0%,
