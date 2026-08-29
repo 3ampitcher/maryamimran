@@ -503,9 +503,12 @@
   .svc-pill.hot .cnt{background:var(--lime);color:var(--ink)}
 
   /* ---------- 05 founder ---------- */
-  .founder{display:grid;grid-template-columns:400px 1fr;gap:70px;align-items:start}
+  .founder{display:grid;grid-template-columns:340px 1fr;gap:64px}
+  /* the whole column travels, not just the picture - sticking the portrait
+     alone left the name and the LinkedIn link behind, below the fold */
+  .p-col{position:sticky;top:118px}
   .portrait{
-    position:sticky;top:130px;border-radius:24px;overflow:hidden;background:var(--ink);
+    position:relative;border-radius:24px;overflow:hidden;background:var(--ink);
     aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;
   }
   .portrait img{width:100%;height:100%;object-fit:cover}
@@ -538,19 +541,80 @@
     color:#fff;background:var(--ink);border-color:var(--ink);transform:translateY(-2px);
   }
 
-  .facts{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:44px;border-top:1px solid var(--line)}
+  /* ---------- the narrative ---------- */
+  .founder .lead{
+    font-size:clamp(21px,2.1vw,26px);line-height:1.42;letter-spacing:-.025em;
+    color:var(--ink);font-weight:700;max-width:34ch;
+  }
+  .founder .lead em{font-style:normal;color:var(--muted);font-weight:600;display:block;margin-top:8px}
+  .bio{margin-top:32px;display:flex;flex-direction:column;gap:19px}
+  .bio p{font-size:17px;line-height:1.68;color:var(--muted);font-weight:500;max-width:62ch}
+  .bio p.turn{
+    color:var(--ink);font-weight:700;font-size:20px;line-height:1.4;letter-spacing:-.025em;
+    margin-top:4px;
+  }
+
+  /* the reframe: the question everyone asks, struck out, and the four that
+     actually decide the outcome */
+  .qs{margin-top:44px;padding-top:34px;border-top:1px solid var(--line)}
+  .q-line{margin:14px 0 30px}
+  .q-old{
+    display:inline-block;position:relative;
+    font-family:var(--serif);font-style:italic;font-weight:300;color:var(--soft);
+    font-size:clamp(27px,3.3vw,40px);line-height:1.15;letter-spacing:-.015em;
+  }
+  .q-old::after{
+    content:"";position:absolute;left:-.04em;right:-.04em;top:55%;height:.075em;
+    background:var(--lime-deep);border-radius:4px;
+    transform:rotate(-1.4deg) scaleX(0);transform-origin:0 50%;
+    transition:transform .75s var(--ease) .35s;
+  }
+  .qs.in .q-old::after{transform:rotate(-1.4deg) scaleX(1)}
+  .q-list{list-style:none;border-top:1px solid var(--line)}
+  .q-list li{
+    position:relative;padding:19px 0 19px 46px;border-bottom:1px solid var(--line);
+    font-size:19px;font-weight:700;line-height:1.42;letter-spacing:-.022em;max-width:52ch;
+  }
+  .q-list li::before{
+    content:attr(data-n);position:absolute;left:0;top:23px;
+    font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--faint);
+  }
+  .bio-end{margin-top:34px;font-size:17px;line-height:1.68;color:var(--muted);font-weight:500;max-width:62ch}
+  .bio-end b{color:var(--ink);font-weight:700}
+
+  /* ---------- Imran at a glance ---------- */
+  .glance{margin-top:100px;padding-top:46px;border-top:1px solid var(--line)}
+  .glance-head{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:end;margin-top:20px}
+  .roles{
+    font-size:clamp(19px,2.5vw,31px);font-weight:700;line-height:1.34;
+    letter-spacing:-.015em;text-transform:uppercase;
+  }
+  .roles span{white-space:nowrap}
+  .roles i{font-style:normal;color:var(--lime-deep)}
+  .glance-lead{font-size:16.5px;line-height:1.68;color:var(--muted);font-weight:500;max-width:62ch}
+
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:52px;border-top:1px solid var(--line)}
   .fact{
-    padding:28px 24px 28px 0;border-bottom:1px solid var(--line);position:relative;
-    transition:padding-left .4s var(--ease);
+    padding:26px 24px 28px 0;border-bottom:1px solid var(--line);position:relative;
+    transition:padding-left .4s var(--ease),background .4s var(--ease);
   }
   .fact::before{
-    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;background:var(--lime);
+    content:"";position:absolute;left:0;top:-1px;height:calc(100% + 1px);width:3px;background:var(--lime-deep);
     transform:scaleY(0);transform-origin:50% 0;transition:transform .4s var(--ease);
   }
-  .fact:hover{padding-left:22px}
+  /* one gesture, three parts: the rule draws, the row warms, the index lights */
+  .fact:hover{padding-left:22px;background:rgba(200,240,60,.13)}
   .fact:hover::before{transform:scaleY(1)}
-  .fact i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--faint);display:block;margin-bottom:12px}
-  .fact p{font-size:16.5px;line-height:1.5;font-weight:600;letter-spacing:-.015em}
+  .fact:hover i{color:var(--lime-deep)}
+  .fact i{
+    font-style:normal;font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--faint);
+    display:block;margin-bottom:11px;transition:color .4s var(--ease);
+  }
+  .fact h4{
+    font-size:12.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+    line-height:1.35;margin-bottom:9px;
+  }
+  .fact p{font-size:16px;line-height:1.56;font-weight:500;color:var(--muted);letter-spacing:-.01em;max-width:52ch}
 
   .creed{
     margin-top:80px;background:var(--ink);color:#fff;border-radius:var(--r-lg);
@@ -566,7 +630,7 @@
   .creed h3 span{display:block}
   .creed h3 span:nth-child(2){color:#8D939E}
   .creed h3 span:nth-child(3){color:var(--lime)}
-  .creed p{font-size:16.5px;line-height:1.7;color:#9AA0AB;font-weight:500}
+  .creed p{font-size:19px;line-height:1.6;color:#9AA0AB;font-weight:500;letter-spacing:-.015em}
   .creed p b{color:#fff;font-weight:700}
 
   /* ---------- 06 logos ---------- */
@@ -653,7 +717,11 @@
     .svc-col{position:static}
     .tree.hover .need,.tree.hover .svc-pill{opacity:1}
     .founder{grid-template-columns:1fr;gap:32px}
-    .portrait{position:relative;top:auto;max-width:320px}
+    .p-col{position:static}
+    .portrait{max-width:320px}
+    .glance{margin-top:64px}
+    .glance-head{grid-template-columns:1fr;gap:24px;align-items:start}
+    .q-list li{font-size:17.5px;padding-left:40px}
     .facts{grid-template-columns:1fr}
     .creed{grid-template-columns:1fr;gap:28px;padding:40px 28px}
     .contact-card{grid-template-columns:1fr;gap:34px;padding:40px 28px}
@@ -893,33 +961,68 @@
 
   <div class="founder">
     <div class="rv">
-      <div class="portrait">
-        <img src="assets/imran-yousuf.jpg" alt="Imran Yousuf, Founder and CEO of TheFounder&amp;Co." style="position:absolute;inset:0" onerror="this.remove()">
-        <div class="ph"><b>IY</b><span>Add portrait</span></div>
-      </div>
-      <div class="p-cap">
-        <div class="p-who">
-          <b>Imran Yousuf</b>
-          <span>Founder <em>&amp;</em> CEO</span>
+      <div class="p-col">
+        <div class="portrait">
+          <img src="assets/imran-yousuf.jpg" alt="Imran Yousuf, Founder and CEO of TheFounder&amp;Co." style="position:absolute;inset:0" onerror="this.remove()">
+          <div class="ph"><b>IY</b><span>Add portrait</span></div>
         </div>
-        <a class="p-li" data-site-link="linkedin" target="_blank" rel="noopener"
-           aria-label="Imran Yousuf on LinkedIn" title="Imran Yousuf on LinkedIn">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
-          <span>LinkedIn</span>
-        </a>
+        <div class="p-cap">
+          <div class="p-who">
+            <b>Imran Yousuf</b>
+            <span>Founder <em>&amp;</em> CEO</span>
+          </div>
+          <a class="p-li" data-site-link="linkedin" target="_blank" rel="noopener"
+             aria-label="Imran Yousuf on LinkedIn" title="Imran Yousuf on LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+        </div>
       </div>
     </div>
 
     <div>
-      <p class="lead rv">Two decades of executive search on one side of the table, and the experience of building and selling a company on the other. TheFounder&amp;Co. exists because those two views rarely sit in the same person &mdash; and startups pay for the gap.</p>
-      <div class="facts">
-        <div class="fact rv"><i>01</i><p>20+ years in GCC executive search and talent advisory</p></div>
-        <div class="fact rv" style="--d:.06s"><i>02</i><p>Former Middle East President, N2Growth</p></div>
-        <div class="fact rv" style="--d:.12s"><i>03</i><p>Three years as Talent Partner to Sanabil Venture Studio</p></div>
-        <div class="fact rv" style="--d:.18s"><i>04</i><p>Founded and exited a startup &mdash; idea to acquisition in 18 months</p></div>
-        <div class="fact rv" style="--d:.24s"><i>05</i><p>BPS-certified assessor with a psychology degree</p></div>
-        <div class="fact rv" style="--d:.3s"><i>06</i><p>C-suite placements across the Saudi technology ecosystem</p></div>
+      <p class="lead rv">I&rsquo;ve spent 20+ years watching people decisions make or break companies.<em>Now we&rsquo;ve turned that experience into a system.</em></p>
+
+      <div class="bio rv" style="--d:.06s">
+        <p>For more than two decades, I&rsquo;ve worked at the intersection of investors, founders, leadership, talent and growth. I&rsquo;ve advised companies on critical hires, built leadership teams, assessed founders, hunted founders for new ventures, coached CEOs, and worked alongside venture studios and some of the world&rsquo;s leading investors.</p>
+        <p>Along the way, I crossed the table myself. I became a founder, investor and board member, built and exited a business, and worked directly with founders and CEOs navigating the realities of building and scaling companies.</p>
+        <p class="turn">That combination changed how I see talent.</p>
       </div>
+
+      <div class="qs rv" style="--d:.06s">
+        <div class="eyebrow">The biggest people question is rarely</div>
+        <p class="q-line"><span class="q-old">&ldquo;Who should we hire?&rdquo;</span></p>
+        <div class="eyebrow" style="margin-bottom:18px">It is</div>
+        <ul class="q-list">
+          <li data-n="01">What outcome are we trying to create?</li>
+          <li data-n="02">What capability will get us there?</li>
+          <li data-n="03">Who is the right person for this stage?</li>
+          <li data-n="04">And what is the smartest way to engage them?</li>
+        </ul>
+      </div>
+
+      <p class="bio-end rv"><b>That thinking became TheFounder&amp;Co.</b> We help founders and investors make better decisions about the people behind the company, from founder assessment and founder search to executive leadership, fractional talent and workforce architecture.</p>
+    </div>
+  </div>
+
+  <div class="glance">
+    <div class="eyebrow rv">Imran at a glance</div>
+    <div class="glance-head">
+      <p class="roles rv" style="--d:.06s"><span>Founder<i>.</i></span> <span>Investor<i>.</i></span> <span>Board member<i>.</i></span> <span>Recruiter<i>.</i></span> <span>Founder hunter<i>.</i></span> <span>Assessor<i>.</i></span> <span>Coach<i>.</i></span> <span>Mentor<i>.</i></span></p>
+      <p class="glance-lead rv" style="--d:.1s">Imran works as an investor, board member, coach and mentor to CEOs and founders of startups and scale-ups across the region, bringing together more than two decades of experience in executive search, leadership advisory, entrepreneurship and venture building.</p>
+    </div>
+
+    <div class="facts">
+      <div class="fact rv"><i>01</i><h4>20+ years</h4><p>Executive search, leadership and talent advisory across MENA.</p></div>
+      <div class="fact rv" style="--d:.05s"><i>02</i><h4>Built from the top</h4><p>Former Middle East President of a world top-10 leadership advisory firm.</p></div>
+      <div class="fact rv" style="--d:.1s"><i>03</i><h4>Founder &amp; entrepreneur</h4><p>Built and exited a company from idea to acquisition in 18 months.</p></div>
+      <div class="fact rv" style="--d:.15s"><i>04</i><h4>Investor &amp; board member</h4><p>Working alongside founders and leadership teams as businesses build, grow and scale.</p></div>
+      <div class="fact rv" style="--d:.2s"><i>05</i><h4>Founder &amp; CEO coach</h4><p>Coach and mentor to founders and CEOs of tech startups and scale-ups across the region.</p></div>
+      <div class="fact rv" style="--d:.25s"><i>06</i><h4>Founder hunter</h4><p>Worked with venture studios and some of the world&rsquo;s leading investors to identify, assess and hunt founders for new ventures.</p></div>
+      <div class="fact rv" style="--d:.3s"><i>07</i><h4>Creator of FQ</h4><p>Founder of Founder Quotient (FQ), a first-of-its-kind assessment built specifically to understand founder potential, fit and capability.</p></div>
+      <div class="fact rv" style="--d:.35s"><i>08</i><h4>Trained in psychology</h4><p>Degree in psychology from a top business school &mdash; the grounding under everything that follows.</p></div>
+      <div class="fact rv" style="--d:.4s"><i>09</i><h4>Science + judgment</h4><p>BPS-certified assessor bringing structured assessment and evidence-based thinking to founder and leadership decisions.</p></div>
+      <div class="fact rv" style="--d:.45s"><i>10</i><h4>Both sides of the table</h4><p>Recruiter, founder, investor, board member and CEO adviser, bringing a rare 360&deg; view of what makes founders, leaders and companies succeed.</p></div>
     </div>
   </div>
 
@@ -929,7 +1032,7 @@
       <h3><span>Search discipline.</span><span>Founder experience.</span><span>Regional pattern recognition.</span></h3>
     </div>
     <div class="k">
-      <p><b>TheFounder&amp;Co. is that pattern turned into a system:</b> matching the right capability to the right stage, every time the company changes shape underneath you. Not a CV pipeline. Not a service catalogue. A way of deciding what the business actually needs next, and the discipline to go and get it.</p>
+      <p><b>We don&rsquo;t start with a job title.</b> We start with the result the business needs, then solve the people equation around it.</p>
     </div>
   </div>
 </section>
