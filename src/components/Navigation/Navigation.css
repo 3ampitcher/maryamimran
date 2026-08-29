@@ -345,3 +345,12 @@
 .nav--ondark .nav__dot {
   background: #7b95ee;
 }
+
+
+/* Over the photographic hero the bar has no solid ground beneath it; the
+   hero's scrim carries the contrast and this adds the separation. */
+.nav--ondark:not(.nav--scrolled) .nav__name,
+.nav--ondark:not(.nav--scrolled) .nav__link,
+.nav--ondark:not(.nav--scrolled) .nav__toggle {
+  text-shadow: 0 1px 14px rgba(24, 26, 29, 0.45);
+}

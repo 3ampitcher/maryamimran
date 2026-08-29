@@ -1,38 +1,88 @@
+/* ============================================================
+   HERO — full-bleed photograph
+   ============================================================ */
+
 .hero {
   position: relative;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+  /* Photography is unpredictable; the shadow adds separation the scrim
+     alone can't guarantee, and is invisible against the scrim itself. */
+  text-shadow: 0 1px 14px rgba(24, 26, 29, 0.4);
   overflow: hidden;
   isolation: isolate;
+  /* Type sits on photography here, so this block runs on the light
+     scale regardless of the section grounds elsewhere. */
+  color: var(--white);
+  background: var(--ink);
 }
 
-/* Stone opening that resolves into paper further down the page. */
-.hero__ground {
+/* --- The photograph --------------------------------------------------- */
+
+.hero__media {
   position: absolute;
-  inset: 0;
-  z-index: -1;
+  /* Extra height at the bottom so the parallax drift never exposes an edge. */
+  inset: 0 0 -14% 0;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* --- Scrims ----------------------------------------------------------
+   Two gradients rather than an overall darkening: the shot is bright
+   and should stay bright through the middle. */
+
+.hero__scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero__scrim--top {
+  top: 0;
+  /* Holds across the navigation band, then clears well above the face.
+     White nav type over the brightest possible frame measures ~4.9:1. */
+  height: 32%;
   background: linear-gradient(
     to bottom,
-    var(--stone) 0%,
-    var(--stone) 42%,
-    color-mix(in srgb, var(--stone) 55%, var(--paper)) 78%,
-    var(--paper) 100%
+    rgba(24, 26, 29, 0.76) 0%,
+    rgba(24, 26, 29, 0.52) 28%,
+    rgba(24, 26, 29, 0.14) 65%,
+    transparent 100%
   );
 }
 
+.hero__scrim--bottom {
+  bottom: 0;
+  /* Begins below the face and deepens toward the edge. Measured against a
+     pure-white frame: the base rail ~11:1, the name ~7.6:1, the
+     positioning line ~4.4:1. */
+  height: 52%;
+  background: linear-gradient(
+    to top,
+    rgba(24, 26, 29, 0.92) 0%,
+    rgba(24, 26, 29, 0.82) 25%,
+    rgba(24, 26, 29, 0.62) 55%,
+    rgba(24, 26, 29, 0.3) 80%,
+    transparent 100%
+  );
+}
+
+/* --- Content ---------------------------------------------------------- */
+
 .hero__inner {
   position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  min-height: 100svh;
   width: 100%;
   max-width: var(--maxw);
   margin-inline: auto;
-  padding: calc(var(--nav-h) + 0.5rem) var(--gutter) 0;
+  padding: calc(var(--nav-h) + 0.5rem) var(--gutter) clamp(1.25rem, 3vh, 2.25rem);
 }
 
-/* --- Top rail --- */
+/* Top rail */
 
 .hero__rail {
   display: flex;
@@ -42,7 +92,7 @@
   font-size: var(--t-label);
   letter-spacing: var(--tr-label);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--white-70);
 }
 
 .hero__place {
@@ -60,32 +110,27 @@
 }
 
 .hero__meta-sep {
-  color: var(--cobalt);
+  color: var(--white-45, rgba(247, 247, 244, 0.45));
 }
 
-/* --- Stage: positioning / portrait / context --- */
+/* Foot: positioning line, then the name */
 
-.hero__stage {
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  padding-block: clamp(1rem, 3vh, 3rem);
+.hero__foot {
+  /* Pinned to the bottom, so the type only ever sits in the part of the
+     frame the scrim actually covers. */
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2.5vh, 2rem);
+  will-change: transform;
 }
 
 .hero__positioning {
-  display: flex;
-  flex-direction: column;
-  justify-self: end;
-  text-align: right;
-  font-size: var(--t-xl);
+  font-size: clamp(1.05rem, 2.2vw, 1.9rem);
   font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: var(--tr-display);
-  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: var(--tr-heading);
+  color: var(--white);
 }
 
 .hero__positioning-line {
@@ -93,95 +138,73 @@
 }
 
 .hero__times {
-  color: var(--cobalt);
-  margin-right: 0.18em;
+  display: inline-block;
+  margin-inline: 0.42em;
   font-weight: 400;
+  /* Cobalt lifted so it holds against photography. */
+  color: #8ba4f2;
 }
 
-.hero__portrait {
-  position: relative;
-  z-index: 2;
-  width: clamp(13rem, min(28vw, 40vh), 26rem);
-  will-change: transform;
-}
-
-/* The overlap is applied to the inner element, not to .hero__portrait,
-   for two reasons: framer-motion owns the transform on the parent, and a
-   transform costs no layout height — a negative margin here would simply
-   be reabsorbed by the flex:1 stage above. This is what puts the figure
-   in front of the letterforms instead of stacked above them. */
-.hero__portrait .portrait {
-  transform: translateY(clamp(1.5rem, 13vh, 8.5rem));
+.hero__baserail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: clamp(0.9rem, 2.2vh, 1.5rem);
 }
 
 .hero__context {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  align-self: end;
-  padding-bottom: clamp(1rem, 4vh, 3rem);
-  font-size: var(--t-sm);
-  line-height: 1.5;
-  color: var(--ink);
-  max-width: 15rem;
+  font-size: var(--t-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--white-70);
+  text-align: right;
 }
 
-.hero__context-line--muted {
-  color: var(--text-tertiary);
-}
-
-/* --- The name band --- */
+/* The name */
 
 .hero__nameband {
-  position: relative;
-  z-index: 1;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  /* Pulled up so the portrait overlaps the type — this overlap is what
-     makes the hero read as one composition instead of two stacked blocks. */
-  margin-top: clamp(-9rem, -9vh, -2.5rem);
-  padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
   pointer-events: none;
 }
 
 .hero__name {
   display: block;
-  /* 16vw makes "MARYAM IMRAN" measure ~111vw, so it deliberately runs
-     past both edges; the clamp keeps it inside the vertical budget. */
+  /* ~16vw makes "MARYAM IMRAN" measure wider than the viewport, so it
+     deliberately runs past both edges; the clamp keeps it in budget. */
   font-size: clamp(3.25rem, 16vw, 24rem);
   font-weight: 500;
   line-height: var(--lh-tight);
   letter-spacing: var(--tr-mega);
-  color: var(--ink);
   text-transform: uppercase;
+  color: var(--white);
   white-space: nowrap;
-  /* Deliberately runs past both edges of the viewport. */
-  margin-left: -0.06em;
-  will-change: transform;
+  margin-left: -0.055em;
+  padding-inline: var(--gutter);
 }
 
 .hero__name-inner {
   display: block;
 }
 
-/* --- Scroll cue --- */
+/* Scroll cue */
 
 .hero__cue {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding-bottom: clamp(1rem, 3vh, 2rem);
   font-size: var(--t-label);
   letter-spacing: var(--tr-label);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--white-70);
 }
 
 .hero__cue-line {
   display: block;
   width: clamp(2rem, 5vw, 4rem);
   height: 1px;
-  background: var(--cobalt);
+  background: #8ba4f2;
   transform-origin: left;
   animation: cue-line 2.4s var(--ease-inout) infinite;
 }
@@ -203,106 +226,65 @@
     animation: none;
     transform: scaleX(1);
   }
-
 }
 
 /* ============================================================
-   TABLET
-   ============================================================ */
-
-@media (max-width: 1024px) {
-  .hero__positioning {
-    font-size: var(--t-lg);
-  }
-
-  .hero__portrait {
-    width: clamp(13rem, min(38vw, 42vh), 20rem);
-  }
-}
-
-/* ============================================================
-   MOBILE — deliberately re-composed, not scaled down.
-   Portrait dominates; positioning and context stack beneath it.
+   MOBILE — a 16:9 photograph on a tall viewport crops hard. The
+   focal point in site.ts keeps her in frame; the type reflows
+   to a single column so it never sits over her face.
    ============================================================ */
 
 @media (max-width: 767px) {
   .hero__inner {
-    padding-top: calc(var(--nav-h) + 0.5rem);
-  }
-
-  .hero__stage {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'portrait'
-      'positioning'
-      'context';
-    gap: 1.5rem;
-    align-items: start;
-    padding-block: 1.25rem 0.5rem;
-  }
-
-  .hero__portrait {
-    grid-area: portrait;
-    width: min(78vw, 22rem);
-    justify-self: center;
+    padding-top: calc(var(--nav-h) + 0.25rem);
   }
 
   .hero__positioning {
-    grid-area: positioning;
-    justify-self: start;
-    text-align: left;
-    font-size: clamp(1.75rem, 8.5vw, 2.5rem);
+    font-size: clamp(1.15rem, 5.4vw, 1.6rem);
+  }
+
+  /* The discipline is the thing worth keeping; the cue is redundant on a
+     touch device that already invites scrolling. */
+  .hero__cue {
+    display: none;
+  }
+
+  .hero__baserail {
+    justify-content: flex-start;
   }
 
   .hero__context {
-    grid-area: context;
-    align-self: start;
-    padding-bottom: 0;
-    max-width: none;
-    font-size: var(--t-xs);
+    text-align: left;
   }
 
   .hero__name {
-    /* Still large, still bleeds — but controlled. */
-    font-size: clamp(3.25rem, 21vw, 7rem);
-  }
-
-  /* The portrait/type overlap is a desktop composition device. Stacked on a
-     phone there is no room for it, and it collides with the context lines. */
-  .hero__portrait .portrait {
-    transform: none;
-  }
-
-  .hero__nameband {
-    margin-top: 0;
-  }
-
-  .hero__context {
-    padding-bottom: 0.75rem;
-  }
-
-  .hero__cue {
-    display: none;
+    font-size: clamp(2.75rem, 19vw, 6rem);
   }
 
   .hero__meta {
     display: none;
   }
-}
 
-@media (max-width: 380px) {
-  .hero__portrait {
-    width: min(82vw, 19rem);
+  .hero__scrim--bottom {
+    height: 58%;
+    background: linear-gradient(
+      to top,
+      rgba(24, 26, 29, 0.94) 0%,
+      rgba(24, 26, 29, 0.86) 26%,
+      rgba(24, 26, 29, 0.64) 58%,
+      rgba(24, 26, 29, 0.28) 82%,
+      transparent 100%
+    );
   }
 }
 
-/* Short landscape viewports: keep the whole composition on screen. */
-@media (max-height: 620px) and (min-width: 768px) {
-  .hero__portrait {
-    width: clamp(11rem, 22vw, 16rem);
-  }
-
+/* Short landscape viewports. */
+@media (max-height: 600px) and (min-width: 768px) {
   .hero__name {
-    font-size: clamp(3rem, 12vw, 8rem);
+    font-size: clamp(2.5rem, 11vw, 7rem);
+  }
+
+  .hero__cue {
+    display: none;
   }
 }

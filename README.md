@@ -110,7 +110,7 @@ before anything reaches the page.
 | Education, awards, grades | `src/data/recognition.ts` |
 | Email, LinkedIn, Substack | `src/data/site.ts` → `site.links` |
 | The LEAP line in Contact | `src/data/site.ts` → `leapMode` (set `false` after LEAP) and `leapLine` |
-| Hero portrait treatment | `src/data/site.ts` → `portrait.cutout` |
+| Which part of the hero photo stays in frame | `src/data/site.ts` → `portrait.focus` |
 | Page titles and meta descriptions | each file in `src/pages/` |
 
 ## Replacing images
@@ -119,16 +119,23 @@ Drop files into `public/assets/<category>/` at the paths listed in
 `public/assets/README.md`. Until a file exists, an editorial placeholder with
 the project's real name renders instead — no stock photography, ever.
 
-The two portraits go in `public/assets/portrait/`:
-`maryam-portrait.png` (hero) and `maryam-about.jpg` (About).
+The two portraits go in `public/assets/portrait/` — full detail in the README
+there. In short:
 
-The hero supports two treatments, switched by `portrait.cutout` in `site.ts`:
+- `maryam-portrait.jpg` — the **hero**. A **landscape** environmental shot
+  (~16:9), running full-bleed across the whole opening screen with the name
+  over it. Export around 2400px wide.
+- `maryam-about.jpg` — the About page. Portrait or square. Optional.
 
-- **`cutout: true`** (current) — a transparent PNG with the background removed,
-  placed straight onto the stone so the figure overlaps the giant name. This is
-  the integrated composition.
-- **`cutout: false`** — a normal rectangular photo. Its lower edge is masked so
-  it dissolves into the ground rather than reading as a photo card.
+The hero crops hard on narrow viewports, so `portrait.focus` in `site.ts`
+(`'62% 30%'`) sets which part of the frame is protected. Nudge those two
+numbers if a future photo is framed differently.
+
+White type sits over the photograph, carried by two gradient scrims — top
+(behind the navigation) and bottom (behind the name). They're calibrated
+against a pure-white frame, so even a very bright photo keeps the type above
+WCAG AA. The middle of the frame is left clean, because that's where the face
+sits.
 
 ## Adding the resume
 

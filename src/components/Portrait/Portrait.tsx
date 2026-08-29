@@ -5,22 +5,23 @@ import './Portrait.css';
 /* ============================================================
    PORTRAIT
    ------------------------------------------------------------
-   Two treatments, both designed to sit *in* the page rather than
-   on top of it:
+   Two modes:
 
-   A. cutout (preferred) — a transparent PNG of Maryam placed
-      directly on the stone. No frame, no ground, no edge. The
-      person and the typography share one surface.
+   A. fill  — the photograph *is* the surface. Absolutely
+      positioned to cover its container, cropped from the focal
+      point outward. This is the hero.
 
-   B. frame (fallback)   — a normal rectangular photograph, with
-      its lower edge dissolved into the ground by a mask so it
-      never reads as a pasted-on photo card.
-
-   Which one is used is set once, in site.ts → portrait.cutout.
+   B. frame — a normal photograph in the flow, at a given aspect
+      ratio, with its lower edge dissolved into the ground so it
+      never reads as a photo card. This is About.
 
    Files:
-     public/assets/portrait/maryam-portrait.jpg   (or .png cutout)
-     public/assets/portrait/maryam-about.jpg
+     public/assets/portrait/maryam-portrait.jpg   (hero, landscape)
+     public/assets/portrait/maryam-about.jpg      (About, optional)
+
+   While a file is absent the component renders a composed
+   stand-in rather than a broken image, so the layout can be
+   judged before the photography arrives.
    ============================================================ */
 
 export const PORTRAIT_SRC = site.portrait.src;
@@ -29,33 +30,35 @@ export const PORTRAIT_ABOUT_SRC = site.portrait.aboutSrc;
 interface PortraitProps {
   src?: string;
   alt?: string;
+  /** frame mode only. */
   ratio?: string;
+  /** Focal point, "x% y%". Defaults to the one in site.ts. */
   objectPosition?: string;
   className?: string;
   priority?: boolean;
   sizes?: string;
-  /** Transparent PNG placed straight on the ground — no frame at all. */
-  cutout?: boolean;
+  /** Cover the container absolutely instead of sitting in the flow. */
+  fill?: boolean;
   placeholderNote?: string;
 }
 
 export function Portrait({
   src = PORTRAIT_SRC,
   alt = `${site.name} — portrait`,
-  ratio = '1 / 1',
-  objectPosition = 'center 24%',
+  ratio = '4 / 5',
+  objectPosition = site.portrait.focus,
   className = '',
   priority = false,
   sizes,
-  cutout = false,
+  fill = false,
   placeholderNote,
 }: PortraitProps) {
   const [status, setStatus] = useState<'loading' | 'loaded' | 'missing'>('loading');
 
   return (
     <div
-      className={`portrait portrait--${cutout ? 'cutout' : 'frame'} portrait--${status} ${className}`}
-      style={{ ['--portrait-ratio' as string]: ratio }}
+      className={`portrait portrait--${fill ? 'fill' : 'frame'} portrait--${status} ${className}`}
+      style={fill ? undefined : { ['--portrait-ratio' as string]: ratio }}
     >
       {status !== 'missing' && (
         <img
@@ -79,7 +82,7 @@ export function Portrait({
             {site.initials}
           </span>
           <span className="portrait__ph-note mono">
-            {placeholderNote ?? src.replace('/assets/portrait/', '')}
+            {placeholderNote ?? `Photograph → ${src.replace('/assets/portrait/', '')}`}
           </span>
         </div>
       )}

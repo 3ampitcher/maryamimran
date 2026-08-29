@@ -7,15 +7,19 @@ import { site } from '../../data/site';
 import './Hero.css';
 
 /* ============================================================
-   HERO — SECTION 01
+   HERO — face first
    ------------------------------------------------------------
-   Face first. Person + typography + page as one composition,
-   not a page with a photo card on it.
+   The photograph is the page. It fills the viewport edge to
+   edge and everything else sits on it: the name enormous along
+   the bottom, the positioning line above it, a thin rail of
+   metadata at the top. No card, no frame, no container.
 
-   Scroll choreography is deliberately quiet: the name lifts a
-   little, softens, and settles back a fraction of a percent in
-   scale. No horizontal travel — the name is a fixed part of the
-   composition, and the motion is a second-order detail.
+   Legibility over photography is handled by two scrims (top and
+   bottom) rather than by darkening the whole image — the shot is
+   bright and airy and should stay that way.
+
+   Scroll: the image drifts up slowly and the name a little
+   faster, so the composition compresses rather than slides.
    ============================================================ */
 
 export function Hero() {
@@ -27,24 +31,37 @@ export function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  /* The name: a small lift, a gentle fade, a touch of scale.
-     Nothing travels sideways. */
-  const nameY = useTransform(scrollYProgress, [0, 1], ['0%', '-9%']);
-  const nameOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.32]);
-  const nameScale = useTransform(scrollYProgress, [0, 1], [1, 0.985]);
-
-  /* The portrait rises very slightly faster, which is what makes
-     the two feel like one composition rather than two layers. */
-  const portraitY = useTransform(scrollYProgress, [0, 1], ['0%', '-13%']);
-  const metaOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  /* A slow drift on the image reads as depth; a faster one on the
+     type makes the two feel like one composition compressing. */
+  const mediaY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const nameY = useTransform(scrollYProgress, [0, 1], ['0%', '-32%']);
+  const nameOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const railOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
 
   return (
     <section ref={ref} className="hero" aria-label="Introduction">
-      <div className="hero__ground" aria-hidden="true" />
+      {/* --- The photograph --- */}
+      <motion.div
+        className="hero__media"
+        style={reduced ? undefined : { y: mediaY, scale: mediaScale }}
+      >
+        <Portrait
+          fill
+          priority
+          sizes="100vw"
+          alt={`${site.name}, ${site.discipline} student in ${site.location}`}
+          placeholderNote="Hero photograph → maryam-portrait.jpg"
+        />
+      </motion.div>
 
+      {/* Two soft scrims, not a blanket darkening. */}
+      <div className="hero__scrim hero__scrim--top" aria-hidden="true" />
+      <div className="hero__scrim hero__scrim--bottom" aria-hidden="true" />
+
+      {/* --- Everything else sits on the photograph --- */}
       <div className="hero__inner">
-        {/* --- Top rail --- */}
-        <motion.div className="hero__rail" style={reduced ? undefined : { opacity: metaOpacity }}>
+        <motion.div className="hero__rail" style={reduced ? undefined : { opacity: railOpacity }}>
           <span className="hero__place mono">{site.location}</span>
           <span className="hero__meta mono" aria-hidden="true">
             {site.heroMeta.map((m, i) => (
@@ -56,23 +73,19 @@ export function Hero() {
           </span>
         </motion.div>
 
-        {/* --- Composition: type and person share the same space --- */}
-        <div className="hero__stage">
+        <motion.div
+          className="hero__foot"
+          style={reduced ? undefined : { y: nameY, opacity: nameOpacity }}
+        >
           <p className="hero__positioning">
-            <MaskRevealOnMount delay={0.15}>
-              <span className="hero__positioning-line">Business</span>
-            </MaskRevealOnMount>
-            <MaskRevealOnMount delay={0.24}>
+            <MaskRevealOnMount delay={0.28}>
               <span className="hero__positioning-line">
+                Business
                 <span className="hero__times" aria-hidden="true">
                   ×
                 </span>
                 <span className="sr-only"> and </span>
                 Technology
-              </span>
-            </MaskRevealOnMount>
-            <MaskRevealOnMount delay={0.33}>
-              <span className="hero__positioning-line">
                 <span className="hero__times" aria-hidden="true">
                   ×
                 </span>
@@ -82,56 +95,31 @@ export function Hero() {
             </MaskRevealOnMount>
           </p>
 
-          <motion.div
-            className="hero__portrait"
-            style={reduced ? undefined : { y: portraitY }}
-          >
-            <Portrait
-              priority
-              cutout={site.portrait.cutout}
-              ratio="4 / 5"
-              objectPosition="center 22%"
-              sizes="(max-width: 767px) 76vw, (max-width: 1200px) 40vw, 32vw"
-              alt={`${site.name}, ${site.discipline} student in ${site.location}`}
-            />
-          </motion.div>
-
-          <div className="hero__context">
-            <MaskRevealOnMount delay={0.42}>
-              <span className="hero__context-line">{site.discipline}</span>
-            </MaskRevealOnMount>
-            <MaskRevealOnMount delay={0.5}>
-              <span className="hero__context-line hero__context-line--muted">
-                {site.university}
-              </span>
-            </MaskRevealOnMount>
+          {/* The name, enormous, running past both edges. */}
+          <div className="hero__nameband">
+            <h1 className="sr-only">
+              {site.name} — {site.positioning}
+            </h1>
+            <span className="hero__name" aria-hidden="true">
+              <MaskRevealOnMount delay={0.08} innerClassName="hero__name-inner">
+                Maryam Imran
+              </MaskRevealOnMount>
+            </span>
           </div>
-        </div>
-
-        {/* --- The name. Static in the composition; it only breathes. --- */}
-        <div className="hero__nameband">
-          <h1 className="sr-only">
-            {site.name} — {site.positioning}
-          </h1>
-          <motion.span
-            className="hero__name"
-            aria-hidden="true"
-            style={reduced ? undefined : { y: nameY, opacity: nameOpacity, scale: nameScale }}
-          >
-            <MaskRevealOnMount delay={0.05} innerClassName="hero__name-inner">
-              Maryam Imran
-            </MaskRevealOnMount>
-          </motion.span>
-        </div>
-
-        <motion.div
-          className="hero__cue"
-          style={reduced ? undefined : { opacity: metaOpacity }}
-          aria-hidden="true"
-        >
-          <span className="mono">Scroll</span>
-          <span className="hero__cue-line" />
         </motion.div>
+
+        <div className="hero__baserail">
+          <motion.span
+            className="hero__cue"
+            style={reduced ? undefined : { opacity: railOpacity }}
+            aria-hidden="true"
+          >
+            <span className="mono">Scroll</span>
+            <span className="hero__cue-line" />
+          </motion.span>
+
+          <p className="hero__context mono">{site.discipline}</p>
+        </div>
       </div>
     </section>
   );

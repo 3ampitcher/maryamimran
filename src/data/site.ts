@@ -27,16 +27,17 @@ export const site = {
     substack: '', // TODO(maryam): add your Substack URL to show the link.
   },
 
-  /* --- Portrait -------------------------------------------------------
-     cutout: true expects a transparent PNG (background removed) placed
-     straight onto the stone hero — person and typography on one surface.
-     cutout: false uses a normal rectangular photo whose lower edge is
-     dissolved into the ground, so it still never reads as a photo card.
-     Either file works; only this flag changes the treatment. */
+  /* --- Portrait ------------------------------------------------------- */
   portrait: {
-    src: '/assets/portrait/maryam-portrait.png',
+    /* The hero is a full-bleed environmental portrait — a wide shot, not a
+       headshot. Landscape, roughly 16:9, exported around 2400px wide. */
+    src: '/assets/portrait/maryam-portrait.jpg',
     aboutSrc: '/assets/portrait/maryam-about.jpg',
-    cutout: true,
+    /* Where the face sits in the frame, as x% y%. The hero crops hard on
+       tall/narrow viewports, and this is what keeps her in shot. Nudge these
+       two numbers if a future photo is framed differently — nothing else
+       needs to change. */
+    focus: '62% 30%',
   },
 
   /* --- Resume ----------------------------------------------------------
