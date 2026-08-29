@@ -156,10 +156,12 @@
   /* ---------- the dial ----------
      One ring, five equal arcs. Hiring is visibly a fifth of it, which is
      the headline's claim drawn rather than illustrated. */
-  .dial{position:relative;width:min(100%,var(--ring,380px));aspect-ratio:1/1}
-  @media(min-width:1600px){ .dial{--ring:420px} }
-  /* below 1200 the labels start reaching past the container */
-  @media(max-width:1200px){ .dial{--ring:330px} }
+  /* the labels ride the curve, so the figure is exactly as wide as the ring
+     and can be big enough to hold the right half on its own */
+  .dial{position:relative;width:min(100%,var(--ring,400px));aspect-ratio:1/1}
+  @media(min-width:1500px){ .dial{--ring:470px} }
+  @media(min-width:1240px) and (max-width:1499px){ .dial{--ring:430px} }
+  @media(max-width:1080px){ .dial{--ring:320px} }
   .dial svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
   /* the rotation lives on the circle's own transform attribute, which already
      carries its centre - putting a CSS transform-origin on the same element
@@ -170,10 +172,22 @@
     transition:transform .45s var(--ease);
   }
   .arc{
-    fill:none;stroke:#CBCBC3;stroke-width:3.6;
+    fill:none;stroke:#CBCBC3;stroke-width:4.2;
     transition:stroke .45s var(--ease),opacity .45s var(--ease);
   }
-  .hit{fill:none;stroke:transparent;stroke-width:6;cursor:pointer}
+  .hit{fill:none;stroke:transparent;stroke-width:9;cursor:pointer}
+  .labtxt{
+    font-family:var(--sans);font-size:3.5px;font-weight:800;letter-spacing:.22em;
+    fill:#7A7D83;text-transform:uppercase;pointer-events:none;
+    transition:fill .45s var(--ease);
+  }
+  .dial.on .labtxt{fill:#A5A8AD}
+  .dial.on .seg.sel .labtxt{fill:var(--ink)}
+  .seg.kb .arc{stroke:var(--lime-deep)}
+  .dl{
+    position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
+    white-space:nowrap;border:none;padding:0;background:none;
+  }
   /* the arcs draw themselves in once, clockwise, then never move again */
   .dial.drawing .arc{transition:stroke-dashoffset .62s var(--ease)}
   .dial.on .arc{opacity:.55}
@@ -184,9 +198,9 @@
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:60%;text-align:center;
   }
-  .dial-core{width:64%}
+  .dial-core{width:58%}
   .dial-core .ask{
-    font-size:19px;line-height:1.32;font-weight:700;letter-spacing:-.025em;color:var(--ink);
+    font-size:20px;line-height:1.32;font-weight:700;letter-spacing:-.025em;color:var(--ink);
   }
   .dial-core .k{
     font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-deep);
@@ -202,20 +216,6 @@
     color:#6E7178;
     transition:color .35s var(--ease),transform .45s var(--ease);
   }
-  .dl em{display:none}
-  .dl i{font-style:normal;position:relative;display:inline-block;padding-bottom:5px}
-  .dl i::after{
-    content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;
-    background:var(--lime-deep);transform:scaleX(0);transform-origin:50% 50%;
-    transition:transform .3s var(--ease);
-  }
-  .dl:hover i::after,.dl:focus-visible i::after,.dl.sel i::after{transform:scaleX(1)}
-  .dl{transform:translate(0,-50%)}
-  .dl.lft{transform:translate(-100%,-50%)}
-  .dial.on .dl.sel{transform:translate(6px,-50%)}
-  .dial.on .dl.sel.lft{transform:translate(calc(-100% - 6px),-50%)}
-  .dial.on .dl{color:#9EA1A7}
-  .dial.on .dl.sel{color:var(--ink)}
 
   /* the ring rides up into the empty space beside the headline so it reads
      level with the copy rather than hanging below it */
@@ -790,7 +790,6 @@
     .hero-say{grid-area:say}
     .dial-wrap{grid-area:dial;margin-top:38px}
     .hero-under{margin-top:38px}
-    .dl{display:none}
     .dial-rows{display:block;grid-area:rows;margin-top:32px;border-top:2px solid var(--line)}
   }
 
@@ -1788,20 +1787,31 @@ const WAYS = [
   if(!el || !segs || !core) return;
 
   const NS   = 'http://www.w3.org/2000/svg';
-  const R    = 38;
+  const R    = 36;                       // arc radius, viewBox units
   const C    = 2 * Math.PI * R;
-  const GAP  = 8;                       // user units of blank between arcs
+  const GAP  = 8;
   const SEG  = C / WAYS.length - GAP;
   const STEP = 360 / WAYS.length;
+  const PAD  = 5;                        // degrees of blank at each arc end
   const ASK  = 'What does the company need next?';
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // a point on a circle, measured clockwise from twelve o'clock
+  const pt = (r, deg) => {
+    const t = deg * Math.PI / 180;
+    return [50 + r * Math.sin(t), 50 - r * Math.cos(t)];
+  };
+  const arcPath = (r, a0, a1, sweep) => {
+    const [x0,y0] = pt(r,a0), [x1,y1] = pt(r,a1);
+    return `M${x0.toFixed(3)} ${y0.toFixed(3)} A${r} ${r} 0 0 ${sweep} ${x1.toFixed(3)} ${y1.toFixed(3)}`;
+  };
 
   const segEls = [], labEls = [], rowEls = [], arcs = [];
 
   WAYS.forEach(([k,v,href],i)=>{
     const g = document.createElementNS(NS,'g');
     g.setAttribute('class','seg');
-    const rot = `rotate(${-90 + STEP * i} 50 50)`;    // every arc starts at 12 o'clock
+    const rot = `rotate(${-90 + STEP * i} 50 50)`;
     for(const cls of ['arc','hit']){
       const c = document.createElementNS(NS,'circle');
       c.setAttribute('class', cls);
@@ -1811,19 +1821,37 @@ const WAYS = [
       if(cls === 'arc'){ c.setAttribute('stroke-dashoffset', still ? 0 : SEG); arcs.push(c); }
       g.appendChild(c);
     }
+
+    /* The label follows its own arc. Below the halfway line the path has to be
+       drawn the other way round or the words hang upside down, and it sits a
+       little further out so the glyphs still clear the stroke. */
+    const a0 = STEP * i + PAD, a1 = STEP * (i + 1) - PAD;
+    const mid = (a0 + a1) / 2;
+    const up  = Math.cos(mid * Math.PI / 180) > 0;
+    const lp  = document.createElementNS(NS,'path');
+    lp.setAttribute('id', 'lp' + i);
+    lp.setAttribute('fill','none');
+    lp.setAttribute('d', up ? arcPath(R + 5.4, a0, a1, 1) : arcPath(R + 9, a1, a0, 0));
+    g.appendChild(lp);
+
+    const tx = document.createElementNS(NS,'text');
+    tx.setAttribute('class','labtxt');
+    const tp = document.createElementNS(NS,'textPath');
+    tp.setAttribute('href', '#lp' + i);
+    tp.setAttribute('startOffset','50%');
+    tp.setAttribute('text-anchor','middle');
+    tp.textContent = k;
+    tx.appendChild(tp);
+    g.appendChild(tx);
+
     segs.appendChild(g);
     segEls.push(g);
 
-    // labels are HTML so they stay crisp, and buttons so the ring is operable
-    // by keyboard; each one is a real link target into the services section
-    const mid = (-90 + STEP * (i + 0.5)) * Math.PI / 180;
+    // the ring stays operable by keyboard; the button itself is for readers
     const lab = document.createElement('button');
     lab.type = 'button';
-    lab.className = 'dl' + (Math.cos(mid) < -0.05 ? ' lft' : '');
-    lab.setAttribute('aria-label', k + ': ' + v);
-    lab.innerHTML = `<i>${k}</i>`;
-    lab.style.left = (50 + Math.cos(mid) * 50) + '%';
-    lab.style.top  = (50 + Math.sin(mid) * 50) + '%';
+    lab.className = 'dl';
+    lab.textContent = k + ': ' + v;
     el.appendChild(lab);
     labEls.push(lab);
   });
@@ -1842,17 +1870,27 @@ const WAYS = [
 
   const jump = i => { location.hash = WAYS[i][2]; };
 
+  /* It turns on its own so the five read themselves out, and hands over the
+     moment a pointer arrives: hover holds, leaving picks the cycle back up. */
+  const CYCLE = 2400;
+  let at = 0, timer = null, held = false, seen = false, ready = still;
+
+  function tick(){ at = (at + 1) % WAYS.length; paint(at); }
+  function play(){ if(timer || held || still || !seen || !ready) return; timer = setInterval(tick, CYCLE); }
+  function halt(){ clearInterval(timer); timer = null; }
+  function hold(n){ held = true; halt(); at = n; paint(n); }
+  function release(){ held = false; play(); }
+
   labEls.forEach((l,i)=>{
-    l.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') paint(i); });
-    l.addEventListener('focus', ()=>paint(i));
-    l.addEventListener('click', ()=>{ paint(i); jump(i); });
+    l.addEventListener('focus', ()=>{ hold(i); segEls[i].classList.add('kb'); });
+    l.addEventListener('blur',  ()=>{ segEls[i].classList.remove('kb'); release(); });
+    l.addEventListener('click', ()=>jump(i));
   });
   [...el.querySelectorAll('.hit')].forEach((h,i)=>{
-    h.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') paint(i); });
-    h.addEventListener('click', ()=>{ paint(i); jump(i); });
+    h.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') hold(i); });
+    h.addEventListener('click', ()=>{ hold(i); jump(i); });
   });
-  el.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') paint(null); });
-  el.addEventListener('focusout', e=>{ if(!el.contains(e.relatedTarget)) paint(null); });
+  el.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') release(); });
 
   if(rows){
     WAYS.forEach(([k,v,href],i)=>{
@@ -1865,8 +1903,8 @@ const WAYS = [
     });
   }
 
-  /* the stroke scale that pushes the live arc 8px outward has to know the
-     radius in real pixels, which changes with the viewport */
+  /* the scale that pushes the live arc 8px outward needs the radius in real
+     pixels, which moves with the viewport */
   function sizeVars(){
     const w = el.getBoundingClientRect().width;
     if(w) el.style.setProperty('--r', (w * R / 100) + '');
@@ -1875,27 +1913,30 @@ const WAYS = [
   window.addEventListener('resize', sizeVars);
 
   paint(null);
-
-  /* One pass on first sight: the five arcs draw in clockwise, then the first
-     answer lights so the ring is never a dead diagram. Nothing loops. */
   if(still){ el.classList.add('drawn'); return; }
+
+  // the five arcs draw in clockwise once, then the cycle takes over
   let played = false;
-  function play(){
+  function start(){
     if(played) return;
     played = true;
-    el.classList.add('drawing');   // not 'draw': brand.css owns that one
-    arcs.forEach((c,i)=> setTimeout(()=>{ c.style.strokeDashoffset = '0'; }, i * 130));
+    el.classList.add('drawing');
+    arcs.forEach((c,i)=> setTimeout(()=>{ c.style.strokeDashoffset = '0'; }, i * 120));
     setTimeout(()=>{
       el.classList.add('drawn');
-      if(!el.matches(':hover')) paint(0);
-      setTimeout(()=>{ if(!el.matches(':hover') && !el.contains(document.activeElement)) paint(null); }, 1900);
-    }, 130 * arcs.length + 620);
+      ready = true;
+      at = 0; if(!held) paint(0);
+      play();
+    }, 120 * arcs.length + 620);
   }
   if('IntersectionObserver' in window){
-    const io = new IntersectionObserver(es=>{ if(es[0].isIntersecting){ io.disconnect(); setTimeout(play, 420); } },
-      {threshold:.3});
-    io.observe(el);
-  } else { play(); }
+    new IntersectionObserver(es=>{
+      seen = es[0].isIntersecting;
+      if(seen) start(); else halt();
+      if(seen) play();
+    }, {threshold:.25}).observe(el);
+  } else { seen = true; start(); }
+  document.addEventListener('visibilitychange', ()=> document.hidden ? halt() : play());
 })();
 
 /* =====================================================================
