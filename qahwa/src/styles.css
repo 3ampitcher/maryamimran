@@ -1,0 +1,251 @@
+/* Qahwa is a 232x322 widget with a transparent window behind it. Everything
+   here is sized for that and nothing is meant to reflow. */
+
+:root {
+  --ink: #f4ece1;
+  --ink-dim: #b9a893;
+  --card: #241a14;
+  --card-edge: #4a3628;
+  --amber: #e0a458;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: transparent;
+}
+
+body {
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+  overflow: hidden;
+  cursor: default;
+}
+
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 14px 14px;
+  border: 1px solid var(--card-edge);
+  border-radius: 18px;
+  background: radial-gradient(120% 90% at 50% 0%, #33241a 0%, var(--card) 62%);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+/* ---------- title bar ---------- */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  margin: 0 -6px;
+  flex: none;
+}
+
+/* The whole strip drags the window; the grip just makes that discoverable. */
+.bar__grip {
+  flex: 1;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--card-edge) 1px, transparent 1px);
+  background-size: 6px 6px;
+  background-position: 8px center;
+  background-repeat: repeat-x;
+  opacity: 0.9;
+}
+
+.bar__btn {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-dim);
+  font: 600 11px/1 'Segoe UI', system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.bar__btn:hover {
+  background: #3a2a1e;
+  color: var(--ink);
+}
+
+/* ---------- machine and cup ---------- */
+
+/* The machine and the cup are two drawings stacked in one box. The window is
+   a fixed size and cannot be resized, so these are plain pixels: the cup sits
+   at the one offset where its base meets the drip tray in the machine art. */
+.stage {
+  position: relative;
+  flex: none;
+  height: 202px;
+}
+
+.machine {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 190px;
+  height: 202px;
+}
+
+.lamp {
+  fill: #4b3627;
+}
+
+.lamp--on {
+  fill: var(--amber);
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.pour {
+  opacity: 0.85;
+}
+
+.cup-slot {
+  position: absolute;
+  left: 50%;
+  top: 110px;
+  padding: 4px 12px 5px;
+  border-radius: 12px;
+  cursor: grab;
+  touch-action: none;
+  transform: translateX(-50%);
+  transition: transform 120ms ease;
+}
+
+.cup-slot:hover {
+  transform: translateX(-50%) translateY(-3px);
+}
+
+.cup-slot:active {
+  cursor: grabbing;
+}
+
+.cup {
+  width: 62px;
+  height: 72px;
+  display: block;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.4));
+}
+
+.steam path {
+  opacity: 0;
+  animation: rise 3s ease-in-out infinite;
+}
+
+@keyframes rise {
+  15%,
+  55% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+
+/* While the OS drags its own copy of the cup, the one on the tray steps aside. */
+.stage--pouring .cup-slot {
+  opacity: 0.18;
+}
+
+.stage--served .cup-slot {
+  opacity: 0.5;
+}
+
+/* ---------- caption ---------- */
+
+.caption {
+  flex: 1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--ink-dim);
+  min-height: 32px;
+}
+
+.stage--error + .caption {
+  color: #e08a6a;
+}
+
+/* ---------- disclaimer ---------- */
+
+.sheet {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 14px;
+  border-radius: 18px;
+  background: #1d1510;
+}
+
+.sheet__body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sheet h1 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sheet p {
+  margin: 0 0 9px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+
+.sheet__warn {
+  padding: 8px 9px;
+  border-left: 2px solid var(--amber);
+  border-radius: 3px;
+  background: #2a1d13;
+  color: #e6d6c0 !important;
+}
+
+.sheet__quiet {
+  font-size: 10.5px !important;
+  color: #8d7c68 !important;
+}
+
+.sheet__ok {
+  flex: none;
+  padding: 8px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--amber);
+  color: #2a1a0c;
+  font: 600 12px 'Segoe UI', system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.sheet__ok:hover {
+  background: #edb267;
+}
