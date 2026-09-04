@@ -13,6 +13,12 @@ on:
       - 'qahwa/**'
   workflow_dispatch:
 
+# A Windows release build with LTO is slow. If a newer commit lands on the same
+# branch, the older build is answering a question nobody is asking any more.
+concurrency:
+  group: qahwa-windows-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: windows-latest

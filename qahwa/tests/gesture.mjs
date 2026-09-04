@@ -114,7 +114,29 @@ console.log('gesture behaviour:')
   await page.close()
 }
 
-// 5. The disclaimer shows once and is remembered.
+// 5. A move with no button held must disarm, not pour.
+{
+  const page = await session()
+  const c = await box(page)
+  await page.mouse.move(c.x, c.y)
+  await page.mouse.down()
+  // A pointermove reporting no buttons: what a missed pointer-up looks like.
+  await page.locator('.cup-slot').dispatchEvent('pointermove', {
+    pointerId: 1, clientX: c.x + 40, clientY: c.y + 40, buttons: 0,
+  })
+  await page.waitForTimeout(150)
+  check('a released pointer disarms the cup', await page.evaluate(() => window.__pours.length), 0)
+  // ...and having disarmed, a later move must not pour either.
+  await page.locator('.cup-slot').dispatchEvent('pointermove', {
+    pointerId: 1, clientX: c.x + 80, clientY: c.y + 80, buttons: 1,
+  })
+  await page.waitForTimeout(150)
+  check('and stays disarmed afterwards', await page.evaluate(() => window.__pours.length), 0)
+  await page.mouse.up()
+  await page.close()
+}
+
+// 6. The disclaimer shows once and is remembered.
 {
   const page = await browser.newPage({ viewport: { width: 228, height: 288 } })
   await page.addInitScript(() => {

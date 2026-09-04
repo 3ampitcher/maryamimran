@@ -109,6 +109,9 @@ export default function App() {
       }
 
       const onMove = (ev: PointerEvent) => {
+        // If capture was refused, a pointer-up outside the cup never reaches
+        // us and the cup would stay armed — so trust the button state too.
+        if (ev.buttons === 0) return disarm()
         if (Math.hypot(ev.clientX - origin.x, ev.clientY - origin.y) < DRAG_THRESHOLD) return
         disarm()
         void pour()

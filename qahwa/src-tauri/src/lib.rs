@@ -54,6 +54,7 @@ async fn pour_reality_shot<R: Runtime>(
         let handle = match window.gtk_window() {
             Ok(w) => w,
             Err(e) => {
+                shot::discard(&path);
                 let _ = tx.send(Err(e.to_string()));
                 return;
             }
