@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import CoffeeMachine from './CoffeeMachine'
@@ -10,6 +10,9 @@ type Status = 'idle' | 'pouring' | 'served' | 'error'
 
 const SEEN_DISCLAIMER = 'qahwa.disclaimer.v1'
 
+/** How far the cursor must travel, held down, before this counts as a drag. */
+const DRAG_THRESHOLD = 4
+
 const CAPTION: Record<Status, string> = {
   idle: 'AI acting weird? Give it a coffee.',
   pouring: 'Pouring… drop it in the chat box.',
@@ -17,14 +20,34 @@ const CAPTION: Record<Status, string> = {
   error: 'The cup slipped. Try again.',
 }
 
+/**
+ * Resolves once the browser has had a chance to paint. On Windows the native
+ * drag blocks the main thread for its whole duration, so the "pouring" frame
+ * has to land before we hand the thread over — but a web view can throttle
+ * animation frames, and a drag that never starts is far worse than one that
+ * starts a frame early. Hence the timeout.
+ */
+function nextPaint(): Promise<void> {
+  return new Promise((resolve) => {
+    let settled = false
+    const finish = () => {
+      if (settled) return
+      settled = true
+      resolve()
+    }
+    requestAnimationFrame(() => requestAnimationFrame(finish))
+    setTimeout(finish, 50)
+  })
+}
+
 export default function App() {
   const [status, setStatus] = useState<Status>('idle')
   const [showDisclaimer, setShowDisclaimer] = useState(
     () => localStorage.getItem(SEEN_DISCLAIMER) !== 'yes',
   )
+  const pouring = useRef(false)
 
-  // No right-click menu, and no text selection anywhere — this is a widget,
-  // not a page.
+  // No right-click menu: this is a widget, not a page.
   useEffect(() => {
     const block = (e: Event) => e.preventDefault()
     document.addEventListener('contextmenu', block)
@@ -36,27 +59,66 @@ export default function App() {
     setShowDisclaimer(false)
   }, [])
 
+  const pour = useCallback(async () => {
+    if (pouring.current) return
+    pouring.current = true
+    setStatus('pouring')
+    await nextPaint()
+
+    try {
+      const outcome = await invoke<PourOutcome>('pour_reality_shot')
+      setStatus(outcome === 'dropped' ? 'served' : 'idle')
+    } catch (err) {
+      console.error('Qahwa: the drag failed to start —', err)
+      setStatus('error')
+    } finally {
+      pouring.current = false
+    }
+  }, [])
+
+  /**
+   * Arms the drag, but waits for actual movement before starting it. Without
+   * the threshold a plain click on the cup would open and immediately close a
+   * native drag, which Windows reports as a successful drop — so the app would
+   * claim it served a coffee that went nowhere.
+   */
   const grabCup = useCallback(
-    async (e: React.PointerEvent) => {
-      if (e.button !== 0 || status === 'pouring') return
-      // Stop the web view from starting its own (useless) HTML5 drag.
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (e.button !== 0 || pouring.current) return
+      // Stop the web view starting its own (useless) HTML5 drag.
       e.preventDefault()
 
-      setStatus('pouring')
-      // On Windows the native drag blocks the main thread for its whole
-      // duration, so the web view cannot repaint once it starts. Let the
-      // "pouring" frame land before handing the thread over.
-      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
+      const el = e.currentTarget
+      const id = e.pointerId
+      const origin = { x: e.clientX, y: e.clientY }
 
+      // Capture so a fast flick out of this small window still reaches us.
       try {
-        const outcome = await invoke<PourOutcome>('pour_reality_shot')
-        setStatus(outcome === 'dropped' ? 'served' : 'idle')
-      } catch (err) {
-        console.error('pour failed', err)
-        setStatus('error')
+        el.setPointerCapture(id)
+      } catch {
+        /* capture is a nicety; the listeners below work either way */
       }
+
+      const disarm = () => {
+        el.removeEventListener('pointermove', onMove)
+        el.removeEventListener('pointerup', disarm)
+        el.removeEventListener('pointercancel', disarm)
+        // Release before the native drag begins: DoDragDrop takes the mouse
+        // capture itself and should not have to fight the web view for it.
+        if (el.hasPointerCapture(id)) el.releasePointerCapture(id)
+      }
+
+      const onMove = (ev: PointerEvent) => {
+        if (Math.hypot(ev.clientX - origin.x, ev.clientY - origin.y) < DRAG_THRESHOLD) return
+        disarm()
+        void pour()
+      }
+
+      el.addEventListener('pointermove', onMove)
+      el.addEventListener('pointerup', disarm)
+      el.addEventListener('pointercancel', disarm)
     },
-    [status],
+    [pour],
   )
 
   // Drop back to the resting state after a moment.
@@ -82,8 +144,6 @@ export default function App() {
         <CoffeeMachine brewing={status === 'pouring'} />
         <div
           className="cup-slot"
-          role="button"
-          tabIndex={0}
           aria-label="Drag this coffee into a chat box"
           title="Drag me into the chat box"
           draggable={false}

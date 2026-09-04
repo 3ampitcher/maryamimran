@@ -39,6 +39,12 @@ frames), and the cup that follows your cursor is a native bitmap
 (`src-tauri/assets/cup-drag.png`) drawn by the OS, not by the page. Nothing in a
 web view can follow a cursor that has left the window.
 
+**A click is not a drag.** Windows reports a drag that opens and closes on the
+spot as a *successful drop*, whether or not anything caught it. So the cup waits
+for the cursor to actually move a few pixels before starting anything — otherwise
+a stray click on the cup would leave a file in the temp folder and the app would
+claim it had served a coffee that went nowhere.
+
 **The file is deleted late, on purpose.** A drop hands the receiving app a
 *path*, not bytes; the browser opens the file when the upload actually runs,
 which is a beat after you let go. Deleting eagerly would race that read. So a
@@ -69,6 +75,18 @@ npm run build
 npm run typecheck
 node scripts/gen-assets.mjs   # regenerate icons + the drag bitmap
 ```
+
+There are behaviour tests for the gesture itself — that a click does not count as
+a drag, that a cancelled drag does not claim success, that one gesture never
+pours two files:
+
+```bash
+npx playwright install chromium   # once
+npm run build && npm run test:ui
+```
+
+They stub the Tauri IPC, so they cover the decisions the UI makes rather than the
+native drag, which exists only on Windows and has to be tried by hand.
 
 A prebuilt Windows installer is produced by
 [`.github/workflows/qahwa-windows.yml`](../.github/workflows/qahwa-windows.yml)
@@ -109,6 +127,8 @@ qahwa/
   scripts/
     render.mjs          a small PNG/ICO encoder, so icon generation needs no deps
     gen-assets.mjs      draws the icons and the drag bitmap
+  tests/
+    gesture.mjs         press, drag, cancel, click — what the UI does with each
 ```
 
 ### Changing the prompt
