@@ -106,19 +106,11 @@ body {
   fill: #4b3627;
 }
 
+/* Static, not pulsing: the lamp is only ever lit while the native drag owns
+   the main thread, and nothing repaints then. An animation would just freeze
+   at whatever opacity it happened to reach. */
 .lamp--on {
   fill: var(--amber);
-  animation: pulse 1.1s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: 0.35;
-  }
-}
-
-.pour {
-  opacity: 0.85;
 }
 
 .cup-slot {
@@ -166,7 +158,7 @@ body {
 
 /* While the OS drags its own copy of the cup, the one on the tray steps aside. */
 .stage--pouring .cup-slot {
-  opacity: 0.18;
+  opacity: 0.12;
 }
 
 .stage--served .cup-slot {

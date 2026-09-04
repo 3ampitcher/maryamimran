@@ -49,14 +49,6 @@ export default function CoffeeMachine({ brewing }: { brewing: boolean }) {
       <rect x="72" y="102" width="5" height="7" rx="2.5" fill="url(#steel)" />
       <rect x="83" y="102" width="5" height="7" rx="2.5" fill="url(#steel)" />
 
-      {/* the two streams, only while a shot is being pulled */}
-      {brewing && (
-        <g className="pour" fill="#6F4527">
-          <rect x="73.2" y="108" width="2.6" height="26" rx="1.3" />
-          <rect x="84.2" y="108" width="2.6" height="26" rx="1.3" />
-        </g>
-      )}
-
       {/* drip tray */}
       <rect x="26" y="148" width="108" height="11" rx="4" fill="#4B3626" />
       <rect x="33" y="150" width="94" height="3.4" rx="1.7" fill="#83694F" />
