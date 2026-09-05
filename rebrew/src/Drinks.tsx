@@ -33,6 +33,15 @@ type Art = {
   kind: 'hot' | 'cold'
   /** The y in this box that should sit on the drip tray. */
   base: number
+  /**
+   * How much to scale this drink by when it is standing on the machine.
+   * Chosen per drink rather than globally so each one lands at the size the
+   * design asks for: a demitasse and a tumbler are not the same drink at
+   * different zoom levels.
+   */
+  scale: number
+  /** Visible bounds in this box — what the eye sees, ignoring the steam. */
+  box: { x: number; y: number; w: number; h: number }
   body: JSX.Element
 }
 
@@ -116,11 +125,13 @@ function art(icon: string, accent: string): Art {
       // Wide and generous: foam to the rim, and a heart.
       return {
         kind: 'hot',
-        base: 71.6,
+        base: 65,
+        scale: 1.08,
+        box: { x: 9, y: 25, w: 46, h: 40 },
         body: (
           <>
-            <Shadow cy={70} rx={23} />
-            <Saucer cy={67} rx={23} />
+            <Shadow cy={62} rx={23} />
+            <Saucer cy={59} rx={23} />
             <Handle d="M47 38 C59 38 59 52 47 52" width={6} />
             <path
               d="M15 30 h34 l-3.6 21 a7 7 0 0 1 -6.9 6 h-13 a7 7 0 0 1 -6.9 -6 z"
@@ -141,65 +152,69 @@ function art(icon: string, accent: string): Art {
       }
 
     case 'latte':
-      // Tall iced glass: milk below, espresso above, ice and a straw.
+      // Tall iced glass: milk below, espresso above, ice and a straw. Wider
+      // than a plain tumbler so it reads as a latte rather than a test tube.
       return {
         kind: 'cold',
-        base: 68.5,
+        base: 69.5,
+        scale: 1.09,
+        box: { x: 12, y: 18, w: 40, h: 54 },
         body: (
           <>
-            <Shadow cy={68} rx={16} />
-            <Saucer cy={65.5} rx={15} />
-            {/* straw */}
-            <rect
-              x="40.6"
-              y="9"
-              width="3.2"
-              height="20"
-              rx="1.6"
-              fill={accent}
-              transform="rotate(14 42 17)"
-            />
+            <Shadow cy={69} rx={20} />
+            <Saucer cy={65.5} rx={20} />
             {/* glass, filled milk-first so the coffee layer floats on top */}
-            <path d="M21 16 h22 l-2 42 a5 5 0 0 1 -5 4.5 h-8 a5 5 0 0 1 -5 -4.5 z" fill={MILK} />
-            <path d="M21.3 22 h21.4 l-1.1 22 h-19.2 z" fill={CREMA} opacity="0.55" />
-            <path d="M21.1 18 h21.8 l-0.6 12 h-20.6 z" fill={COFFEE} opacity="0.8" />
-            <Ice x={23} y={22} size={9} tilt={-14} seed={0} />
-            <Ice x={32} y={30} size={8} tilt={11} seed={1} />
-            <Ice x={24} y={40} size={7.5} tilt={5} seed={2} />
+            <path d="M14 22 h36 l-2.6 38 a6 6 0 0 1 -6 5 h-18.8 a6 6 0 0 1 -6 -5 z" fill={MILK} />
+            <path d="M14.4 32 h35.2 l-1.4 20 h-32.4 z" fill={CREMA} opacity="0.55" />
+            <path d="M14.1 24 h35.8 l-0.9 13 h-34 z" fill={COFFEE} opacity="0.8" />
+            <Ice x={18} y={28} size={9} tilt={-14} seed={0} />
+            <Ice x={30} y={36} size={8} tilt={12} seed={1} />
+            <Ice x={20} y={46} size={7.5} tilt={5} seed={2} />
             <path
-              d="M21 16 h22 l-2 42 a5 5 0 0 1 -5 4.5 h-8 a5 5 0 0 1 -5 -4.5 z"
+              d="M14 22 h36 l-2.6 38 a6 6 0 0 1 -6 5 h-18.8 a6 6 0 0 1 -6 -5 z"
               fill="none"
               stroke={GLASS_RIM}
               strokeWidth={RIM}
               opacity="0.85"
             />
-            <ellipse cx="32" cy="16" rx="11" ry="3" fill={GLASS_RIM} opacity="0.4" />
+            <ellipse cx="32" cy="22" rx="18" ry="4" fill={GLASS_RIM} opacity="0.4" />
+            <rect
+              x="42"
+              y="18"
+              width="3.8"
+              height="22"
+              rx="1.9"
+              fill={accent}
+              transform="rotate(15 44 29)"
+            />
           </>
         ),
       }
 
     case 'americano':
-      // Shorter, wider, very dark. No milk, no straw.
+      // Short and wide, very dark. No milk, no straw — black coffee over ice.
       return {
         kind: 'cold',
-        base: 63,
+        base: 62.8,
+        scale: 1.16,
+        box: { x: 9, y: 28, w: 46, h: 35 },
         body: (
           <>
-            <Shadow cy={65} rx={17} />
-            <path d="M17 30 h30 l-1.8 28 a5 5 0 0 1 -5 4.5 h-16.4 a5 5 0 0 1 -5 -4.5 z" fill="#2A170E" />
-            <path d="M17.5 34 h29 l-1.6 24 a5 5 0 0 1 -5 4.5 h-15.8 a5 5 0 0 1 -5 -4.5 z" fill={ESPRESSO} />
-            <Ice x={21} y={34} size={9.5} tilt={-12} seed={0} />
-            <Ice x={32} y={40} size={8.5} tilt={14} seed={1} />
-            <Ice x={25} y={47} size={8} tilt={4} seed={2} />
+            <Shadow cy={60.5} rx={23} />
+            <path d="M9 32 h46 l-2.2 24 a5 5 0 0 1 -5 4.5 h-31.6 a5 5 0 0 1 -5 -4.5 z" fill="#2A170E" />
+            <path d="M9.7 36 h44.6 l-1.9 20 a5 5 0 0 1 -5 4.5 h-30.8 a5 5 0 0 1 -5 -4.5 z" fill={ESPRESSO} />
+            <Ice x={15} y={37} size={10} tilt={-12} seed={0} />
+            <Ice x={31} y={42} size={9} tilt={14} seed={1} />
+            <Ice x={21} y={48} size={8.5} tilt={4} seed={2} />
             <path
-              d="M17 30 h30 l-1.8 28 a5 5 0 0 1 -5 4.5 h-16.4 a5 5 0 0 1 -5 -4.5 z"
+              d="M9 32 h46 l-2.2 24 a5 5 0 0 1 -5 4.5 h-31.6 a5 5 0 0 1 -5 -4.5 z"
               fill="none"
               stroke={GLASS_RIM}
               strokeWidth={RIM}
               opacity="0.85"
             />
-            <ellipse cx="32" cy="30" rx="15" ry="3.6" fill={GLASS_RIM} opacity="0.35" />
-            <ellipse cx="32" cy="30.4" rx="12.6" ry="2.7" fill={accent} opacity="0.28" />
+            <ellipse cx="32" cy="32" rx="23" ry="3.4" fill={GLASS_RIM} opacity="0.35" />
+            <ellipse cx="32" cy="32.4" rx="19.6" ry="2.5" fill={accent} opacity="0.28" />
           </>
         ),
       }
@@ -209,11 +224,13 @@ function art(icon: string, accent: string): Art {
       // A demitasse: small, dark, on a saucer.
       return {
         kind: 'hot',
-        base: 71,
+        base: 65,
+        scale: 0.93,
+        box: { x: 13, y: 31, w: 38, h: 34 },
         body: (
           <>
-            <Shadow cy={70} rx={19} />
-            <Saucer cy={67} rx={19} />
+            <Shadow cy={62.5} rx={19} />
+            <Saucer cy={60} rx={19} />
             <Handle d="M44 40 C54 40 54 51 44 51" width={5} />
             <path d="M22 34 h21 l-2.6 19 a6 6 0 0 1 -6 5 h-4.8 a6 6 0 0 1 -6 -5 z" fill={IVORY} />
             <path d="M37 34 h6 l-2.6 19 a6 6 0 0 1 -6 5 h-3 a6 6 0 0 0 6 -5 z" fill={IVORY_SHADE} />
@@ -226,9 +243,13 @@ function art(icon: string, accent: string): Art {
   }
 }
 
-/** Where this drink's lowest point is, so the caller can stand it on the tray. */
-export function baselineOf(icon: string): number {
-  return art(icon, '#000').base
+/**
+ * How to stand this drink on the tray: how far to scale it, where its foot is,
+ * and the visible bounds the drag target is padded out from.
+ */
+export function placementOf(icon: string) {
+  const { base, scale, box } = art(icon, '#000')
+  return { base, scale, box }
 }
 
 /**

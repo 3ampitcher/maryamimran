@@ -2,16 +2,17 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import * as api from './api'
 import type { Preset, RecipeView } from './api'
 import CoffeeMachine from './CoffeeMachine'
-import { DrinkArt, baselineOf } from './Drinks'
+import { DrinkArt, placementOf } from './Drinks'
 
 /** How far the cursor must travel, held down, before this counts as a drag. */
 const DRAG_THRESHOLD = 4
 
-/* Placement of the drink inside the machine's 160x170 viewBox. The tray line is
-   where every drink stands, whatever shape it is. */
-const DRINK_SCALE = 0.65
-const DRINK_X = 59.2
-const TRAY_Y = 148
+/* The tray line inside the machine's viewBox: where every drink stands,
+   whatever shape it is. Each drink brings its own scale, so the sizes stay
+   true to the drinks rather than to one shared zoom level. */
+const TRAY_Y = 168
+/** Invisible padding around a drink, in art units — about 12-16px on screen. */
+const GRAB_PADDING = 9
 
 type Status = 'idle' | 'pouring' | 'served' | 'error'
 
@@ -164,6 +165,7 @@ export default function Carousel({
   }
 
   const accent = api.accentHex(accents, selected.accent)
+  const place = placementOf(selected.icon)
   const instruction =
     status === 'pouring'
       ? 'Pouring… drop it into your AI chat.'
@@ -179,7 +181,7 @@ export default function Carousel({
 
       <div className={`stage stage--${status}`}>
         <button
-          className="arrow"
+          className="arrow arrow--prev"
           onClick={() => onChoose(index - 1)}
           title="Previous coffee"
           aria-label="Previous coffee"
@@ -199,21 +201,29 @@ export default function Carousel({
           <CoffeeMachine brewing={status === 'pouring'} />
           <svg
             className="drink-layer"
-            viewBox="0 0 160 166"
+            viewBox="0 0 160 186"
             preserveAspectRatio="xMidYMax meet"
             aria-hidden="true"
           >
             <g
               key={selected.id}
               className="drink-grab"
-              transform={`translate(${DRINK_X} ${TRAY_Y - baselineOf(selected.icon) * DRINK_SCALE}) scale(${DRINK_SCALE})`}
+              transform={`translate(${80 - 32 * place.scale} ${TRAY_Y - place.base * place.scale}) scale(${place.scale})`}
               onPointerDown={grabDrink}
               onDragStart={(e) => e.preventDefault()}
             >
               <title>Drag {selected.name} into your AI chat</title>
               <g className="drink-lift">
-                {/* A comfortable grab target that still stops at the drink. */}
-                <rect x="8" y="4" width="48" height="68" fill="transparent" />
+                {/* Padding out from what is actually visible, so a small
+                    espresso is as easy to grab as a wide tumbler — without
+                    reaching so far that the machine becomes draggable. */}
+                <rect
+                  x={place.box.x - GRAB_PADDING}
+                  y={place.box.y - GRAB_PADDING}
+                  width={place.box.w + GRAB_PADDING * 2}
+                  height={place.box.h + GRAB_PADDING * 2}
+                  fill="transparent"
+                />
                 <DrinkArt
                   icon={selected.icon}
                   accent={accent}
@@ -225,7 +235,7 @@ export default function Carousel({
         </div>
 
         <button
-          className="arrow"
+          className="arrow arrow--next"
           onClick={() => onChoose(index + 1)}
           title="Next coffee"
           aria-label="Next coffee"

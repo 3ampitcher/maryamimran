@@ -4,14 +4,15 @@
  * The viewBox is 160x170 and the cup is positioned against it in `styles.css`,
  * so the two drawings only line up because the numbers here and there agree.
  * Landmarks worth knowing if you move anything:
- *   y = 88..108  group head and spouts
+ *   y = 88..109  group head and spouts
+ *   y = 168      top of the drip tray, which is where the drink stands
  *   y = 148      top of the drip tray, which is where the cup stands
  */
 export default function CoffeeMachine({ brewing }: { brewing: boolean }) {
   return (
     <svg
       className="machine"
-      viewBox="0 0 160 166"
+      viewBox="0 0 160 186"
       preserveAspectRatio="xMidYMax meet"
       role="img"
       aria-label="The Rebrew coffee machine"
@@ -55,9 +56,9 @@ export default function CoffeeMachine({ brewing }: { brewing: boolean }) {
       <rect x="83" y="102" width="5" height="7" rx="2.5" fill="url(#steel)" />
 
       {/* drip tray */}
-      <rect x="26" y="148" width="108" height="11" rx="4" fill="#4B3626" />
-      <rect x="33" y="150" width="94" height="3.4" rx="1.7" fill="#83694F" />
-      <rect x="34" y="159" width="92" height="5" rx="2.5" fill="#3A2A1E" />
+      <rect x="26" y="168" width="108" height="11" rx="4" fill="#4B3626" />
+      <rect x="33" y="170" width="94" height="3.4" rx="1.7" fill="#83694F" />
+      <rect x="34" y="179" width="92" height="5" rx="2.5" fill="#3A2A1E" />
     </svg>
   )
 }
