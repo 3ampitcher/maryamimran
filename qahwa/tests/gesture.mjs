@@ -11,10 +11,14 @@ import { chromium } from 'playwright'
 import http from 'node:http'
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const ROOT = new URL('../dist', import.meta.url).pathname
+// `new URL(...).pathname` would be '/D:/a/...' on Windows — the drive letter
+// becomes a directory name and nothing is ever found. fileURLToPath is the
+// only conversion that is right on every platform.
+const ROOT = fileURLToPath(new URL('../dist', import.meta.url))
 if (!fs.existsSync(path.join(ROOT, 'index.html'))) {
-  console.error('No dist/ to test. Run `npm run build` first.')
+  console.error(`No dist/ to test at ${ROOT}. Run \`npm run build\` first.`)
   process.exit(1)
 }
 
