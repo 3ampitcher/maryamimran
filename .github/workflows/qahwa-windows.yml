@@ -12,6 +12,11 @@ on:
     paths:
       - 'qahwa/**'
   workflow_dispatch:
+    inputs:
+      publish_release:
+        description: 'Replace the public download page with this build'
+        type: boolean
+        default: false
 
 # A Windows release build with LTO is slow. If a newer commit lands on the same
 # branch, the older build is answering a question nobody is asking any more.
@@ -62,8 +67,11 @@ jobs:
       # The artifact above needs a GitHub login to download, which is no use for
       # handing the app to someone to test. A release is a plain public download
       # page. The tag is fixed, so the link stays the same as builds replace it.
+      # Deliberately manual. The public release is what testers have installed,
+      # so it is replaced only when someone asks for it by name — never as a
+      # side effect of a push.
       - name: Publish the downloadable release
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
