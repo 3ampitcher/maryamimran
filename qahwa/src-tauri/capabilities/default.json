@@ -1,12 +1,15 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "What the Qahwa window is allowed to do. Deliberately small: no file system, no shell, no network.",
+  "description": "What the Qahwa window is allowed to do. Deliberately small: no filesystem plugin, no shell, no http. The file pickers below only return a path — the reading and writing of a backup happens in Rust.",
   "windows": ["main"],
   "permissions": [
     "core:default",
     "core:window:allow-start-dragging",
     "core:window:allow-close",
-    "core:window:allow-minimize"
+    "core:window:allow-minimize",
+    "core:window:allow-set-always-on-top",
+    "dialog:allow-open",
+    "dialog:allow-save"
   ]
 }

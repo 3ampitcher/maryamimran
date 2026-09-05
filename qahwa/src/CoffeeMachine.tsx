@@ -9,7 +9,13 @@
  */
 export default function CoffeeMachine({ brewing }: { brewing: boolean }) {
   return (
-    <svg className="machine" viewBox="0 0 160 170" role="img" aria-label="A small coffee machine">
+    <svg
+      className="machine"
+      viewBox="0 0 160 170"
+      preserveAspectRatio="xMidYMid meet"
+      role="img"
+      aria-label="A small coffee machine"
+    >
       <defs>
         <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#5A4230" />
