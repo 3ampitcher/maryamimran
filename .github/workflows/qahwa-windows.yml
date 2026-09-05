@@ -22,6 +22,8 @@ concurrency:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write # to publish the downloadable release at the end
     defaults:
       run:
         working-directory: qahwa
@@ -56,3 +58,23 @@ jobs:
             qahwa/src-tauri/target/release/bundle/nsis/*.exe
             qahwa/src-tauri/target/release/qahwa.exe
           if-no-files-found: error
+
+      # The artifact above needs a GitHub login to download, which is no use for
+      # handing the app to someone to test. A release is a plain public download
+      # page. The tag is fixed, so the link stays the same as builds replace it.
+      - name: Publish the downloadable release
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp src-tauri/target/release/qahwa.exe src-tauri/target/release/Qahwa-portable.exe
+          gh release delete qahwa-latest --yes --cleanup-tag || true
+          gh release create qahwa-latest \
+            --title "Qahwa - test build" \
+            --notes-file ../.github/qahwa-release-notes.md \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            src-tauri/target/release/bundle/nsis/*.exe \
+            src-tauri/target/release/Qahwa-portable.exe
