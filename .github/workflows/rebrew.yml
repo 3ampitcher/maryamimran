@@ -95,11 +95,18 @@ jobs:
           path: ${{ matrix.paths }}
           if-no-files-found: error
 
-      # Deliberately manual, and Windows only for now. The public release is
-      # what testers have installed, so it is replaced only when someone asks
-      # for it by name — never as a side effect of a push.
+      # Deliberately explicit, and Windows only for now. The public release is
+      # what testers have installed, so it is replaced only when a commit asks
+      # for it by name — never as a side effect of ordinary work.
+      #
+      # Two ways to ask, because not every context has both: run the workflow
+      # by hand and tick the box, or put [publish] in the commit message. A
+      # tag would be the conventional third, but a tag push is refused here.
       - name: Publish the downloadable release
-        if: matrix.os == 'windows-latest' && github.event_name == 'workflow_dispatch' && inputs.publish_release
+        if: >-
+          matrix.os == 'windows-latest' &&
+          ((github.event_name == 'workflow_dispatch' && inputs.publish_release) ||
+           contains(github.event.head_commit.message, '[publish]'))
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
