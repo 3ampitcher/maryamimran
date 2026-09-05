@@ -1,0 +1,34 @@
+[package]
+name = "rebrew"
+version = "0.3.0"
+description = "A small coffee machine for your desktop"
+authors = ["Rebrew"]
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+# Tauri's desktop entry point lives in the lib so `main.rs` stays a one-liner.
+name = "rebrew_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# `macos-private-api` is what lets the frameless window be transparent on macOS;
+# it is inert on Windows but has to be declared to match tauri.conf.json.
+tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
+tauri-plugin-autostart = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Native, cross-application outbound drag-and-drop. On Windows this is an OLE
+# `DoDragDrop` with a `CF_HDROP` payload, which is exactly what a browser
+# treats as a real dropped file.
+drag = "2.1.1"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true
