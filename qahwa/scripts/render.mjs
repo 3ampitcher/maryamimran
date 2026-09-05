@@ -136,6 +136,37 @@ function dibEntry(c) {
   return Buffer.concat([header, xor, and])
 }
 
+/* ---------- ICNS ---------- */
+
+// macOS icon bundle. Every entry here is one of the PNG-payload types
+// (10.7 and later), so the same encoder above does the actual image work.
+const ICNS_TYPES = {
+  16: 'icp4',
+  32: 'icp5',
+  64: 'ic12',
+  128: 'ic07',
+  256: 'ic08',
+  512: 'ic09',
+}
+
+export function encodeIcns(canvases) {
+  const entries = []
+  for (const c of canvases) {
+    const type = ICNS_TYPES[c.w]
+    if (!type) throw new Error(`no ICNS type for ${c.w}x${c.h}`)
+    const png = encodePng(c)
+    const head = Buffer.alloc(8)
+    head.write(type, 0, 'ascii')
+    head.writeUInt32BE(png.length + 8, 4)
+    entries.push(Buffer.concat([head, png]))
+  }
+  const body = Buffer.concat(entries)
+  const header = Buffer.alloc(8)
+  header.write('icns', 0, 'ascii')
+  header.writeUInt32BE(body.length + 8, 4)
+  return Buffer.concat([header, body])
+}
+
 export function encodeIco(canvases) {
   const images = canvases.map(dibEntry)
   const dir = Buffer.alloc(6)

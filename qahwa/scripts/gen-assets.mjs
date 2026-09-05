@@ -1,7 +1,7 @@
 // Regenerates the app icons and the drag-preview bitmap.
 //   node scripts/gen-assets.mjs
 import { writeFileSync, mkdirSync } from 'node:fs'
-import { canvas, paint, ellipse, annulus, and, not, encodePng, encodeIco } from './render.mjs'
+import { canvas, paint, ellipse, annulus, and, not, encodePng, encodeIco, encodeIcns } from './render.mjs'
 
 const ROOT = new URL('..', import.meta.url).pathname
 
@@ -82,6 +82,7 @@ for (const [name, size] of [['32x32.png', 32], ['128x128.png', 128], ['128x128@2
   write(`src-tauri/icons/${name}`, encodePng(appIcon(size)))
 }
 write('src-tauri/icons/icon.ico', encodeIco([16, 32, 48, 64, 128, 256].map(appIcon)))
+write('src-tauri/icons/icon.icns', encodeIcns([16, 32, 64, 128, 256, 512].map(appIcon)))
 
 console.log('drag preview:')
 write('src-tauri/assets/cup-drag.png', encodePng(dragImage(160)))

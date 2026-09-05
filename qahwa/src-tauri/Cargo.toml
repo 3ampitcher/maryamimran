@@ -1,7 +1,7 @@
 [package]
 name = "qahwa"
-version = "0.1.0"
-description = "A tiny coffee machine for your desktop"
+version = "0.2.0"
+description = "A small coffee machine for your desktop"
 authors = ["Qahwa"]
 edition = "2021"
 rust-version = "1.77.2"
@@ -15,7 +15,14 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = [] }
+# `macos-private-api` is what lets the frameless window be transparent on macOS;
+# it is inert on Windows but has to be declared to match tauri.conf.json.
+tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
+# File pickers for the recipe backup/restore. Chosen over the filesystem plugin
+# because the picker is all the UI needs: the reading and writing happens in
+# Rust, so the web view is never handed filesystem access of its own.
+tauri-plugin-dialog = "2"
+tauri-plugin-autostart = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 # Native, cross-application outbound drag-and-drop. On Windows this is an OLE
