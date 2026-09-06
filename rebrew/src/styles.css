@@ -390,6 +390,7 @@ body {
   border-radius: 10px;
   background: rgba(255, 238, 214, 0.05);
   color: var(--ink);
+  font: inherit;
   cursor: grab;
   transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
 }
