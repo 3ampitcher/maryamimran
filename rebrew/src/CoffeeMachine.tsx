@@ -8,11 +8,20 @@
  *   y = 168      top of the drip tray, which is where the drink stands
  *   y = 148      top of the drip tray, which is where the cup stands
  */
-export default function CoffeeMachine({ brewing }: { brewing: boolean }) {
+export default function CoffeeMachine({
+  brewing,
+  crop = false,
+}: {
+  brewing: boolean
+  /** The All Coffees menu shows the machine above a tray of its own, so it
+   *  takes the body and the group head only — the same drawing, cropped, not a
+   *  second machine that has to be kept in step with this one. */
+  crop?: boolean
+}) {
   return (
     <svg
-      className="machine"
-      viewBox="0 0 160 186"
+      className={crop ? 'machine machine--crop' : 'machine'}
+      viewBox={crop ? '12 0 136 112' : '0 0 160 186'}
       preserveAspectRatio="xMidYMax meet"
       role="img"
       aria-label="The Rebrew coffee machine"

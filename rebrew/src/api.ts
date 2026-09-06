@@ -45,12 +45,16 @@ export type RecipeInput = {
   accent: string
 }
 
+/** The two main screens: one coffee at a time, or the whole menu. */
+export type View = 'carousel' | 'grid'
+
 export type Settings = {
   alwaysOnTop: boolean
   showTray: boolean
   launchAtLogin: boolean
   selectedRecipe: string | null
   seenIntro: boolean
+  view: View
 }
 
 export type Preset = { id: string; label: string; value: string }
@@ -71,12 +75,10 @@ export const reorderRecipes = (ids: string[]) => invoke<void>('reorder_recipes',
 export const iconPresets = () => invoke<Preset[]>('icon_presets')
 export const accentPresets = () => invoke<Preset[]>('accent_presets')
 
-export const exportRecipes = (path: string) => invoke<string>('export_recipes', { path })
-export const importRecipes = (path: string) => invoke<number>('import_recipes', { path })
-
 export const getSettings = () => invoke<Settings>('get_settings')
 export const selectRecipe = (id: string) => invoke<void>('select_recipe', { id })
 export const markIntroSeen = () => invoke<void>('mark_intro_seen')
+export const setView = (view: View) => invoke<void>('set_view', { view })
 export const setAlwaysOnTop = (enabled: boolean) => invoke<void>('set_always_on_top', { enabled })
 export const setShowTray = (enabled: boolean) => invoke<void>('set_show_tray', { enabled })
 export const setLaunchAtLogin = (enabled: boolean) =>
@@ -86,7 +88,12 @@ export const resetWindowPosition = () => invoke<void>('reset_window_position')
 export const closeWindow = () => invoke<void>('close_window')
 export const configPath = () => invoke<string>('config_path')
 
-export const pour = (recipeId: string) => invoke<PourOutcome>('pour', { recipeId })
+/**
+ * Starts the native drag. `image` is the PNG of the coffee being dragged, drawn
+ * by the window; the app falls back to its bundled cup when it is null.
+ */
+export const pour = (recipeId: string, image: number[] | null) =>
+  invoke<PourOutcome>('pour', { recipeId, image })
 
 /** Hex for an accent id, with a sane fallback if the presets have not loaded. */
 export function accentHex(presets: Preset[], id: string): string {

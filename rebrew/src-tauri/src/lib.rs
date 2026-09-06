@@ -26,10 +26,26 @@ use tauri::{
 
 use store::{Data, Recipe, RecipeView, Settings, Store};
 
-/// The bitmap that rides under the cursor during the drag. This is how the cup
-/// "follows the cursor" across application boundaries — no web view can do
-/// that, because the cursor has already left the window.
+/// The fallback bitmap that rides under the cursor during the drag. This is how
+/// the cup "follows the cursor" across application boundaries — no web view can
+/// do that, because the cursor has already left the window.
+///
+/// Normally the window sends the picture of the coffee actually selected, so
+/// dragging an Espresso does not put somebody else's cup under the pointer.
+/// This is what is used when it could not draw one.
 const CUP_IMAGE: &[u8] = include_bytes!("../assets/cup-drag.png");
+
+/// The first eight bytes of every PNG. A drag image that will not decode leaves
+/// Windows dragging nothing visible at all, so anything that is not obviously a
+/// PNG falls back to the bundled cup rather than being handed over on trust.
+const PNG_MAGIC: [u8; 8] = [0x89, b'P', b'N', b'G', 0x0d, 0x0a, 0x1a, 0x0a];
+
+fn drag_bitmap(sent: Option<Vec<u8>>) -> Vec<u8> {
+    match sent {
+        Some(bytes) if bytes.starts_with(&PNG_MAGIC) => bytes,
+        _ => CUP_IMAGE.to_vec(),
+    }
+}
 
 /// How often window moves and resizes are written to disk.
 const GEOMETRY_FLUSH: Duration = Duration::from_secs(2);
@@ -62,6 +78,9 @@ async fn pour(
     window: WebviewWindow<Wry>,
     store: State<'_, Store>,
     recipe_id: String,
+    // The selected coffee, drawn by the window and encoded as a PNG: the window
+    // sends it because the window is what knows how the drink looks.
+    image: Option<Vec<u8>>,
 ) -> Result<PourOutcome> {
     let recipe = store
         .with(|d| d.recipes.iter().find(|r| r.id == recipe_id).cloned())
@@ -69,6 +88,7 @@ async fn pour(
 
     let path = shot::pour(&recipe.file_name(), &recipe.prompt)
         .map_err(|e| err("could not brew the coffee", e))?;
+    let bitmap = drag_bitmap(image);
 
     // `drag::start_drag` must run on the main thread, and on Windows it blocks
     // there for the entire drag. So: hand the work to the main thread, then wait
@@ -94,7 +114,7 @@ async fn pour(
         let started = drag::start_drag(
             &handle,
             drag::DragItem::Files(vec![drag_path]),
-            drag::Image::Raw(CUP_IMAGE.to_vec()),
+            drag::Image::Raw(bitmap),
             move |result, _cursor| {
                 let outcome = match result {
                     drag::DragResult::Dropped => {
@@ -270,7 +290,11 @@ fn accent_presets() -> Vec<Preset> {
 
 #[tauri::command]
 fn get_settings(store: State<'_, Store>) -> Settings {
-    store.with(|d| d.settings.clone())
+    store.with(|d| {
+        let mut s = d.settings.clone();
+        s.normalise();
+        s
+    })
 }
 
 #[tauri::command]
@@ -281,6 +305,15 @@ fn select_recipe(store: State<'_, Store>, id: String) {
 #[tauri::command]
 fn mark_intro_seen(store: State<'_, Store>) {
     store.update(|d| d.settings.seen_intro = true);
+}
+
+/// Remembers which screen the window should open on next time.
+#[tauri::command]
+fn set_view(store: State<'_, Store>, view: String) {
+    store.update(|d| {
+        d.settings.view = view;
+        d.settings.normalise();
+    });
 }
 
 #[tauri::command]
@@ -473,6 +506,7 @@ pub fn run() {
             get_settings,
             select_recipe,
             mark_intro_seen,
+            set_view,
             set_always_on_top,
             set_show_tray,
             set_launch_at_login,
@@ -535,4 +569,27 @@ pub fn run() {
                 shot::sweep(shot::LINGER);
             }
         });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A drag picture that will not decode leaves Windows dragging nothing
+    /// visible, which is worse than dragging the wrong cup.
+    #[test]
+    fn only_a_real_png_replaces_the_bundled_cup() {
+        assert_eq!(drag_bitmap(None), CUP_IMAGE);
+        assert_eq!(drag_bitmap(Some(Vec::new())), CUP_IMAGE);
+        assert_eq!(drag_bitmap(Some(b"<svg/>".to_vec())), CUP_IMAGE);
+
+        let png: Vec<u8> = PNG_MAGIC.iter().copied().chain([1, 2, 3]).collect();
+        assert_eq!(drag_bitmap(Some(png.clone())), png);
+    }
+
+    /// The fallback is only a fallback if it decodes.
+    #[test]
+    fn the_bundled_cup_is_itself_a_png() {
+        assert!(CUP_IMAGE.starts_with(&PNG_MAGIC));
+    }
 }

@@ -14,17 +14,9 @@ const BLANK: RecipeInput = {
   accent: 'espresso',
 }
 
-/**
- * The same rule `recipes::file_name` uses in Rust, so the preview shows what
- * will actually land in the chat rather than an approximation.
- */
-function previewFileName(name: string, purpose: string) {
-  const clean = (s: string) => s.replace(/[\\/:*?"<>|]/g, '-').trim()
-  return `${clean(purpose) || clean(name) || 'Rebrew recipe'}.md`
-}
-
 export default function Editor({
   recipeId,
+  fileName,
   icons,
   accents,
   onSaved,
@@ -32,6 +24,9 @@ export default function Editor({
   onNotice,
 }: {
   recipeId: string
+  /** What this coffee arrives as in a chat. Fixed per coffee, so editing the
+   *  name or the purpose no longer moves it. */
+  fileName: string
   icons: Preset[]
   accents: Preset[]
   onSaved: (id: string) => void
@@ -119,7 +114,7 @@ export default function Editor({
             {draft.name || 'Coffee'}
             {draft.purpose ? ` — ${draft.purpose}` : ''}
           </p>
-          <p className="preview__file">{previewFileName(draft.name, draft.purpose)}</p>
+          <p className="preview__file">{fileName}</p>
           <p className="preview__explain">{draft.explanation || 'One line about what it does.'}</p>
         </div>
       </div>

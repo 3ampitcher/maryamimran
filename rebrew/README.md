@@ -5,7 +5,7 @@ A café for better AI answers.
 A small coffee machine that sits on your desktop. Each coffee is a prompt.
 
 Pick one, drag its cup into ChatGPT or Claude, and it arrives as a normal file
-upload — `Reality Shot.md` — carrying instructions the AI then
+upload — `APPLY NOW — Check the Answer.md` — carrying instructions the AI
 follows. No copy-pasting, no extension, no account.
 
 ```
@@ -29,14 +29,22 @@ The cup is not an image being faked into a drop event. Dragging it starts a
   file from your Downloads folder, which is why the drop lands as an ordinary
   upload rather than as pasted text.
 
-Four consequences are handled deliberately, and are worth knowing before
+Five consequences are handled deliberately, and are worth knowing before
 changing any of it:
 
 **The window freezes mid-drag.** `DoDragDrop` blocks the main thread for the
 whole gesture, and the web view repaints on that thread. So the UI paints its
-"pouring" frame *before* handing the thread over (`Carousel.tsx` waits for a
-frame, with a timeout in case the web view throttles them), and the cup that
-follows your cursor is a native bitmap drawn by the OS, not by the page.
+"pouring" frame *before* handing the thread over (`brew.ts` waits for a frame,
+with a timeout in case the web view throttles them), and the cup that follows
+your cursor is a bitmap the OS draws, not the page.
+
+**That bitmap still has to be the right coffee.** The OS needs pixels before the
+gesture starts, so the window rasterises each drink from the very SVG it is
+showing — cropped to what the eye sees, at that drink's own scale — while the
+app is idle, and hands the PNG to `pour` (`DragArt.tsx`). Dragging an Espresso
+puts an espresso cup under the cursor, not a generic one. If a picture could not
+be drawn, `pour` falls back to the cup bundled in the binary, so a drag never
+fails over a preview.
 
 **A click is not a drag.** Windows reports a drag that opens and closes on the
 spot as a *successful drop*, whether or not anything caught it. So the cup waits
@@ -67,8 +75,14 @@ that pours. Your choice is remembered.
 **Drag the cup** into the chat box of ChatGPT, Claude, or anything else that
 accepts an uploaded file, then send the message.
 
-**The ⓘ button** explains the selected coffee and opens its recipe. **The ⚙
-button** holds settings and the recipe library.
+**The grid button** in the header swaps between the carousel — one coffee at a
+time, on the machine — and All Coffees, the whole menu on a serving tray. Every
+cup on the tray drags into a chat exactly like the one on the machine; clicking
+one chooses it and goes back to the carousel. Rebrew opens on whichever of the
+two you used last.
+
+**The ? button** explains the menu. **The ⚙ button** holds settings and the
+recipe library.
 
 ### The menu
 
@@ -79,20 +93,19 @@ button** holds settings and the recipe library.
 | **Latte** — Second Opinion | Breaks out of the first idea and finds different directions. |
 | **Americano** — The Challenger | Tests your idea like a skeptical judge or investor. |
 
-### Editing and adding recipes
+### Editing recipes
 
-**⚙ → Manage recipes.** Every coffee can be edited, duplicated, reordered, and
-hidden from the carousel. Recipes you create yourself can also be deleted;
-built-in ones can only be hidden, and an edited built-in can be put back the way
-it was with the ⟲ button.
+**⚙ → Manage recipes.** Every coffee can be edited, reordered, and hidden from
+the menu — though never all of them at once. An edited coffee can be put back
+the way it shipped with the ⟲ button. This release has four built-ins and no way
+to create or delete a coffee.
 
 A recipe is a coffee type, a purpose, a one-line explanation, a cup, a colour,
-and the prompt itself. The file name follows from the first three:
-`{purpose}.md`. The editor previews it before you save.
-
-**Export** writes every recipe to a JSON file; **import** merges one back in,
-replacing recipes with the same id and adding the rest. Coffee names keep their
-Unicode, so `☕` and `🧊` survive the round trip.
+and the prompt itself. The file name is *not* one of them: it is fixed per
+coffee, because it is the first thing the receiving AI reads and it has a job to
+do there. Each one begins `APPLY NOW — …` and each prompt opens by telling the
+AI to carry the instructions out rather than describe the file it just received.
+The editor shows the name before you save.
 
 Cups and colours are a closed set of presets. There is no way to point a recipe
 at an arbitrary file or a remote image, by design.
@@ -129,8 +142,8 @@ cd rebrew
 npm install
 npm run app:dev              # dev window with hot reload
 
-npm run app:build:windows    # -> src-tauri/target/release/bundle/nsis/Rebrew_0.3.0_x64-setup.exe
-npm run app:build:mac        # -> src-tauri/target/release/bundle/dmg/Rebrew_0.3.0_aarch64.dmg
+npm run app:build:windows    # -> src-tauri/target/release/bundle/nsis/Rebrew_0.4.0_x64-setup.exe
+npm run app:build:mac        # -> src-tauri/target/release/bundle/dmg/Rebrew_0.4.0_aarch64.dmg
 ```
 
 Frontend-only, if you just want to poke at the UI in a browser:

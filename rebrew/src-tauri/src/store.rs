@@ -43,8 +43,19 @@ pub struct Recipe {
 }
 
 impl Recipe {
+    /// The name this arrives under in a chat.
+    ///
+    /// It comes from the built-in rather than from the recipe, so renaming a
+    /// coffee in the library changes the label in the window without changing
+    /// the instruction the receiving AI reads off the file name.
     pub fn file_name(&self) -> String {
-        recipes::file_name(&self.purpose, &self.name)
+        let stem = self
+            .origin
+            .as_deref()
+            .and_then(recipes::built_in)
+            .map(|b| b.file_stem)
+            .unwrap_or(self.purpose.as_str());
+        recipes::file_name(stem, &self.name)
     }
 
     /// A built-in the user has since edited — the only case where offering
@@ -125,6 +136,22 @@ pub struct Settings {
     pub launch_at_login: bool,
     pub selected_recipe: Option<String>,
     pub seen_intro: bool,
+    /// Which screen the window opens on: `carousel` or `grid`. A string rather
+    /// than an enum so that a hand-edited file with nonsense in it falls back
+    /// to the carousel instead of failing to parse and losing everything else.
+    pub view: String,
+}
+
+pub const VIEW_CAROUSEL: &str = "carousel";
+pub const VIEW_GRID: &str = "grid";
+
+impl Settings {
+    /// The stored view, or the carousel if the file says something else.
+    pub fn normalise(&mut self) {
+        if self.view != VIEW_GRID {
+            self.view = VIEW_CAROUSEL.to_string();
+        }
+    }
 }
 
 impl Default for Settings {
@@ -136,6 +163,9 @@ impl Default for Settings {
             launch_at_login: false,
             selected_recipe: None,
             seen_intro: false,
+            // New users meet one coffee at a time; the whole menu is a click
+            // away and is remembered once they go there.
+            view: VIEW_CAROUSEL.to_string(),
         }
     }
 }
@@ -231,6 +261,7 @@ impl Data {
                 r.enabled = true;
             }
         }
+        self.settings.normalise();
         self.version = DATA_VERSION;
     }
 }

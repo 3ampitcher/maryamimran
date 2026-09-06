@@ -31,6 +31,12 @@ export default function Help({ firstRun, onClose }: { firstRun: boolean; onClose
         nothing — that is deliberate, so you cannot send one by accident.
       </p>
 
+      <p className="para">
+        The grid button at the top shows all four coffees at once. Any of them can be dragged
+        straight from there, or clicked to bring it back to the machine. Rebrew opens on whichever
+        of the two you used last.
+      </p>
+
       <h2 className="section">The menu</h2>
       <ul className="menu">
         {MENU.map(([name, purpose, what]) => (

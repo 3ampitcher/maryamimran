@@ -1,6 +1,6 @@
 [package]
 name = "rebrew"
-version = "0.3.0"
+version = "0.4.0"
 description = "A small coffee machine for your desktop"
 authors = ["Rebrew"]
 edition = "2021"

@@ -65,7 +65,11 @@ function stub(outcome) {
       switch (cmd) {
         case 'list_recipes': return RECIPES
         case 'get_settings':
-          return { alwaysOnTop: false, showTray: true, launchAtLogin: false, selectedRecipe: null, seenIntro: true }
+          return {
+            alwaysOnTop: false, showTray: true, launchAtLogin: false,
+            selectedRecipe: null, seenIntro: true, view: window.__view ?? 'carousel',
+          }
+        case 'set_view': window.__view = args.view; return null
         case 'icon_presets': return [{ id: 'espresso', label: 'Espresso cup', value: 'espresso' }]
         case 'accent_presets': return [{ id: 'espresso', label: 'espresso', value: '#8C5A3B' }]
         case 'pour': return outcome
@@ -75,16 +79,38 @@ function stub(outcome) {
   }
 }
 
-async function session(outcome = 'dropped') {
-  const page = await browser.newPage({ viewport: { width: 280, height: 330 } })
+async function session(outcome = 'dropped', { width = 280, height = 330 } = {}) {
+  const page = await browser.newPage({ viewport: { width, height } })
   await page.addInitScript(stub, outcome)
   await page.goto('http://localhost:4607/')
   await page.waitForSelector('.drink-grab')
+  await ready(page)
   await page.evaluate(() => { window.__calls.length = 0 })
   return page
 }
 
-const pours = (page) => page.evaluate(() => window.__calls.filter((c) => c[0] === 'pour'))
+/* All four drag pictures drawn and cached. They are rasterised while the app
+   is idle, so a test that drags the instant the page loads would otherwise be
+   racing them. */
+const ready = (page) =>
+  page.waitForFunction(() => document.querySelector('.drag-art')?.dataset.ready === '4')
+
+/* The drag image is thousands of bytes; keep the recipe and the picture's
+   dimensions, which is all any assertion here cares about. */
+const pours = (page) =>
+  page.evaluate(() =>
+    window.__calls
+      .filter((c) => c[0] === 'pour')
+      .map(([, a]) => {
+        const png = a.image
+        // PNG: 8-byte signature, then IHDR's length+type, then width, height.
+        const at = (i) => (png[i] << 24) | (png[i + 1] << 16) | (png[i + 2] << 8) | png[i + 3]
+        return {
+          recipeId: a.recipeId,
+          image: png ? `${at(16)}x${at(20)}` : null,
+        }
+      }),
+  )
 const centreOf = async (page, selector) => {
   const b = await page.locator(selector).first().boundingBox()
   return { x: b.x + b.width / 2, y: b.y + b.height / 2 }
@@ -114,7 +140,9 @@ console.log('the drag:')
   await page.mouse.down()
   await page.mouse.move(c.x + 40, c.y - 30, { steps: 10 })
   await page.waitForTimeout(250)
-  check('dragging pours one shot', await pours(page), [['pour', { recipeId: 'builtin.espresso' }]])
+  check('dragging pours one shot', await pours(page), [
+    { recipeId: 'builtin.espresso', image: '102x92' },
+  ])
   check('and says so', await page.textContent('.instruct'), 'Served. Send the message.')
   await page.mouse.up()
   await page.close()
@@ -202,7 +230,9 @@ console.log('the carousel:')
   await page.mouse.down()
   await page.mouse.move(c.x + 40, c.y - 30, { steps: 10 })
   await page.waitForTimeout(250)
-  check('the selected coffee is what pours', await pours(page), [['pour', { recipeId: 'builtin.latte' }]])
+  check('the selected coffee is what pours', await pours(page), [
+    { recipeId: 'builtin.latte', image: '125x164' },
+  ])
   await page.mouse.up()
   await page.close()
 }
@@ -227,7 +257,7 @@ console.log('the panels:')
 {
   const page = await session()
   const onScreen = await page.evaluate(() => document.body.innerText)
-  check('no prompt body on the main screen', /intentionally selected this Qahwa recipe/.test(onScreen), false)
+  check('no prompt body on the main screen', /Immediately apply the instructions below/.test(onScreen), false)
   await page.close()
 }
 
@@ -275,7 +305,9 @@ console.log('the menu and motion:')
 // 13. Hot drinks steam, cold ones do not; cold ones have ice that drifts.
 {
   const page = await session()
-  const has = async (sel) => (await page.locator(sel).count()) > 0
+  // Scoped to the drink on the machine: the offscreen drag pictures are drawn
+  // from the same art, so an unscoped selector would find every drink at once.
+  const has = async (sel) => (await page.locator(`.drink-layer ${sel}`).count()) > 0
   check('espresso steams', await has('.steam'), true)
   check('espresso has no ice', await has('.ice'), false)
   await page.click('.arrow[title="Next coffee"]')
@@ -292,7 +324,7 @@ console.log('the menu and motion:')
   await page.goto('http://localhost:4607/')
   await page.waitForSelector('.drink-grab')
   const steamAnimating = await page.evaluate(() => {
-    const el = document.querySelector('.steam path')
+    const el = document.querySelector('.drink-layer .steam path')
     return el ? getComputedStyle(el).animationName : 'none'
   })
   check('no looping steam under reduced motion', steamAnimating, 'none')
@@ -300,11 +332,121 @@ console.log('the menu and motion:')
   await page.click('.arrow[title="Next coffee"]')
   await page.click('.arrow[title="Next coffee"]')
   const iceAnimating = await page.evaluate(() => {
-    const el = document.querySelector('.ice')
+    const el = document.querySelector('.drink-layer .ice')
     return el ? getComputedStyle(el).animationName : 'missing'
   })
   check('and no drifting ice either', iceAnimating, 'none')
   await page.close()
+}
+
+console.log('the drag picture:')
+
+// 15. Whatever coffee is dragged, that coffee's own picture goes under the
+//     cursor. Each drink is cropped and scaled to its own size, so the
+//     bitmap's dimensions identify it.
+{
+  const page = await session()
+  const SIZES = [
+    ['Espresso', '102x92'],
+    ['Cappuccino', '140x124'],
+    ['Latte', '125x164'],
+    ['Americano', '151x118'],
+  ]
+  const seen = []
+  for (const [name] of SIZES) {
+    await page.evaluate(() => { window.__calls.length = 0 })
+    const c = await centreOf(page, '.drink-grab')
+    await page.mouse.move(c.x, c.y)
+    await page.mouse.down()
+    await page.mouse.move(c.x + 40, c.y - 30, { steps: 10 })
+    await page.waitForTimeout(220)
+    const [shot] = await pours(page)
+    seen.push([name, shot?.image ?? 'none'])
+    await page.mouse.up()
+    await page.click('.arrow[title="Next coffee"]')
+    await page.waitForTimeout(1700) // let 'served' fall back to idle
+  }
+  check('each coffee drags its own picture', seen, SIZES)
+  await page.close()
+}
+
+console.log('the two views:')
+
+// 16. The switcher opens the whole menu and comes back, and says which it is.
+{
+  const page = await session()
+  check('the carousel is where new users start', await page.locator('.tray').count(), 0)
+  check('and the switcher offers the menu', await page.getAttribute('.bar__btn[aria-pressed]', 'title'), 'Show all coffees')
+
+  await page.click('.bar__btn[aria-label="Show all coffees"]')
+  await page.waitForSelector('.tray')
+  check('all four coffees are on the tray', await page.locator('.cup').count(), 4)
+  check('the machine is still there', await page.locator('.machine--crop').count(), 1)
+  check('and the switcher now offers the carousel', await page.getAttribute('.bar__btn[aria-pressed]', 'title'), 'Show one coffee at a time')
+  check('the view is remembered', await page.evaluate(() => window.__view), 'grid')
+
+  await page.click('.bar__btn[aria-label="Show one coffee at a time"]')
+  await page.waitForSelector('.drink-grab')
+  check('and back again', await page.evaluate(() => window.__view), 'carousel')
+  await page.close()
+}
+
+// 17. On the tray, a click chooses a coffee and hands the window back.
+{
+  const page = await session()
+  await page.click('.bar__btn[aria-label="Show all coffees"]')
+  await page.waitForSelector('.tray')
+  check('the first coffee is the selected one', await page.locator('.cup--on .cup__name').textContent(), 'Espresso')
+
+  await page.locator('.cup').nth(2).click()
+  await page.waitForSelector('.drink-grab')
+  check('clicking a coffee chooses it', await page.textContent('.drink-name'), 'Latte')
+  check('and returns to the carousel', await page.locator('.tray').count(), 0)
+  await page.close()
+}
+
+// 18. And a drag from the tray pours that coffee, with its own picture.
+{
+  const page = await session()
+  await page.click('.bar__btn[aria-label="Show all coffees"]')
+  await page.waitForSelector('.tray')
+  await page.evaluate(() => { window.__calls.length = 0 })
+
+  const b = await page.locator('.cup').nth(3).boundingBox()
+  const c = { x: b.x + b.width / 2, y: b.y + b.height / 2 }
+  await page.mouse.move(c.x, c.y)
+  await page.mouse.down()
+  await page.mouse.move(c.x + 45, c.y - 35, { steps: 10 })
+  await page.waitForTimeout(250)
+  check('dragging from the tray pours that coffee', await pours(page), [
+    { recipeId: 'builtin.americano', image: '151x118' },
+  ])
+  await page.mouse.up()
+  await page.waitForTimeout(150)
+  check('and the drag did not also choose it', await page.locator('.tray').count(), 1)
+  await page.close()
+}
+
+// 19. The tray holds four coffees legibly at both ends of the resize range.
+{
+  for (const [w, h] of [[230, 280], [520, 650]]) {
+    const page = await session('dropped', { width: w, height: h })
+    await page.click('.bar__btn[aria-label="Show all coffees"]')
+    await page.waitForSelector('.tray')
+    const bad = await page.evaluate(() => {
+      const out = []
+      const card = document.querySelector('.app').getBoundingClientRect()
+      if (document.documentElement.scrollHeight > document.documentElement.clientHeight) out.push('scrolls')
+      for (const el of document.querySelectorAll('.cup, .cup__drink, .cup__name, .cup__purpose')) {
+        const r = el.getBoundingClientRect()
+        if (r.width < 1 || r.height < 1) out.push(`${el.className} collapsed`)
+        if (r.bottom > card.bottom + 0.5 || r.top < card.top - 0.5) out.push(`${el.className} outside`)
+      }
+      return [...new Set(out)]
+    })
+    check(`the tray fits at ${w}x${h}`, bad, [])
+    await page.close()
+  }
 }
 
 await browser.close()

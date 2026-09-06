@@ -1,14 +1,41 @@
 import { useCallback, useEffect, useState } from 'react'
 import { listen } from '@tauri-apps/api/event'
 import * as api from './api'
-import type { Preset, RecipeView, Settings } from './api'
+import type { Preset, RecipeView, Settings, View } from './api'
+import AllCoffees from './AllCoffees'
 import Carousel from './Carousel'
+import DragArt from './DragArt'
 import Help from './Help'
 import SettingsPanel from './SettingsPanel'
 import Library from './Library'
 import Editor from './Editor'
 
 export type Screen = 'main' | 'help' | 'settings' | 'library' | 'editor'
+
+/** Four cups on a tray: "show me all the coffees". Deliberately not three
+ *  stacked lines — a hamburger promises navigation, and there is none. */
+function GridMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3.5" y="3.5" width="7.6" height="7.6" rx="2.2" fill="currentColor" />
+      <rect x="12.9" y="3.5" width="7.6" height="7.6" rx="2.2" fill="currentColor" />
+      <rect x="3.5" y="12.9" width="7.6" height="7.6" rx="2.2" fill="currentColor" />
+      <rect x="12.9" y="12.9" width="7.6" height="7.6" rx="2.2" fill="currentColor" />
+    </svg>
+  )
+}
+
+/** One cup in the middle, the others waiting either side: back to the
+ *  carousel. */
+function CarouselMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="8" y="4.5" width="8" height="15" rx="2.6" fill="currentColor" />
+      <rect x="2.6" y="8" width="3.2" height="8" rx="1.6" fill="currentColor" opacity="0.45" />
+      <rect x="18.2" y="8" width="3.2" height="8" rx="1.6" fill="currentColor" opacity="0.45" />
+    </svg>
+  )
+}
 
 /** The Rebrew mark: a coffee bean. */
 function Bean() {
@@ -112,6 +139,23 @@ export default function App() {
     setScreen('main')
   }, [])
 
+  // The carousel until someone asks for the whole menu, and then whichever
+  // they left it on. Remembered on this machine, like every other preference.
+  const view: View = settings?.view === 'grid' ? 'grid' : 'carousel'
+  const showView = useCallback((next: View) => {
+    setSettings((s) => (s ? { ...s, view: next } : s))
+    api.setView(next).catch(() => {})
+  }, [])
+
+  /** From the All Coffees menu: choose a coffee and go back to the carousel. */
+  const pick = useCallback(
+    (next: number) => {
+      choose(next)
+      showView('carousel')
+    },
+    [choose, showView],
+  )
+
   return (
     <div className="app">
       <header className="bar" data-tauri-drag-region>
@@ -129,6 +173,18 @@ export default function App() {
         )}
         <button className="bar__btn" title="Help" aria-label="Help" onClick={() => setScreen('help')}>
           ?
+        </button>
+        <button
+          className="bar__btn"
+          title={view === 'grid' ? 'Show one coffee at a time' : 'Show all coffees'}
+          aria-label={view === 'grid' ? 'Show one coffee at a time' : 'Show all coffees'}
+          aria-pressed={view === 'grid'}
+          onClick={() => {
+            setScreen('main')
+            showView(view === 'grid' ? 'carousel' : 'grid')
+          }}
+        >
+          {view === 'grid' ? <CarouselMark /> : <GridMark />}
         </button>
         <button
           className="bar__btn"
@@ -156,14 +212,27 @@ export default function App() {
         </button>
       </header>
 
-      <Carousel
-        recipes={menu}
-        index={index}
-        accents={accents}
-        active={screen === 'main'}
-        onChoose={choose}
-        onNotice={setNotice}
-      />
+      {view === 'grid' ? (
+        <AllCoffees
+          recipes={menu}
+          index={index}
+          accents={accents}
+          onPick={pick}
+          onNotice={setNotice}
+        />
+      ) : (
+        <Carousel
+          recipes={menu}
+          index={index}
+          accents={accents}
+          active={screen === 'main'}
+          onChoose={choose}
+          onNotice={setNotice}
+        />
+      )}
+
+      {/* Offscreen: the picture each coffee drags under the cursor. */}
+      <DragArt recipes={menu} accents={accents} />
 
       {notice && <div className="notice">{notice}</div>}
 
@@ -201,6 +270,7 @@ export default function App() {
       {screen === 'editor' && editing && (
         <Editor
           recipeId={editing}
+          fileName={all.find((r) => r.id === editing)?.fileName ?? ''}
           icons={icons}
           accents={accents}
           onSaved={(id) => {
