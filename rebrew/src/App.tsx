@@ -158,19 +158,12 @@ export default function App() {
 
   return (
     <div className="app">
+      {/* The controls sit together on the left, where the name used to be, and
+          the ✕ sits alone on the right — so the button that closes the window
+          is nowhere near the ones that do not. The strip between them drags
+          the window. */}
       <header className="bar" data-tauri-drag-region>
-        <span className="brand" data-tauri-drag-region>
-          <Bean />
-          <span className="brand__name" data-tauri-drag-region>
-            Rebrew
-          </span>
-        </span>
-        <span className="bar__spacer" data-tauri-drag-region />
-        {settings?.alwaysOnTop && (
-          <span className="bar__pin" title="Staying above other apps" aria-label="Staying above other apps">
-            ●
-          </span>
-        )}
+        <Bean />
         <button className="bar__btn" title="Help" aria-label="Help" onClick={() => setScreen('help')}>
           ?
         </button>
@@ -207,6 +200,13 @@ export default function App() {
             />
           </svg>
         </button>
+        <span className="bar__spacer" data-tauri-drag-region />
+
+        {settings?.alwaysOnTop && (
+          <span className="bar__pin" title="Staying above other apps" aria-label="Staying above other apps">
+            ●
+          </span>
+        )}
         <button className="bar__btn" title="Close" aria-label="Close" onClick={() => api.closeWindow()}>
           ✕
         </button>

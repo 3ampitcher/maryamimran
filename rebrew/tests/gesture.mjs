@@ -370,6 +370,19 @@ console.log('the drag picture:')
   await page.close()
 }
 
+// 15b. The title bar is controls only, with the ✕ off on its own.
+{
+  const page = await session()
+  check('no product name in the title bar', await page.locator('.brand__name').count(), 0)
+  const order = await page.evaluate(() =>
+    [...document.querySelectorAll('.bar > *')].map((el) =>
+      el.classList.contains('bar__spacer') ? '|' : (el.getAttribute('title') ?? el.tagName.toLowerCase()),
+    ),
+  )
+  check('controls left, close right', order, ['svg', 'Help', 'Show all coffees', 'Settings', '|', 'Close'])
+  await page.close()
+}
+
 console.log('the two views:')
 
 // 16. The switcher opens the whole menu and comes back, and says which it is.
@@ -381,7 +394,7 @@ console.log('the two views:')
   await page.click('.bar__btn[aria-label="Show all coffees"]')
   await page.waitForSelector('.tray')
   check('all four coffees are on the tray', await page.locator('.cup').count(), 4)
-  check('the machine is still there', await page.locator('.machine--crop').count(), 1)
+  check('and the machine steps aside for them', await page.locator('.machine').count(), 0)
   check('and the switcher now offers the carousel', await page.getAttribute('.bar__btn[aria-pressed]', 'title'), 'Show one coffee at a time')
   check('the view is remembered', await page.evaluate(() => window.__view), 'grid')
 

@@ -64,30 +64,22 @@ body {
   flex: none;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  min-width: 0;
-}
-
+/* The bean, alone. The name is gone from the title bar: at this size it was
+   competing with the controls for a strip 30px tall, and the window is only
+   ever one app. */
 .brand__mark {
   width: 15px;
   height: 15px;
   flex: none;
+  margin-right: 1px;
 }
 
-.brand__name {
-  font-weight: 600;
-  font-size: clamp(11px, 3.4vw, 15px);
-  letter-spacing: 0.01em;
-}
-
-/* The strip either side of the brand drags the window. The buttons are
+/* The strip between the controls and the ✕ drags the window. The buttons are
    separate elements without the drag attribute, so clicking one never moves
    the window. */
 .bar__spacer {
   flex: 1;
+  min-width: 8px;
   height: 100%;
 }
 
@@ -342,23 +334,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 4px;
-  padding-top: 2px;
-}
-
-/* The machine, cropped to its body and group head, so the tray below reads as
-   the drinks it just poured rather than as a separate list. */
-.menu__machine {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: end center;
-  height: clamp(46px, 17vh, 100px);
-}
-
-.machine--crop {
-  height: 100%;
-  width: auto;
-  aspect-ratio: 136 / 112;
+  padding-top: 3px;
 }
 
 /* The serving tray: the drip tray's own colours, widened out to hold four. */
@@ -423,7 +399,7 @@ body {
 .cup__drink {
   flex: 0 1 auto;
   min-height: 0;
-  height: clamp(28px, 52%, 92px);
+  height: clamp(28px, 50%, 110px);
   width: auto;
   aspect-ratio: 64 / 74;
   pointer-events: none;

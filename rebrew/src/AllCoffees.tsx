@@ -1,15 +1,14 @@
 /**
- * The whole menu at once: the machine above, and its four coffees on a serving
- * tray below.
+ * The whole menu at once: the four coffees on a serving tray.
  *
- * Not a settings screen and not a list — the point is that it still reads as
- * the machine, with its drinks lined up under the group head. Every cup on the
- * tray drags into an AI chat exactly as the one on the carousel does; a plain
- * click chooses it and hands the window back to the carousel.
+ * Not a settings screen and not a list — the tray is the machine's own drip
+ * tray widened out, so the drinks still read as something that was poured
+ * rather than a menu of options. Every cup on it drags into an AI chat exactly
+ * as the one on the carousel does; a plain click chooses it and hands the
+ * window back to the carousel.
  */
 import * as api from './api'
 import type { Preset, RecipeView } from './api'
-import CoffeeMachine from './CoffeeMachine'
 import Drink from './Drinks'
 import { instructionFor, useBrew, usePrefersReducedMotion } from './brew'
 
@@ -41,10 +40,6 @@ export default function AllCoffees({
       <p className={`instruct ${status === 'pouring' ? 'instruct--live' : ''}`}>{instruction}</p>
 
       <div className={`menu menu--${status}`}>
-        <div className="menu__machine">
-          <CoffeeMachine brewing={status === 'pouring'} crop />
-        </div>
-
         <div className="tray" role="group" aria-label="All coffees">
           {recipes.map((r, i) => (
             <button
