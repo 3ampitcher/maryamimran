@@ -11,18 +11,38 @@ gets a file telling it to go and do that work on the answer it just gave you.
 1. Download **`Rebrew_0.4.1_x64-setup.exe`** from the Assets list below.
    (Or `Rebrew-portable.exe` if you would rather not install anything — that one
    just runs when you double-click it.)
-2. Your browser may say the file "isn't commonly downloaded". Choose **Keep**.
+2. Your browser may say the file "isn't commonly downloaded" and offer
+   **Cancel** and **Delete**. Click the small **⌄ arrow next to Delete** and
+   choose **Keep** — that option is hidden in the dropdown.
 3. Double-click the file. Windows will show a blue box saying
    **"Windows protected your PC"**. Click **More info**, then **Run anyway**.
 
-That blue box is expected. It appears for any program that has not been signed
-with a paid certificate, which costs a few hundred dollars a year — it is not a
-virus warning. This app was built automatically from public source code, and you
-can read every line of it in this repository.
+Both of those are expected. They appear for any program that has not been signed
+with a paid certificate — they are not virus warnings. This app was built
+automatically from public source code, and you can read every line of it in this
+repository.
 
 If the installer says **"Error opening file for writing"**, the folder you chose
 is not one you can write to. Leave the default
 (`C:\Users\<you>\AppData\Local\Rebrew`), or use `Rebrew-portable.exe` instead.
+
+### If you see "Smart App Control blocked an app that may be unsafe"
+
+This one is a wall, not a warning, and it is worth knowing the difference before
+you start clicking. Smart App Control only runs programs signed with a paid
+certificate. Rebrew is not signed, so it is blocked outright: there is no "run
+anyway", and Windows has no way to let one app through while leaving the feature
+on.
+
+You can see whether you have it under **Windows Security → App & browser control
+→ Smart App Control settings**. Turning it off does let Rebrew run — but **it
+cannot be turned back on afterwards without resetting or reinstalling Windows**.
+That is a real trade, so it is your call and not a step to take lightly. If the
+machine matters to you, the honest advice is to leave the setting alone and give
+Rebrew a miss until it is signed.
+
+Smart App Control is only ever switched on for clean installs of Windows 11, so
+most machines never show this at all.
 
 ## How to use it
 
