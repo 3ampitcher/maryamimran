@@ -8,7 +8,7 @@ gets a file telling it to go and do that work on the answer it just gave you.
 
 ## How to install it
 
-1. Download **`Rebrew_0.4.0_x64-setup.exe`** from the Assets list below.
+1. Download **`Rebrew_0.4.1_x64-setup.exe`** from the Assets list below.
    (Or `Rebrew-portable.exe` if you would rather not install anything — that one
    just runs when you double-click it.)
 2. Your browser may say the file "isn't commonly downloaded". Choose **Keep**.
@@ -49,13 +49,15 @@ with the file.
 
 ### The window
 
-- The **grid button** in the header shows all four coffees at once. Any of them
-  drags straight into a chat from there; clicking one picks it and goes back to
-  the machine. Rebrew opens on whichever view you used last.
+The buttons live together at the top left; the **✕** is on its own at the right.
+
+- The **grid button** shows all four coffees at once. Any of them drags straight
+  into a chat from there; clicking one picks it and goes back to the machine.
+  Rebrew opens on whichever view you used last.
 - The **?** button explains the menu. **⚙** holds settings and lets you edit any
   coffee's prompt.
-- Drag the strip at the top to **move** the window; drag an edge to **resize**
-  it. Where you put it and how big you made it are remembered.
+- Drag the empty strip along the top to **move** the window; drag an edge to
+  **resize** it. Where you put it and how big you made it are remembered.
 - **✕** hides it to the system tray; click the tray icon to bring it back.
 
 ## Please tell me

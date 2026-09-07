@@ -142,8 +142,8 @@ cd rebrew
 npm install
 npm run app:dev              # dev window with hot reload
 
-npm run app:build:windows    # -> src-tauri/target/release/bundle/nsis/Rebrew_0.4.0_x64-setup.exe
-npm run app:build:mac        # -> src-tauri/target/release/bundle/dmg/Rebrew_0.4.0_aarch64.dmg
+npm run app:build:windows    # -> src-tauri/target/release/bundle/nsis/Rebrew_0.4.1_x64-setup.exe
+npm run app:build:mac        # -> src-tauri/target/release/bundle/dmg/Rebrew_0.4.1_aarch64.dmg
 ```
 
 Frontend-only, if you just want to poke at the UI in a browser:
