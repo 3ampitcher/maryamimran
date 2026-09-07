@@ -9,6 +9,9 @@ on:
     paths:
       - 'rebrew/**'
       - '.github/workflows/rebrew.yml'
+      # The copy on the download page. Editing it should be able to put the
+      # page up again on its own, without pretending the app changed.
+      - '.github/rebrew-release-notes.md'
   pull_request:
     paths:
       - 'rebrew/**'
@@ -102,6 +105,10 @@ jobs:
       # Two ways to ask, because not every context has both: run the workflow
       # by hand and tick the box, or put [publish] in the commit message. A
       # tag would be the conventional third, but a tag push is refused here.
+      #
+      # A commit carrying the marker still has to change one of the files
+      # above, or the paths filter drops the push before this job exists and
+      # the ask goes nowhere. An empty commit publishes nothing.
       - name: Publish the downloadable release
         if: >-
           matrix.os == 'windows-latest' &&
