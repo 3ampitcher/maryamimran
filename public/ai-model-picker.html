@@ -71,6 +71,13 @@ textarea{
 }
 textarea::placeholder{color:var(--muted)}
 textarea:focus{border-color:var(--sig);box-shadow:0 0 0 3px color-mix(in srgb,var(--sig) 16%,transparent)}
+.ex{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.ex>span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.ex button{font-family:var(--body);font-size:12px;color:var(--ink-2);background:#0C1120;
+  border:1px solid var(--line);border-radius:99px;padding:4px 11px;cursor:pointer;transition:.16s}
+.ex button:hover{color:var(--ink);border-color:color-mix(in srgb,var(--sig) 50%,var(--line))}
+.ex button:active{transform:translateY(1px)}
+.ex button:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;min-height:22px}
 .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
   color:var(--sig);border:1px solid color-mix(in srgb,var(--sig) 38%,transparent);
@@ -235,6 +242,7 @@ footer .mono{font-family:var(--mono);font-size:11px}
       <div class="pbody">
         <label for="task" class="grouplabel" style="margin:0 0 8px">Describe it <span class="hint">plain language is fine</span></label>
         <textarea id="task" spellcheck="false">Read 400-page vendor contracts and flag clauses that shift liability onto us.</textarea>
+        <div class="ex" id="ex"><span>or start from</span></div>
         <div class="tags" id="tags"></div>
 
         <div class="grouplabel">Task type
@@ -502,6 +510,17 @@ T.forEach(function(t){
   b.className="chip";b.type="button";b.textContent=t.n;b.dataset.id=t.id;b.setAttribute("aria-pressed","false");
   b.onclick=function(){manual=t.id;$("#auto").dataset.on="0";run()};
   chips.appendChild(b);
+});
+[["Flag risky clauses in 400-page contracts","Read 400-page vendor contracts and flag clauses that shift liability onto us."],
+ ["Refactor a big codebase","Refactor a large TypeScript repo and fix the failing unit tests."],
+ ["Tag 2 million support tickets","Classify two million support tickets by topic as cheaply as possible."],
+ ["Make a product logo","Design a logo and poster artwork for a new coffee brand."],
+ ["Transcribe meetings live","Transcribe meetings in real time with speaker labels."],
+ ["Chatbot on private data","A support chatbot over our internal docs that must stay on our own servers."]
+].forEach(function(x){
+  var b=document.createElement("button");b.type="button";b.textContent=x[0];
+  b.onclick=function(){$("#task").value=x[1];manual=null;$("#auto").dataset.on="1";run()};
+  document.getElementById("ex").appendChild(b);
 });
 $("#auto").onclick=function(){manual=null;this.dataset.on="1";run()};
 $("#task").addEventListener("input",function(){if(!manual)run();else run()});
