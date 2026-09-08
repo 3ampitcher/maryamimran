@@ -1,0 +1,676 @@
+<title>Which AI Should I Use</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#0A0D16;
+  --panel:#111726;
+  --panel-2:#161D2F;
+  --line:#232C42;
+  --line-soft:#1A2135;
+  --ink:#E9EDF7;
+  --ink-2:#AAB4CC;
+  --muted:#727E9A;
+  --rose:#FF6E92;
+  --cyan:#4FC3F7;
+  --violet:#A98BFF;
+  --amber:#FFB454;
+  --green:#43DDA0;
+  --sig:var(--violet);
+  --display:"Bricolage Grotesque","Trebuchet MS",sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --r:10px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--body);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+#field{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 22px 90px}
+
+/* ---------- top bar ---------- */
+.bar{display:flex;align-items:center;gap:14px;padding:18px 0 0;flex-wrap:wrap}
+.mark{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--sig);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--sig) 18%,transparent);transition:background .5s,box-shadow .5s}
+.bar .stamp{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+/* ---------- hero ---------- */
+.hero{padding:46px 0 30px;max-width:720px}
+h1{
+  font-family:var(--display);font-weight:800;font-size:clamp(38px,6.2vw,68px);
+  line-height:.98;letter-spacing:-.028em;margin:0 0 16px;text-wrap:balance;
+}
+h1 .glow{color:var(--sig);transition:color .5s}
+.lede{font-size:17px;color:var(--ink-2);max-width:60ch;margin:0}
+.lede b{color:var(--ink);font-weight:600}
+
+/* ---------- console ---------- */
+.console{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:18px;align-items:start}
+@media (max-width:900px){.console{grid-template-columns:1fr}}
+.panel{
+  background:linear-gradient(180deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);border-radius:14px;
+}
+.phead{
+  display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+}
+.phead .n{color:var(--sig);transition:color .5s}
+.pbody{padding:16px}
+
+/* input bay */
+textarea{
+  width:100%;min-height:104px;resize:vertical;background:#0C1120;color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;
+  font-family:var(--body);font-size:15px;line-height:1.5;outline:none;transition:border-color .2s,box-shadow .2s;
+}
+textarea::placeholder{color:var(--muted)}
+textarea:focus{border-color:var(--sig);box-shadow:0 0 0 3px color-mix(in srgb,var(--sig) 16%,transparent)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;min-height:22px}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--sig);border:1px solid color-mix(in srgb,var(--sig) 38%,transparent);
+  background:color-mix(in srgb,var(--sig) 10%,transparent);padding:2px 7px;border-radius:99px;
+  animation:pop .32s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes pop{from{opacity:0;transform:translateY(4px) scale(.9)}to{opacity:1;transform:none}}
+
+.grouplabel{display:flex;align-items:baseline;gap:8px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin:20px 0 9px}
+.grouplabel .hint{letter-spacing:0;text-transform:none;font-family:var(--body);font-size:11.5px;color:#5D688A}
+.autobtn{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:2px 9px;cursor:pointer;transition:.18s}
+.autobtn:hover{color:var(--ink);border-color:var(--ink-2)}
+.autobtn[data-on="1"]{color:var(--sig);border-color:color-mix(in srgb,var(--sig) 45%,transparent)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-size:12.5px;font-weight:500;color:var(--ink-2);background:#0C1120;
+  border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer;
+  transition:transform .12s,border-color .18s,color .18s,background .18s;font-family:var(--body);
+}
+.chip:hover{color:var(--ink);border-color:#33405E}
+.chip:active{transform:translateY(1px) scale(.98)}
+.chip[aria-pressed="true"]{
+  color:#0A0D16;background:var(--sig);border-color:var(--sig);font-weight:600;
+}
+.chip:focus-visible,.seg button:focus-visible,.autobtn:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+
+.seg{display:flex;background:#0C1120;border:1px solid var(--line);border-radius:var(--r);padding:3px;gap:3px}
+.seg button{
+  flex:1;font-family:var(--body);font-size:12px;font-weight:500;color:var(--ink-2);
+  background:none;border:0;border-radius:7px;padding:7px 4px;cursor:pointer;transition:.16s;white-space:nowrap;
+}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--line);color:var(--ink);box-shadow:inset 0 1px 0 #2E3A56}
+.ctrl+.ctrl{margin-top:12px}
+.ctrl>span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+
+/* readout */
+.pick{position:relative;overflow:hidden;border-radius:var(--r);
+  border:1px solid color-mix(in srgb,var(--sig) 34%,var(--line));
+  background:linear-gradient(135deg,color-mix(in srgb,var(--sig) 11%,#0C1120),#0C1120 62%);
+  padding:18px}
+.pick::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,transparent 42%,color-mix(in srgb,var(--sig) 26%,transparent) 50%,transparent 58%);
+  transform:translateX(-120%);
+}
+.pick.sweep::after{animation:sweep .85s cubic-bezier(.3,0,.2,1) 1}
+@keyframes sweep{to{transform:translateX(120%)}}
+.picktop{display:flex;align-items:flex-start;gap:16px}
+.rank{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--sig);margin-bottom:5px}
+.mname{font-family:var(--display);font-weight:800;font-size:clamp(24px,3.4vw,34px);
+  line-height:1.05;letter-spacing:-.02em;margin:0}
+.mprov{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:4px}
+.score{margin-left:auto;text-align:right;flex:none}
+.score b{display:block;font-family:var(--display);font-weight:800;font-size:40px;line-height:1;
+  letter-spacing:-.03em;color:var(--sig);font-variant-numeric:tabular-nums}
+.score span{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.specs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0}
+.spec{font-family:var(--mono);font-size:11px;color:var(--ink-2);background:#0F1524;
+  border:1px solid var(--line);border-radius:6px;padding:3px 8px}
+.spec i{font-style:normal;color:var(--muted)}
+.reason{margin:14px 0 0;font-size:14px;color:var(--ink-2)}
+.reason b{color:var(--ink);font-weight:600}
+.watch{margin:12px 0 0;padding:9px 12px;border-radius:8px;background:#0F1524;border:1px solid var(--line-soft);
+  font-size:13px;color:var(--ink-2)}
+.watch b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--amber);display:block;margin-bottom:3px}
+
+/* meters */
+.meters{margin-top:16px;display:grid;gap:7px}
+.meter{display:grid;grid-template-columns:96px 1fr 34px;align-items:center;gap:10px}
+.meter .ml{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.meter .mt{height:6px;border-radius:99px;background:#0E1524;border:1px solid var(--line-soft);overflow:hidden}
+.meter .mf{height:100%;border-radius:99px;background:var(--sig);width:0;
+  transition:width .7s cubic-bezier(.22,1,.3,1),background .5s}
+.meter .mf.low{background:#39445F}
+.meter .mv{font-family:var(--mono);font-size:11px;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+.wnote{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:9px;letter-spacing:.04em}
+
+/* runners */
+.runners{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media (max-width:560px){.runners{grid-template-columns:1fr}}
+.run{background:#0C1120;border:1px solid var(--line);border-radius:var(--r);padding:12px 13px}
+.run .rn{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.01em}
+.run .rp{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.run .rs{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:8px;
+  display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums}
+.run .rbar{flex:1;height:4px;border-radius:99px;background:#131A2B;overflow:hidden}
+.run .rbar i{display:block;height:100%;background:color-mix(in srgb,var(--sig) 62%,transparent);width:0;
+  transition:width .7s cubic-bezier(.22,1,.3,1) .12s}
+.run .rw{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.45}
+
+.ruled{margin-top:12px;padding:11px 13px;border:1px dashed var(--line);border-radius:var(--r);
+  font-size:12.5px;color:var(--muted)}
+.ruled b{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-2);display:block;margin-bottom:5px}
+.ruled s{text-decoration:none;color:var(--ink-2)}
+
+/* weights strip */
+.weights{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px}
+.wchip{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--muted);
+  border:1px solid var(--line-soft);border-radius:5px;padding:2px 6px;font-variant-numeric:tabular-nums}
+.wchip[data-hi="1"]{color:var(--sig);border-color:color-mix(in srgb,var(--sig) 35%,transparent)}
+
+/* ---------- sheet ---------- */
+.section{margin-top:64px}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);
+  letter-spacing:-.02em;margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 20px;max-width:62ch}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:13.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);background:#0E1422;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#131A2B}
+td.n{font-weight:600;color:var(--ink);white-space:nowrap}
+td.m{font-family:var(--mono);font-size:12px;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{color:var(--ink-2);min-width:250px}
+.fam{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:8px;vertical-align:1px}
+
+/* ---------- how ---------- */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+.step{border-top:2px solid var(--line);padding-top:13px}
+.step .sn{font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--sig);margin-bottom:6px}
+.step h3{font-family:var(--display);font-weight:700;font-size:17px;margin:0 0 6px;letter-spacing:-.01em}
+.step p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.55}
+
+footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line-soft);
+  font-size:12.5px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;align-items:baseline}
+footer .mono{font-family:var(--mono);font-size:11px}
+
+.rise{animation:rise .6s cubic-bezier(.2,.8,.3,1) both}
+@keyframes rise{from{opacity:.001;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<canvas id="field" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <div class="bar">
+    <div class="mark"><span class="dot" id="dot"></span> Model Router</div>
+    <div class="stamp">Reference sheet · Sept 2026</div>
+  </div>
+
+  <header class="hero rise">
+    <h1>Stop guessing <span class="glow">which model</span> to point at the job.</h1>
+    <p class="lede">Describe the task in your own words. This weighs it across nine axes — depth, speed, value, craft, code, multimodal, context, control, autonomy — against <b>20 current models</b>, applies your hard constraints, and tells you what to use and what it costs you.</p>
+  </header>
+
+  <div class="console">
+    <!-- INPUT BAY -->
+    <section class="panel rise" style="animation-delay:.08s">
+      <div class="phead"><span class="n">01</span> The task</div>
+      <div class="pbody">
+        <label for="task" class="grouplabel" style="margin:0 0 8px">Describe it <span class="hint">plain language is fine</span></label>
+        <textarea id="task" spellcheck="false">Read 400-page vendor contracts and flag clauses that shift liability onto us.</textarea>
+        <div class="tags" id="tags"></div>
+
+        <div class="grouplabel">Task type
+          <button class="autobtn" id="auto" data-on="1" type="button">auto</button>
+        </div>
+        <div class="chips" id="chips"></div>
+
+        <div class="grouplabel">Hard constraints</div>
+        <div class="ctrl"><span>Budget</span>
+          <div class="seg" data-key="budget">
+            <button data-v="any" aria-pressed="true">No ceiling</button>
+            <button data-v="tight" aria-pressed="false">Cost-sensitive</button>
+            <button data-v="free" aria-pressed="false">Free / open</button>
+          </div>
+        </div>
+        <div class="ctrl"><span>Latency</span>
+          <div class="seg" data-key="latency">
+            <button data-v="batch" aria-pressed="true">Batch is fine</button>
+            <button data-v="inter" aria-pressed="false">Interactive</button>
+            <button data-v="real" aria-pressed="false">Real time</button>
+          </div>
+        </div>
+        <div class="ctrl"><span>Where the data may go</span>
+          <div class="seg" data-key="data">
+            <button data-v="cloud" aria-pressed="true">Any API</button>
+            <button data-v="local" aria-pressed="false">Must stay in-house</button>
+          </div>
+        </div>
+        <div class="ctrl"><span>Volume</span>
+          <div class="seg" data-key="volume">
+            <button data-v="few" aria-pressed="true">A handful</button>
+            <button data-v="thousands" aria-pressed="false">Thousands</button>
+            <button data-v="millions" aria-pressed="false">Millions</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- READOUT -->
+    <section class="panel rise" style="animation-delay:.16s">
+      <div class="phead"><span class="n">02</span> Readout <span id="pool" style="margin-left:auto;letter-spacing:.04em;text-transform:none;font-size:10.5px"></span></div>
+      <div class="pbody">
+        <div class="pick" id="pick">
+          <div class="picktop">
+            <div>
+              <div class="rank">Top pick</div>
+              <h3 class="mname" id="p-name">—</h3>
+              <div class="mprov" id="p-prov"></div>
+            </div>
+            <div class="score"><b id="p-score">0</b><span>match</span></div>
+          </div>
+          <div class="specs" id="p-specs"></div>
+          <p class="reason" id="p-reason"></p>
+          <div class="watch"><b>Trade-off</b><span id="p-watch"></span></div>
+          <div class="meters" id="p-meters"></div>
+          <div class="wnote" id="p-wnote"></div>
+        </div>
+
+        <div class="runners" id="runners"></div>
+        <div class="ruled" id="ruled" hidden></div>
+        <div class="weights" id="weights"></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="section rise">
+    <h2>The sheet</h2>
+    <p class="sub">Every model in the pool, with the two numbers that actually decide most calls: how much it can hold at once, and what it costs to run at volume. Prices move — check the provider's page before you commit a budget.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Model</th><th>Context</th><th>Cost band</th><th>Reach for it when</th></tr></thead>
+        <tbody id="sheet"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section rise">
+    <h2>How the call gets made</h2>
+    <p class="sub">Three passes, in this order — because a constraint you cannot break should eliminate a model before any score gets compared.</p>
+    <div class="how">
+      <div class="step"><div class="sn">PASS 01</div><h3>Filter</h3>
+        <p>Hard constraints cut the pool first. "Must stay in-house" removes every hosted API, whatever it scores. "Real time" removes anything that thinks before it answers. Whatever gets cut is listed, with the reason.</p></div>
+      <div class="step"><div class="sn">PASS 02</div><h3>Weight</h3>
+        <p>The task type sets a base weight on each of the nine axes; keywords in your description bend them. Say "cheap" and Value doubles. Say "400-page" and Context does. The weights in play are printed under the readout.</p></div>
+      <div class="step"><div class="sn">PASS 03</div><h3>Score</h3>
+        <p>Every surviving model is a weighted sum of its axis scores, normalised to a 0–100 match. Anything inside four points of the winner is a coin flip — pick on price, or on whichever API you already have a key for.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="mono">MODEL ROUTER</span>
+    <span>Scores are an opinionated read of public benchmarks and hands-on use, not vendor marketing.</span>
+    <span class="mono" style="margin-left:auto">Sept 2026</span>
+  </footer>
+</div>
+
+<script>
+/* ---------------- data ---------------- */
+var AX=[["depth","Depth"],["speed","Speed"],["value","Value"],["craft","Craft"],
+        ["code","Code"],["media","Multimodal"],["context","Context"],["control","Control"],["autonomy","Autonomy"]];
+
+/* kind: t=text  i=image  v=video  a=audio  e=embedding */
+var M=[
+{n:"Claude Opus 5",p:"Anthropic",k:"t",ctx:"200K",cost:"$$$",band:"premium",local:0,slow:1,
+ s:{depth:98,speed:60,value:28,craft:95,code:97,media:88,context:84,control:20,autonomy:98},
+ e:"Holds a long, messy chain of reasoning together without losing the thread — the one to hand a job you cannot easily check.",
+ w:"The most expensive option here, and it thinks before it answers. Wasted on anything routine.",
+ use:"Hard reasoning, long autonomous runs, work you can't easily verify yourself."},
+{n:"Claude Sonnet 5",p:"Anthropic",k:"t",ctx:"200K",cost:"$$",band:"mid",local:0,slow:0,
+ s:{depth:92,speed:82,value:62,craft:92,code:94,media:86,context:84,control:20,autonomy:93},
+ e:"Close to frontier quality at a fraction of frontier cost — the sane default for most production work.",
+ w:"On the genuinely hard 5% of problems, the bigger model still pulls ahead.",
+ use:"The default workhorse: coding, agents, drafting, most of everything."},
+{n:"Claude Haiku 4.5",p:"Anthropic",k:"t",ctx:"200K",cost:"$",band:"cheap",local:0,slow:0,
+ s:{depth:76,speed:96,value:88,craft:80,code:83,media:78,context:80,control:20,autonomy:80},
+ e:"Fast and cheap without dropping to a dumb model — still follows a multi-step instruction properly.",
+ w:"Give it an ambiguous task and it commits early instead of reasoning it out.",
+ use:"High-volume classification, routing, extraction, snappy chat."},
+{n:"GPT-5.1",p:"OpenAI",k:"t",ctx:"400K",cost:"$$$",band:"premium",local:0,slow:1,
+ s:{depth:95,speed:66,value:38,craft:90,code:93,media:90,context:88,control:20,autonomy:92},
+ e:"Adjustable reasoning effort lets you buy exactly as much thinking as the problem needs.",
+ w:"Latency swings hard with effort level — budget for the slow path, not the fast one.",
+ use:"Maths-heavy reasoning, competitive coding, anything you'd give to a specialist."},
+{n:"GPT-5 mini",p:"OpenAI",k:"t",ctx:"400K",cost:"$",band:"cheap",local:0,slow:0,
+ s:{depth:78,speed:92,value:86,craft:80,code:83,media:82,context:84,control:20,autonomy:78},
+ e:"Very large context for the money — good when the input is bulky but the thinking isn't.",
+ w:"Thin on long agentic chains; it drifts after a dozen tool calls.",
+ use:"Cheap bulk work where the inputs are big but the task is simple."},
+{n:"Gemini 3 Pro",p:"Google",k:"t",ctx:"1M",cost:"$$",band:"mid",local:0,slow:0,
+ s:{depth:93,speed:74,value:56,craft:86,code:90,media:96,context:100,control:20,autonomy:88},
+ e:"A million tokens of context and the strongest native handling of video, audio and PDFs in one call.",
+ w:"Recall across the far end of a million-token window is real but uneven — spot-check it.",
+ use:"Whole-codebase reads, video and PDF understanding, giant single-shot inputs."},
+{n:"Gemini 3 Flash",p:"Google",k:"t",ctx:"1M",cost:"$",band:"cheap",local:0,slow:0,
+ s:{depth:74,speed:97,value:93,craft:76,code:79,media:88,context:98,control:20,autonomy:74},
+ e:"The cheapest way to push a very large document through a competent model.",
+ w:"Reasoning is shallow. Do not hand it judgement calls that matter.",
+ use:"Million-token inputs at pennies, bulk summarising, first-pass triage."},
+{n:"DeepSeek V3.2",p:"DeepSeek · open weights",k:"t",ctx:"128K",cost:"$",band:"cheap",local:1,slow:1,
+ s:{depth:88,speed:58,value:96,craft:74,code:89,media:26,context:70,control:86,autonomy:70},
+ e:"Frontier-adjacent reasoning at open-weight prices, and you can host it yourself if the data can't leave.",
+ w:"Slow, text-only, and self-hosting it needs serious GPUs — the licence is free, the inference isn't.",
+ use:"Cheap hard reasoning, or reasoning that must run on your own metal."},
+{n:"Llama 4 Maverick",p:"Meta · open weights",k:"t",ctx:"256K",cost:"$",band:"cheap",local:1,slow:0,
+ s:{depth:74,speed:74,value:90,craft:75,code:76,media:62,context:74,control:98,autonomy:64},
+ e:"The mature self-hosting choice: every serving stack, quantisation and fine-tuning tool already supports it.",
+ w:"A clear step below the hosted frontier on reasoning and instruction-following.",
+ use:"On-prem deployments, fine-tuning on your own data, air-gapped environments."},
+{n:"Qwen3 8B",p:"Alibaba · open weights",k:"t",ctx:"128K",cost:"$",band:"cheap",local:1,slow:0,
+ s:{depth:58,speed:90,value:98,craft:66,code:72,media:38,context:56,control:99,autonomy:52},
+ e:"Runs on one consumer GPU — or a laptop, quantised. Nothing ever leaves the machine.",
+ w:"Small-model ceiling: it will confidently botch anything requiring real depth.",
+ use:"Offline and edge use, privacy-absolute work, prototyping with zero API spend."},
+{n:"Midjourney v7",p:"Midjourney",k:"i",ctx:"—",cost:"$$",band:"mid",local:0,slow:0,
+ s:{depth:60,speed:66,value:64,craft:99,code:0,media:95,context:20,control:44,autonomy:10},
+ e:"Still the best pure aesthetic per prompt — it makes attractive choices you didn't ask for.",
+ w:"Hardest to control precisely. Bad fit when the brief is exact rather than evocative.",
+ use:"Concept art, moodboards, anything where it just needs to look good."},
+{n:"FLUX.1.1 Pro",p:"Black Forest Labs",k:"i",ctx:"—",cost:"$",band:"cheap",local:1,slow:0,
+ s:{depth:62,speed:84,value:88,craft:88,code:0,media:90,context:20,control:92,autonomy:14},
+ e:"Open-weight siblings, ControlNets and LoRAs — the choice when you need repeatable, art-directed output.",
+ w:"Needs more prompt craft than Midjourney to reach the same first impression.",
+ use:"Product image pipelines, brand-consistent generation, self-hosted image work."},
+{n:"Gemini 3 Image",p:"Google",k:"i",ctx:"—",cost:"$",band:"cheap",local:0,slow:0,
+ s:{depth:70,speed:88,value:86,craft:82,code:0,media:96,context:40,control:74,autonomy:22},
+ e:"Conversational editing: point at a region, say what to change, keep everything else identical.",
+ w:"Fine typography and small text in-image remain unreliable.",
+ use:"Editing real photographs, iterative retouching, text-instructed image changes."},
+{n:"Veo 3.1",p:"Google",k:"v",ctx:"—",cost:"$$$",band:"premium",local:0,slow:1,
+ s:{depth:76,speed:40,value:40,craft:94,code:0,media:97,context:24,control:66,autonomy:12},
+ e:"Generates synchronised dialogue and sound with the picture, so a clip lands finished.",
+ w:"Costly per second, and shot-to-shot character consistency still needs babysitting.",
+ use:"Short film-like clips that need audio baked in."},
+{n:"Sora 2",p:"OpenAI",k:"v",ctx:"—",cost:"$$$",band:"premium",local:0,slow:1,
+ s:{depth:78,speed:42,value:42,craft:92,code:0,media:95,context:26,control:62,autonomy:12},
+ e:"The strongest physical plausibility — objects collide, fall and occlude the way they should.",
+ w:"Long generation times and tight content limits on real people.",
+ use:"Physics-heavy scenes, longer continuous shots."},
+{n:"Runway Gen-4",p:"Runway",k:"v",ctx:"—",cost:"$$",band:"mid",local:0,slow:0,
+ s:{depth:66,speed:70,value:66,craft:84,code:0,media:88,context:22,control:90,autonomy:14},
+ e:"Built as an editing tool, not a demo: camera control, references, inpainting, an actual timeline.",
+ w:"Raw fidelity trails the two frontier video models.",
+ use:"Production video work where you must direct the shot, not roll the dice."},
+{n:"Whisper large-v3",p:"OpenAI · open weights",k:"a",ctx:"—",cost:"$",band:"cheap",local:1,slow:0,
+ s:{depth:64,speed:74,value:96,craft:52,code:0,media:86,context:40,control:97,autonomy:10},
+ e:"Free, self-hostable, and strong across 90-odd languages — the default transcription baseline.",
+ w:"Batch only, no speaker labels out of the box, and it hallucinates over long silences.",
+ use:"Bulk transcription, multilingual audio, transcription that can't leave your network."},
+{n:"Deepgram Nova-3",p:"Deepgram",k:"a",ctx:"—",cost:"$",band:"cheap",local:0,slow:0,
+ s:{depth:60,speed:98,value:82,craft:50,code:0,media:84,context:36,control:52,autonomy:10},
+ e:"Streaming transcription in a couple of hundred milliseconds, with diarisation and word timings.",
+ w:"Accuracy dips on heavy accents and noisy rooms compared to a batch pass.",
+ use:"Live captions, voice agents, real-time meeting notes."},
+{n:"ElevenLabs v3",p:"ElevenLabs",k:"a",ctx:"—",cost:"$$",band:"mid",local:0,slow:0,
+ s:{depth:58,speed:80,value:56,craft:97,code:0,media:82,context:30,control:76,autonomy:10},
+ e:"The most convincing synthetic delivery available — emotion, pacing and cloning across languages.",
+ w:"Priced per character, so long-form narration adds up fast. Cloning needs consent.",
+ use:"Narration, dubbing, product voices, audiobooks."},
+{n:"Voyage-3",p:"Voyage AI",k:"e",ctx:"32K",cost:"$",band:"cheap",local:0,slow:0,
+ s:{depth:72,speed:92,value:88,craft:40,code:70,media:30,context:80,control:40,autonomy:8},
+ e:"Retrieval quality above the general-purpose embedding models, with domain-tuned variants.",
+ w:"One more vendor in the stack, and re-embedding a corpus to switch is expensive.",
+ use:"RAG where retrieval quality is the bottleneck."},
+{n:"bge-m3",p:"BAAI · open weights",k:"e",ctx:"8K",cost:"$",band:"cheap",local:1,slow:0,
+ s:{depth:64,speed:94,value:99,craft:36,code:60,media:24,context:60,control:99,autonomy:8},
+ e:"Free, multilingual, runs on your own hardware, and does dense plus sparse retrieval in one model.",
+ w:"Short window, so chunk carefully; a hosted embedder still edges it on quality.",
+ use:"Self-hosted RAG, multilingual corpora, zero-cost embedding at scale."}
+];
+
+/* task types: pool kinds + axis weights + signal hue */
+var T=[
+{id:"write",  n:"Writing & editing",   k:["t"], hue:"--rose",
+ w:{depth:.6,speed:.3,value:.4,craft:1,code:0,media:.1,context:.4,control:.2,autonomy:.1}},
+{id:"code",   n:"Coding & debugging",  k:["t"], hue:"--cyan",
+ w:{depth:.8,speed:.5,value:.4,craft:.3,code:1,media:.1,context:.6,control:.2,autonomy:.7}},
+{id:"analyze",n:"Long-document analysis",k:["t"],hue:"--violet",
+ w:{depth:1,speed:.2,value:.35,craft:.4,code:.1,media:.3,context:1,control:.25,autonomy:.25}},
+{id:"research",n:"Research & reasoning",k:["t"],hue:"--violet",
+ w:{depth:1,speed:.2,value:.3,craft:.55,code:.2,media:.2,context:.7,control:.2,autonomy:.6}},
+{id:"extract",n:"Bulk extraction",     k:["t"], hue:"--violet",
+ w:{depth:.4,speed:1,value:1,craft:.1,code:.2,media:.3,context:.5,control:.3,autonomy:.2}},
+{id:"chat",   n:"Chat & support",      k:["t"], hue:"--rose",
+ w:{depth:.5,speed:.95,value:.8,craft:.6,code:.1,media:.2,context:.4,control:.3,autonomy:.4}},
+{id:"agent",  n:"Agents & automation", k:["t"], hue:"--cyan",
+ w:{depth:.9,speed:.5,value:.4,craft:.2,code:.8,media:.2,context:.7,control:.2,autonomy:1}},
+{id:"image",  n:"Images",              k:["i"], hue:"--amber",
+ w:{depth:.4,speed:.4,value:.5,craft:1,code:0,media:.9,context:0,control:.6,autonomy:0}},
+{id:"video",  n:"Video",               k:["v"], hue:"--amber",
+ w:{depth:.4,speed:.35,value:.5,craft:1,code:0,media:.9,context:0,control:.6,autonomy:0}},
+{id:"voice",  n:"Voice & transcription",k:["a"],hue:"--green",
+ w:{depth:.35,speed:.8,value:.7,craft:.8,code:0,media:.8,context:0,control:.5,autonomy:0}},
+{id:"search", n:"Search & RAG",        k:["e"], hue:"--green",
+ w:{depth:.5,speed:.8,value:.8,craft:.1,code:.2,media:.1,context:.6,control:.5,autonomy:0}}
+];
+
+/* keyword rules -> [regex, taskId or null, axis bumps, tag] */
+var K=[
+ [/\b(logo|poster|illustrat|image|photo|artwork|thumbnail|banner|render)\w*/i,"image",{},"visual output"],
+ [/\b(video|clip|footage|animat|b-?roll|film)\w*/i,"video",{},"moving image"],
+ [/\b(transcri|voiceover|voice-?over|speech|podcast|dub|narrat|caption|subtitle)\w*/i,"voice",{},"audio"],
+ [/\b(rag|retrieval|embed|vector|semantic search|knowledge base)\w*/i,"search",{},"retrieval"],
+ [/\b(refactor|debug|codebase|python|typescript|repo|unit test|api|sql|bug)\w*/i,"code",{},"engineering"],
+ [/\b(agent|automat|workflow|pipeline|tool[- ]use|multi-?step|autonomous)\w*/i,"agent",{},"autonomous"],
+ [/\b(contract|legal|clause|policy|filing|report|paper|transcript|deposition|400|whole document)\w*/i,"analyze",{context:.35,depth:.2},"long documents"],
+ [/\b(classif|label|tag|extract|parse|categor|triage|bulk|batch)\w*/i,"extract",{},"bulk"],
+ [/\b(blog|copy|essay|newsletter|marketing|tone of voice|draft|edit|proofread)\w*/i,"write",{},"prose"],
+ [/\b(support|customer|chatbot|helpdesk|faq|assistant)\w*/i,"chat",{},"conversational"],
+ [/\b(cheap|budget|afford|cost|pennies|spend|expensive)\w*/i,null,{value:.5},"cost-sensitive"],
+ [/\b(fast|quick|instant|latency|real-?time|streaming|snappy)\w*/i,null,{speed:.5},"latency-sensitive"],
+ [/\b(private|privacy|confidential|hipaa|gdpr|on-?prem|self-?host|local|offline|air-?gap)\w*/i,null,{control:.9},"data-restricted"],
+ [/\b(million|thousands|scale|high[- ]volume|every day|nightly)\w*/i,null,{value:.4,speed:.35},"at scale"],
+ [/\b(accura|correct|critical|audit|compliance|high[- ]stakes|must not|risk)\w*/i,null,{depth:.4},"high-stakes"],
+ [/\b(long|entire|whole|huge|400|1000|hundreds of pages|book)\w*/i,null,{context:.35},"large inputs"],
+ [/\b(reason|proof|maths|math|algorithm|strategy|analy[sz]e|diagnose)\w*/i,null,{depth:.35},"reasoning-heavy"]
+];
+
+var C={budget:"any",latency:"batch",data:"cloud",volume:"few"};
+var manual=null, curHue="--violet", $=function(s){return document.querySelector(s)};
+
+/* ---------------- chips + sheet ---------------- */
+var chips=$("#chips");
+T.forEach(function(t){
+  var b=document.createElement("button");
+  b.className="chip";b.type="button";b.textContent=t.n;b.dataset.id=t.id;b.setAttribute("aria-pressed","false");
+  b.onclick=function(){manual=t.id;$("#auto").dataset.on="0";run()};
+  chips.appendChild(b);
+});
+$("#auto").onclick=function(){manual=null;this.dataset.on="1";run()};
+$("#task").addEventListener("input",function(){if(!manual)run();else run()});
+document.querySelectorAll(".seg").forEach(function(seg){
+  seg.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    seg.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+    C[seg.dataset.key]=b.dataset.v;run();
+  });
+});
+var famHue={t:"--violet",i:"--amber",v:"--amber",a:"--green",e:"--green"};
+$("#sheet").innerHTML=M.map(function(m){
+  return '<tr><td class="n"><span class="fam" style="background:var('+famHue[m.k]+')"></span>'+m.n+
+    '<div style="font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;margin-left:15px">'+m.p+'</div></td>'+
+    '<td class="m">'+m.ctx+'</td><td class="m">'+m.cost+'</td><td class="d">'+m.use+'</td></tr>';
+}).join("");
+
+/* ---------------- engine ---------------- */
+function detect(txt){
+  var hits=[],task=null,bump={};
+  K.forEach(function(r){
+    if(r[0].test(txt)){
+      hits.push(r[3]);
+      if(r[1]&&!task)task=r[1];
+      for(var a in r[2])bump[a]=(bump[a]||0)+r[2][a];
+    }
+  });
+  return{task:task,bump:bump,tags:hits.filter(function(v,i,s){return s.indexOf(v)===i}).slice(0,6)};
+}
+
+function run(){
+  var txt=$("#task").value, d=detect(txt);
+  var id=manual||d.task||"write";
+  var t=T.filter(function(x){return x.id===id})[0];
+
+  document.querySelectorAll(".chip").forEach(function(c){
+    c.setAttribute("aria-pressed",String(c.dataset.id===id));
+  });
+  $("#tags").innerHTML=d.tags.length?d.tags.map(function(x){return '<span class="tag">'+x+'</span>'}).join(""):
+    '<span class="tag" style="color:var(--muted);border-color:var(--line);background:none">no signals yet</span>';
+
+  /* weights */
+  var w={};AX.forEach(function(a){w[a[0]]=t.w[a[0]]||0});
+  for(var a in d.bump)w[a]=Math.min(1.6,(w[a]||0)+d.bump[a]);
+  if(C.budget==="tight")w.value=Math.min(1.8,w.value*2.2+.2);
+  if(C.budget==="free"){w.value=1.8;w.control=Math.max(w.control,1.1)}
+  if(C.latency==="inter")w.speed=Math.min(1.6,w.speed*1.6+.2);
+  if(C.latency==="real"){w.speed=1.8;w.depth*=.55}
+  if(C.data==="local")w.control=1.8;
+  if(C.volume==="thousands"){w.value=Math.min(1.8,w.value*1.4+.1);w.speed=Math.min(1.6,w.speed*1.2)}
+  if(C.volume==="millions"){w.value=Math.min(1.9,w.value*1.9+.2);w.speed=Math.min(1.8,w.speed*1.5+.1)}
+
+  /* filter */
+  var pool=[],cut=[];
+  M.forEach(function(m){
+    if(t.k.indexOf(m.k)<0)return;
+    if(C.data==="local"&&!m.local){cut.push([m.n,"hosted API only"]);return}
+    if(C.budget==="free"&&m.band!=="cheap"){cut.push([m.n,"no free or open tier"]);return}
+    if(C.latency==="real"&&m.slow){cut.push([m.n,"too slow to stream"]);return}
+    pool.push(m);
+  });
+  if(!pool.length){pool=M.filter(function(m){return t.k.indexOf(m.k)>=0});cut=[]}
+
+  /* score */
+  var sum=0;AX.forEach(function(x){sum+=w[x[0]]});
+  var ranked=pool.map(function(m){
+    var v=0;AX.forEach(function(x){v+=w[x[0]]*m.s[x[0]]});
+    return{m:m,score:sum?v/sum:0};
+  }).sort(function(a,b){return b.score-a.score});
+
+  var top=ranked[0];
+  curHue=t.hue;
+  document.documentElement.style.setProperty("--sig","var("+t.hue+")");
+
+  /* render pick */
+  $("#pool").textContent=pool.length+" of "+M.filter(function(m){return t.k.indexOf(m.k)>=0}).length+" in play";
+  $("#p-name").textContent=top.m.n;
+  $("#p-prov").textContent=top.m.p;
+  $("#p-specs").innerHTML=
+    (top.m.ctx!=="—"?'<span class="spec"><i>context</i> '+top.m.ctx+'</span>':'')+
+    '<span class="spec"><i>cost</i> '+top.m.cost+'</span>'+
+    '<span class="spec"><i>latency</i> '+(top.m.slow?"considered":"quick")+'</span>'+
+    '<span class="spec"><i>self-host</i> '+(top.m.local?"yes":"no")+'</span>';
+  $("#p-reason").innerHTML="<b>Why:</b> "+top.m.e;
+  $("#p-watch").textContent=top.m.w;
+
+  /* meters: the axes this task actually weights */
+  var shown=AX.filter(function(x){return w[x[0]]>=.3}).sort(function(a,b){return w[b[0]]-w[a[0]]}).slice(0,6);
+  $("#p-meters").innerHTML=shown.map(function(x){
+    return '<div class="meter"><div class="ml">'+x[1]+'</div><div class="mt"><div class="mf'+
+      (top.m.s[x[0]]<55?" low":"")+'" data-v="'+top.m.s[x[0]]+'"></div></div><div class="mv">'+top.m.s[x[0]]+'</div></div>';
+  }).join("");
+  $("#p-wnote").textContent="Meters show this model's strength on the axes your task weights most.";
+
+  $("#runners").innerHTML=ranked.slice(1,3).map(function(r){
+    return '<div class="run"><div class="rn">'+r.m.n+'</div><div class="rp">'+r.m.p+'</div>'+
+      '<div class="rs"><div class="rbar"><i data-v="'+Math.round(r.score)+'"></i></div>'+Math.round(r.score)+'</div>'+
+      '<div class="rw">'+r.m.use+'</div></div>';
+  }).join("");
+
+  var ru=$("#ruled");
+  if(cut.length){ru.hidden=false;ru.innerHTML="<b>Ruled out by your constraints</b>"+
+    cut.slice(0,6).map(function(c){return '<s>'+c[0]+'</s> — '+c[1]}).join(" · ")}
+  else ru.hidden=true;
+
+  $("#weights").innerHTML='<span class="wchip" style="border:0;padding-left:0">WEIGHTS IN PLAY</span>'+
+    AX.map(function(x){var v=w[x[0]];return '<span class="wchip" data-hi="'+(v>=.8?1:0)+'">'+x[1]+' '+v.toFixed(1)+'</span>'}).join("");
+
+  /* animate */
+  requestAnimationFrame(function(){
+    document.querySelectorAll("#p-meters .mf").forEach(function(el,i){
+      el.style.transitionDelay=(i*55)+"ms";el.style.width=el.dataset.v+"%";
+    });
+    document.querySelectorAll("#runners .rbar i").forEach(function(el){el.style.width=el.dataset.v+"%"});
+  });
+  countTo($("#p-score"),Math.round(top.score));
+  var pk=$("#pick");pk.classList.remove("sweep");void pk.offsetWidth;pk.classList.add("sweep");
+  if(window.__pulse)window.__pulse(getComputedStyle(document.documentElement).getPropertyValue(t.hue).trim());
+}
+
+var ct;
+function countTo(el,to){
+  clearInterval(ct);var from=parseInt(el.textContent,10)||0,st=performance.now();
+  ct=setInterval(function(){
+    var p=Math.min(1,(performance.now()-st)/520),e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(from+(to-from)*e);
+    if(p===1)clearInterval(ct);
+  },16);
+}
+
+/* ---------------- flow field ---------------- */
+(function(){
+  var c=document.getElementById("field"),x=c.getContext("2d"),W,H,ps=[],t=0,hue="#A98BFF",tgt="#A98BFF";
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function size(){W=c.width=innerWidth*devicePixelRatio;H=c.height=innerHeight*devicePixelRatio;
+    c.style.width=innerWidth+"px";c.style.height=innerHeight+"px";x.scale(1,1)}
+  size();addEventListener("resize",size);
+  var N=reduce?60:150;
+  for(var i=0;i<N;i++)ps.push({x:Math.random()*W,y:Math.random()*H,l:Math.random()*260});
+  window.__pulse=function(h){tgt=h||tgt};
+  function mix(a,b,k){
+    function p(s){s=s.replace("#","");return[parseInt(s.substr(0,2),16),parseInt(s.substr(2,2),16),parseInt(s.substr(4,2),16)]}
+    var A=p(a),B=p(b);return"rgb("+Math.round(A[0]+(B[0]-A[0])*k)+","+Math.round(A[1]+(B[1]-A[1])*k)+","+Math.round(A[2]+(B[2]-A[2])*k)+")";
+  }
+  var cur=[169,139,255];
+  function step(){
+    t+=0.0016;
+    x.fillStyle="rgba(10,13,22,0.085)";x.fillRect(0,0,W,H);
+    var tp=(function(s){s=(tgt||"#A98BFF").replace("#","");
+      return[parseInt(s.substr(0,2),16),parseInt(s.substr(2,2),16),parseInt(s.substr(4,2),16)]})();
+    for(var j=0;j<3;j++)cur[j]+=(tp[j]-cur[j])*0.04;
+    x.strokeStyle="rgba("+(cur[0]|0)+","+(cur[1]|0)+","+(cur[2]|0)+",0.34)";
+    x.lineWidth=1*devicePixelRatio;
+    x.beginPath();
+    for(var i=0;i<ps.length;i++){
+      var p=ps[i];
+      var a=Math.sin(p.x*0.0011+t*2.1)*Math.cos(p.y*0.0014-t*1.4)*3.14159+t*1.7;
+      var vx=Math.cos(a)*1.5*devicePixelRatio+0.55*devicePixelRatio, vy=Math.sin(a)*1.5*devicePixelRatio;
+      x.moveTo(p.x,p.y);p.x+=vx;p.y+=vy;x.lineTo(p.x,p.y);
+      p.l--;
+      if(p.l<0||p.x>W+20||p.x<-20||p.y>H+20||p.y<-20){
+        p.x=Math.random()*W*0.5-W*0.05;p.y=Math.random()*H;p.l=200+Math.random()*220;
+      }
+    }
+    x.stroke();
+    if(!reduce)requestAnimationFrame(step);
+  }
+  if(reduce){for(var k=0;k<200;k++)step();}else step();
+})();
+
+run();
+</script>
