@@ -193,8 +193,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .btn:hover{background:var(--surface-2);border-color:rgba(255,255,255,.28)}
 .btn.ghost{background:none}
-.btn.danger{color:#FF9B96;border-color:rgba(255,155,150,.32)}
-.btn.danger:hover{background:rgba(192,39,45,.2)}
+a.btn{text-decoration:none;display:inline-block}
 
 .live{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mist-dim)}
 .live i{width:7px;height:7px;border-radius:50%;background:var(--mist-dim);flex:none}
@@ -353,8 +352,8 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
   </section>
 
   <div class="foot">
-    <p>Responses are anonymous: the kiosk records the rating and the time it was tapped, nothing about the person who tapped it.</p>
-    <button class="btn danger" id="reset">Clear all responses</button>
+    <p>Responses are anonymous: the kiosk records the rating and the time it was tapped, nothing about the person who tapped it. Every response is a row in your Google Sheet.</p>
+    <a class="btn" id="sheet" href="#" target="_blank" rel="noopener">Open the Google Sheet ↗</a>
   </div>
 </main>
 
@@ -362,62 +361,89 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
 (() => {
   "use strict";
 
+  /* ══════════════════════════════════════════════════════════════════
+     PASTE YOUR APPS SCRIPT URL BETWEEN THE QUOTES ON THE NEXT LINE.
+     It looks like: https://script.google.com/macros/s/AKfycb.../exec
+     ══════════════════════════════════════════════════════════════════ */
+  const API = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+  /* Optional: your Google Sheet link, for the button on the results page. */
+  const SHEET_URL = "";
+
+  const READY = /^https:\/\/script\.google\.com\//.test(API);
+
   const SCALE = [
     {r:4, label:"Great",     color:"var(--r4)", mouth:"M28,56 Q50,90 72,56"},
     {r:3, label:"Good",      color:"var(--r3)", mouth:"M33,64 Q50,77 67,64"},
     {r:2, label:"Not great", color:"var(--r2)", mouth:"M33,70 Q50,55 67,70"},
     {r:1, label:"Bad",       color:"var(--r1)", mouth:"M28,75 Q50,44 72,75"},
   ];
-  // one face drawing, reused at every size
+  const byR = r => SCALE.find(s => s.r === Number(r)) || SCALE[0];
   const chip = (s, px) => `<svg class="chip" style="width:${px}px;height:${px}px" viewBox="-6 -6 112 112" aria-hidden="true">`
     + `<circle cx="50" cy="50" r="55" fill="${s.color}"/>`
     + `<circle cx="35" cy="40" r="6.4" fill="rgba(12,18,30,.82)"/><circle cx="65" cy="40" r="6.4" fill="rgba(12,18,30,.82)"/>`
     + `<path d="${s.mouth}" fill="none" stroke="rgba(12,18,30,.82)" stroke-width="8" stroke-linecap="round"/></svg>`;
-  const byR = r => SCALE.find(s => s.r === r) || SCALE[0];
+
   const PENDING = "ubt.booth.pending.v1";
   const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2, "0");
+  const dayOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 
-  /* ── store ──────────────────────────────────────────────────────── */
-  let db = null, dbReady = false;
   const readPending = () => { try { return JSON.parse(localStorage.getItem(PENDING) || "[]"); } catch { return []; } };
-  const writePending = v => { try { localStorage.setItem(PENDING, JSON.stringify(v.slice(-500))); } catch {} };
+  const writePending = v => { try { localStorage.setItem(PENDING, JSON.stringify(v.slice(-800))); } catch {} };
+  const queue = v => { const q = readPending(); q.push(v); writePending(q); };
 
   const setPilot = ok => {
     const p = $("pilot");
     p.classList.toggle("on", !!ok);
-    p.title = ok ? "Connected — responses are being saved" : "Saving locally until the connection returns";
+    p.title = ok ? "Connected — responses are saving to the sheet"
+                 : "Saving on this tablet until the connection returns";
   };
 
-  const makeVote = rating => {
-    const d = new Date();
-    return {
-      rating,
-      ts: d.toISOString(),
-      day: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`,
-      hour: d.getHours(),
-    };
-  };
-
-  async function save(vote) {
-    if (!db) throw new Error("no-db");
-    await db.collection("votes").add(vote);
+  /* ── the sheet ───────────────────────────────────────────────────
+     Both calls are deliberately "simple" CORS requests — a text/plain
+     POST and a bare GET — so the browser never sends a preflight that
+     Apps Script cannot answer.                                        */
+  async function send(votes) {
+    if (!READY) throw new Error("not-configured");
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(votes),
+      redirect: "follow",
+    });
+    if (!res.ok) throw new Error("http-" + res.status);
+    const out = await res.json();
+    if (!out || out.ok !== true) throw new Error("rejected");
+    return out;
   }
 
-  // Anything that could not reach the store waits in the browser and is
-  // pushed up on the next successful write or the next page load.
+  async function fetchResults() {
+    if (!READY) throw new Error("not-configured");
+    const res = await fetch(API + "?action=results&t=" + Date.now(), { redirect: "follow" });
+    if (!res.ok) throw new Error("http-" + res.status);
+    return res.json();
+  }
+
+  // Anything that could not reach the sheet waits here and goes up on
+  // the next tap, the next poll, or the next time the page is opened.
+  let flushing = false;
   async function flush() {
-    if (!db) return;
-    let queue = readPending();
-    if (!queue.length) return;
-    const left = [];
-    for (const v of queue) {
-      try { await save(v); } catch { left.push(v); }
-    }
-    writePending(left);
-    setPilot(left.length === 0);
+    if (flushing || !READY) return;
+    const q = readPending();
+    if (!q.length) return;
+    flushing = true;
+    try {
+      await send(q);
+      const after = readPending().slice(q.length);   // taps made mid-flight
+      writePending(after);
+      setPilot(true);
+    } catch {
+      setPilot(false);
+    } finally { flushing = false; }
   }
 
-  /* ── kiosk ──────────────────────────────────────────────────────── */
+  /* ── kiosk ───────────────────────────────────────────────────────── */
   let locked = false, veilTimer = 0;
   const veil = $("veil");
   const veilNote = t => { $("veilNote").textContent = t; };
@@ -427,22 +453,16 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     locked = true;
     btn.classList.add("press");
 
-    const vote = makeVote(rating);
-    // The visitor never waits on the network: thank them immediately,
-    // then persist (and queue locally if that fails).
+    const now = new Date();
+    const vote = { rating, ts: now.toISOString() };
+
+    // The visitor never waits on the network: thank them at once, then
+    // persist. A failed write is queued, not lost.
     veilNote("Your response was recorded.");
     veil.classList.add("show");
 
-    const finish = ok => { if (!ok) veilNote("Saved on this tablet."); setPilot(ok); };
-    if (db) {
-      save(vote).then(() => { finish(true); flush(); })
-                .catch(() => { const q = readPending(); q.push(vote); writePending(q); finish(false); });
-    } else if (dbReady) {
-      const q = readPending(); q.push(vote); writePending(q); finish(false);
-    } else {
-      // capability still resolving — hold it locally, flush() picks it up
-      const q = readPending(); q.push(vote); writePending(q);
-    }
+    queue(vote);
+    flush().then(() => { if (readPending().length) veilNote("Saved on this tablet."); });
 
     clearTimeout(veilTimer);
     veilTimer = setTimeout(() => {
@@ -458,7 +478,7 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     if (btn) record(Number(btn.dataset.r), btn);
   });
 
-  /* ── corner key: press and hold ─────────────────────────────────── */
+  /* ── corner key: press and hold ──────────────────────────────────── */
   const key = $("key");
   let holdTimer = 0;
   const startHold = e => {
@@ -476,8 +496,8 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openResults(); }
   });
 
-  /* ── results ────────────────────────────────────────────────────── */
-  let resultsOpen = false, unsub = null, votes = [];
+  /* ── results ─────────────────────────────────────────────────────── */
+  let resultsOpen = false, poll = 0, remote = null;
 
   function openResults() {
     endHold();
@@ -485,11 +505,14 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     $("kiosk").hidden = true; key.hidden = true; $("results").hidden = false;
     window.scrollTo(0, 0);
     render();
-    if (db) subscribe(); else if (dbReady) setLive(false, "Offline");
+    refresh();
+    // 30s, and never while the tab is in the background — Apps Script
+    // accounts have a daily runtime budget worth not burning.
+    poll = setInterval(() => { if (!document.hidden) refresh(); }, 30000);
   }
   function closeResults() {
     resultsOpen = false;
-    if (unsub) { unsub(); unsub = null; }
+    clearInterval(poll); poll = 0;
     $("results").hidden = true; $("kiosk").hidden = false; key.hidden = false;
   }
   $("back").addEventListener("click", closeResults);
@@ -501,86 +524,80 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     $("liveTxt").textContent = text;
   };
 
-  function subscribe() {
-    if (unsub || !db) return;
-    setLive(false, "Connecting");
-    unsub = db.collection("votes").orderBy("ts", "desc").limit(1000).onSnapshot(
-      snap => {
-        votes = snap.docs.map(d => ({ id: d.id, ...(d.data() || {}) }));
-        setLive(true, snap.metadata.fromCache ? "Syncing" : "Live");
-        render();
-      },
-      err => {
-        unsub = null;
-        setLive(false, err.code === "revoked" ? "Disconnected" : "Offline");
-      }
-    );
+  async function refresh() {
+    if (!READY) { setLive(false, "Not set up"); render(); return; }
+    setLive(!!remote, remote ? "Live" : "Connecting");
+    await flush();
+    try {
+      const data = await fetchResults();
+      remote = data;
+      setPilot(true);
+      setLive(true, "Live");
+    } catch {
+      setLive(false, "Offline");
+      setPilot(false);
+    }
+    render();
   }
 
-  const todayKey = () => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-  };
-  const fmtTime = iso => {
-    const d = new Date(iso);
-    return isNaN(d) ? "—" : d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-  };
-
   function render() {
-    const pending = readPending();
-    const all = votes.concat(pending.map(v => ({ ...v, id: "pending-" + v.ts, pending: true })))
-                     .sort((a, b) => String(b.ts).localeCompare(String(a.ts)));
-    const total = all.length;
+    const pending = readPending().map(v => ({ ...v, pending: true }));
+    const rows = ((remote && remote.rows) || []).map(v => ({ rating: Number(v.rating), ts: v.ts }));
+
+    const all = rows.concat(pending)
+      .map(v => { const d = new Date(v.ts); return { ...v, d, day: dayOf(d), hour: d.getHours() }; })
+      .sort((a, b) => b.d - a.d);
+
+    // The sheet reports its own total; the fetched rows are only the
+    // recent window, so never recount them as the total.
+    const total = (remote ? Number(remote.total) || 0 : 0) + pending.length;
     const counts = {};
-    for (const s of SCALE) counts[s.r] = 0;
-    for (const v of all) if (counts[v.rating] !== undefined) counts[v.rating]++;
+    for (const s of SCALE) counts[s.r] = (remote && remote.counts ? Number(remote.counts[s.r]) || 0 : 0);
+    for (const v of pending) if (counts[v.rating] !== undefined) counts[v.rating]++;
 
     const positive = counts[4] + counts[3];
     $("kScore").textContent = total ? Math.round((positive / total) * 100) + "%" : "—";
-    $("kScoreNote").textContent = total
-      ? `${positive} of ${total} tapped Great or Good`
-      : "No responses yet";
+    $("kScoreNote").textContent = total ? `${positive} of ${total} tapped Great or Good` : "No responses yet";
     $("kTotal").textContent = total;
 
-    const tk = todayKey();
+    const tk = dayOf(new Date());
     const today = all.filter(v => v.day === tk);
-    $("kToday").textContent = today.length;
+    const todayTotal = remote && remote.today !== undefined
+      ? Number(remote.today) + pending.filter(v => dayOf(new Date(v.ts)) === tk).length
+      : today.length;
+    $("kToday").textContent = todayTotal;
     $("range").textContent = total
       ? `${total} response${total === 1 ? "" : "s"}${pending.length ? ` · ${pending.length} waiting to sync` : ""}`
       : "Waiting for the first response";
 
-    // capacity + sync notices
     const notes = [];
-    if (pending.length) notes.push(`${pending.length} response${pending.length === 1 ? "" : "s"} are saved on this tablet and will sync when the connection returns.`);
-    if (votes.length >= 4500) notes.push("This kiosk is close to its 5,000-response limit — clear old responses after exporting them.");
+    if (!READY) notes.push("This kiosk has no sheet connected yet: taps are being saved on this tablet only. Paste your Apps Script URL into the API line at the top of this page's code.");
+    if (pending.length) notes.push(`${pending.length} response${pending.length === 1 ? "" : "s"} saved on this tablet, syncing when the connection returns.`);
     $("warn").hidden = notes.length === 0;
     $("warn").textContent = notes.join(" ");
 
-    // breakdown
     const max = Math.max(1, ...SCALE.map(s => counts[s.r]));
     $("bdBody").innerHTML = SCALE.map(s => {
       const n = counts[s.r];
       const pct = total ? Math.round((n / total) * 100) : 0;
       return `<tr>
-        <td><div class="bd-name">${chip(s,26)}${s.label}</div></td>
+        <td><div class="bd-name">${chip(s, 26)}${s.label}</div></td>
         <td class="bar"><div class="bd-track"><div class="bd-fill" style="width:${(n / max) * 100}%;background:${s.color}"></div></div></td>
         <td class="num bd-pct">${total ? pct + "%" : "—"}</td>
         <td class="num bd-n">${n}</td>
       </tr>`;
     }).join("");
 
-    // by hour, today only — stacked by rating so mood over the day reads
     const hoursWrap = $("hours");
     $("hoursDay").textContent = today.length ? "· today" : "";
     if (!today.length) {
       hoursWrap.hidden = true; $("hoursEmpty").hidden = false;
     } else {
       $("hoursEmpty").hidden = true; hoursWrap.hidden = false;
-      const hrs = today.map(v => (typeof v.hour === "number" ? v.hour : new Date(v.ts).getHours()));
-      const lo = Math.min(...hrs), hi = Math.max(...hrs);
+      const lo = Math.min(...today.map(v => v.hour)), hi = Math.max(...today.map(v => v.hour));
       const buckets = [];
       for (let h = lo; h <= hi; h++) {
-        const inHour = today.filter((v, i) => hrs[i] === h);
+        const inHour = today.filter(v => v.hour === h);
         buckets.push({ h, n: inHour.length, byR: SCALE.map(s => inHour.filter(v => v.rating === s.r).length) });
       }
       const peak = Math.max(1, ...buckets.map(b => b.n));
@@ -593,50 +610,21 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
       }).join("");
     }
 
-    // latest
     const recent = all.slice(0, 12);
     $("feedEmpty").hidden = recent.length > 0;
     $("feed").innerHTML = recent.map(v => {
       const s = byR(v.rating);
-      return `<li>${chip(s,22)}<span class="who">${s.label}${v.pending ? " · not synced yet" : ""}</span><time datetime="${v.ts}">${fmtTime(v.ts)}</time></li>`;
+      const t = isNaN(v.d) ? "—" : v.d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      return `<li>${chip(s, 22)}<span class="who">${s.label}${v.pending ? " · not synced yet" : ""}</span><time datetime="${v.ts}">${t}</time></li>`;
     }).join("");
+
+    const sheetBtn = $("sheet");
+    if (SHEET_URL) sheetBtn.href = SHEET_URL; else sheetBtn.hidden = true;
   }
 
-  /* ── clear ──────────────────────────────────────────────────────── */
-  $("reset").addEventListener("click", async e => {
-    const btn = e.currentTarget;
-    if (btn.dataset.armed !== "1") {
-      btn.dataset.armed = "1";
-      btn.textContent = `Really clear ${votes.length + readPending().length} responses?`;
-      setTimeout(() => { btn.dataset.armed = "0"; btn.textContent = "Clear all responses"; }, 5000);
-      return;
-    }
-    btn.dataset.armed = "0"; btn.textContent = "Clearing…"; btn.disabled = true;
-    writePending([]);
-    if (db) {
-      try {
-        let snap = await db.collection("votes").limit(500).get();
-        while (snap.docs.length) {
-          await Promise.all(snap.docs.map(d => db.collection("votes").doc(d.id).delete()));
-          snap = await db.collection("votes").limit(500).get();
-        }
-      } catch { /* whatever survived shows up on the next snapshot */ }
-    }
-    votes = []; render();
-    btn.disabled = false; btn.textContent = "Clear all responses";
-  });
-
+  setPilot(false);
   render();
-
-  // Last: reach for the store. Absent (a saved copy of this file, or a
-  // viewer that withholds it) the kiosk still collects, into the queue.
-  Promise.resolve(window.claude && window.claude.use ? window.claude.use("db") : null)
-    .catch(() => null)
-    .then(async handle => {
-      db = handle || null; dbReady = true;
-      setPilot(!!db);
-      if (db) { await flush(); if (resultsOpen) subscribe(); }
-      render();
-    });
+  if (READY) { flush().then(() => setPilot(!readPending().length)); }
+  window.addEventListener("online", flush);
 })();
 </script>
