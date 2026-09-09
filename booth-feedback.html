@@ -1,0 +1,642 @@
+<title>UBT Booth Feedback</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+/* ── UBT Sustainability booth terminal ───────────────────────────────
+   A single committed visual world: the club's navy field with a white
+   device panel sitting on it, the way the physical terminal sits on the
+   table. Deliberately theme-independent — a kiosk must look identical on
+   whatever tablet it is propped up on. Every colour is explicit.        */
+:root{
+  --navy:#1B2A63;          /* club navy, from the logo            */
+  --navy-deep:#101A42;     /* field behind the device             */
+  --navy-ink:#0B1230;
+  --green:#56B848;         /* club green, from the logo           */
+  --panel:#FBFCFA;         /* device shell — warm white, not #fff */
+  --panel-edge:#DDE3DA;
+  --paper:#F1F4EF;
+
+  /* Satisfaction scale. Ordered, never re-ordered, always carrying an
+     emoji + written label + number, so identity is never colour alone. */
+  --r4:#1E8E4A;  --r3:#C6D62E;  --r2:#E0742C;  --r1:#C0272D;
+
+  --ink:#141C33;
+  --ink-soft:#5A6478;
+  --line:rgba(255,255,255,.13);
+  --surface:#18224A;       /* results cards on the navy field     */
+  --surface-2:#1F2B58;
+  --mist:#B9C2DE;          /* secondary ink on navy               */
+  --mist-dim:#8792B8;
+
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--navy-deep); color:#fff;
+  font-family:var(--sans); -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--green); outline-offset:3px; border-radius:6px}
+
+/* ═══ KIOSK ══════════════════════════════════════════════════════════ */
+.kiosk{
+  min-height:100dvh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:clamp(28px,4.5vh,56px);
+  padding:clamp(20px,4vw,44px) clamp(16px,4vw,40px) clamp(56px,7vh,84px);
+  text-align:center; position:relative; isolation:isolate;
+  /* soft green light thrown up behind the device */
+  background:
+    radial-gradient(120% 78% at 50% 108%, rgba(86,184,72,.30) 0%, rgba(86,184,72,0) 62%),
+    radial-gradient(90% 60% at 50% -14%, rgba(64,88,178,.34) 0%, rgba(64,88,178,0) 70%),
+    var(--navy-deep);
+  /* a kiosk is for tapping, not for selecting or pinching */
+  user-select:none; -webkit-user-select:none; touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.prompt{
+  font-family:var(--display); font-weight:800;
+  font-size:clamp(2.1rem,6.4vw,4.15rem); line-height:1.04;
+  letter-spacing:-.022em; text-wrap:balance; margin:0; max-width:16ch;
+}
+.prompt em{font-style:normal;color:var(--green)}
+.prompt-sub{
+  margin:14px 0 0; font-size:clamp(.95rem,1.7vw,1.2rem); font-weight:500;
+  color:var(--mist); letter-spacing:.01em;
+}
+
+/* the device: a white panel with a real edge, the way the terminal reads
+   on the table — buttons above, club mark where the brand sits on it */
+.device{
+  background:linear-gradient(180deg,var(--panel) 0%,var(--paper) 100%);
+  border-radius:30px; padding:clamp(22px,3.4vw,38px) clamp(20px,4vw,52px) clamp(16px,2.2vw,24px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 -1px 0 rgba(0,0,0,.06) inset,
+    0 26px 60px -18px rgba(4,10,32,.72),
+    0 4px 14px rgba(4,10,32,.4);
+  display:flex; flex-direction:column; align-items:center;
+  gap:clamp(16px,2.4vw,26px); max-width:920px; width:100%;
+}
+.pilot{width:8px;height:8px;border-radius:50%;background:var(--ink);opacity:.24;flex:none}
+.pilot.on{background:var(--r4);opacity:1;box-shadow:0 0 0 4px rgba(30,142,74,.16)}
+
+.faces{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:clamp(14px,3vw,34px); width:100%;
+}
+.faces > div{display:flex;flex-direction:column;align-items:center;min-width:0}
+.face svg{width:62%;height:62%;display:block}
+.face svg *{stroke:rgba(12,18,30,.82)}
+.face svg circle.eye{fill:rgba(12,18,30,.82);stroke:none}
+.face{
+  width:100%; aspect-ratio:1/1; border-radius:50%; position:relative;
+  display:grid; place-items:center; padding:0;
+  /* a physical cap: domed top light, dark seat under it */
+  box-shadow:
+    0 3px 0 rgba(255,255,255,.5) inset,
+    0 -10px 18px -8px rgba(0,0,0,.34) inset,
+    0 6px 0 rgba(0,0,0,.17),
+    0 12px 22px -6px rgba(0,0,0,.32);
+  transition:transform .13s cubic-bezier(.3,.8,.4,1), box-shadow .13s ease, filter .13s ease;
+}
+.face::after{ /* the ring the real buttons sit in */
+  content:""; position:absolute; inset:-7px; border-radius:50%;
+  border:2px solid rgba(20,28,51,.13);
+}
+.face[data-r="4"]{background:radial-gradient(circle at 50% 30%,#3FB367 0%,var(--r4) 58%,#166F3A 100%)}
+.face[data-r="3"]{background:radial-gradient(circle at 50% 30%,#DCE95C 0%,var(--r3) 58%,#9CAC1C 100%)}
+.face[data-r="2"]{background:radial-gradient(circle at 50% 30%,#F5964F 0%,var(--r2) 58%,#B95514 100%)}
+.face[data-r="1"]{background:radial-gradient(circle at 50% 30%,#DF4C48 0%,var(--r1) 58%,#8E1418 100%)}
+.face:active,.face.press{
+  transform:translateY(6px) scale(.97);
+  box-shadow:0 -8px 16px -8px rgba(0,0,0,.4) inset, 0 1px 0 rgba(0,0,0,.2);
+  filter:brightness(.94);
+}
+.face-label{
+  display:block; margin-top:11px; font-size:clamp(.62rem,1.35vw,.82rem);
+  font-weight:600; letter-spacing:.085em; text-transform:uppercase;
+  color:var(--ink-soft); text-align:center;
+}
+
+/* club mark, sitting on the device where the maker's brand sits */
+.brand{display:flex;align-items:center;gap:11px;opacity:.95}
+.brand svg{width:34px;height:34px;flex:none}
+.brand-word{display:flex;flex-direction:column;line-height:1;text-align:left}
+.brand-word b{font-size:1.06rem;font-weight:700;letter-spacing:.03em;color:var(--navy)}
+.brand-word span{font-size:.63rem;font-weight:600;letter-spacing:.055em;color:var(--navy);opacity:.82}
+
+/* ═══ THANK-YOU VEIL ═════════════════════════════════════════════════ */
+.veil{
+  position:fixed; inset:0; z-index:60; display:grid; place-content:center;
+  justify-items:center; gap:24px; text-align:center; padding:24px;
+  background:rgba(11,18,48,.74); backdrop-filter:blur(14px) saturate(120%);
+  -webkit-backdrop-filter:blur(14px) saturate(120%);
+  opacity:0; visibility:hidden; transition:opacity .26s ease, visibility .26s;
+}
+.veil.show{opacity:1;visibility:visible}
+.veil p{
+  margin:0; font-family:var(--display); font-weight:800;
+  font-size:clamp(1.6rem,4.6vw,2.9rem); letter-spacing:-.015em;
+}
+.veil small{display:block;margin-top:10px;font-family:var(--sans);font-size:1rem;font-weight:500;color:var(--mist);letter-spacing:.01em}
+.tick{width:clamp(88px,17vw,128px);height:clamp(88px,17vw,128px)}
+.tick circle{
+  fill:none; stroke:var(--green); stroke-width:5;
+  stroke-dasharray:301; stroke-dashoffset:301;
+}
+.tick path{
+  fill:none; stroke:#fff; stroke-width:8; stroke-linecap:round; stroke-linejoin:round;
+  stroke-dasharray:60; stroke-dashoffset:60;
+}
+.veil.show .tick circle{animation:draw .5s cubic-bezier(.4,0,.2,1) forwards}
+.veil.show .tick path{animation:draw .32s cubic-bezier(.4,0,.2,1) .34s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ═══ CORNER KEY ═════════════════════════════════════════════════════ */
+.key{
+  position:fixed; right:0; bottom:0; z-index:40;
+  width:60px; height:60px; display:grid; place-items:center;
+  border-radius:22px 0 0 0;
+}
+.key i{
+  display:block; width:9px; height:9px; border-radius:50%;
+  background:rgba(255,255,255,.2); transition:transform .9s linear, background .3s ease;
+}
+.key.holding i{transform:scale(2.6);background:var(--green)}
+
+/* ═══ RESULTS ════════════════════════════════════════════════════════ */
+.results{
+  min-height:100dvh; padding:clamp(20px,3.4vw,40px) clamp(16px,3.4vw,40px) 64px;
+  max-width:1080px; margin:0 auto;
+  background:var(--navy-deep);
+}
+.res-top{
+  display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+  gap:18px; padding-bottom:20px; border-bottom:1px solid var(--line);
+}
+.res-top h1{
+  font-family:var(--display); font-weight:800; margin:0;
+  font-size:clamp(1.5rem,3.6vw,2.15rem); letter-spacing:-.02em;
+}
+.res-top h1 + p{margin:7px 0 0;color:var(--mist-dim);font-size:.9rem}
+.btn{
+  border:1px solid var(--line); background:var(--surface); color:#fff;
+  padding:10px 18px; border-radius:999px; font-size:.88rem; font-weight:600;
+  transition:background .15s ease,border-color .15s ease;
+}
+.btn:hover{background:var(--surface-2);border-color:rgba(255,255,255,.28)}
+.btn.ghost{background:none}
+.btn.danger{color:#FF9B96;border-color:rgba(255,155,150,.32)}
+.btn.danger:hover{background:rgba(192,39,45,.2)}
+
+.live{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mist-dim)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--mist-dim);flex:none}
+.live.on i{background:var(--r4);box-shadow:0 0 0 4px rgba(30,142,74,.18);animation:pulse 2.4s ease-in-out infinite}
+.live.off i{background:var(--r2)}
+@keyframes pulse{50%{opacity:.45}}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:26px 0 30px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.tile.lead{border-color:rgba(86,184,72,.42);background:linear-gradient(160deg,rgba(86,184,72,.16),var(--surface) 62%)}
+.tile dt{font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--mist-dim);margin:0}
+.tile dd{
+  margin:9px 0 0; font-family:var(--display); font-weight:800;
+  font-size:clamp(1.9rem,4.4vw,2.65rem); line-height:1;
+  letter-spacing:-.03em; font-variant-numeric:tabular-nums;
+}
+.tile .note{display:block;margin-top:8px;font-family:var(--sans);font-size:.79rem;font-weight:500;color:var(--mist-dim);letter-spacing:0}
+
+h2.sec{
+  font-size:.76rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--mist-dim); margin:0 0 14px;
+}
+.block{margin-bottom:34px}
+
+/* breakdown — a labelled table, which is also the contrast relief for
+   the deep red against the navy surface */
+table.bd{width:100%;border-collapse:collapse}
+table.bd th{
+  text-align:right; font-size:.7rem; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--mist-dim); padding:0 0 10px; font-weight:600;
+}
+table.bd th:first-child{text-align:left}
+table.bd td{padding:9px 0;border-top:1px solid var(--line);vertical-align:middle}
+table.bd td:last-child,table.bd td.num{text-align:right;font-variant-numeric:tabular-nums}
+table.bd th:not(:first-child),table.bd td.num{padding-left:22px}
+.bd-name{display:flex;align-items:center;gap:12px;font-weight:600;font-size:.98rem;white-space:nowrap}
+.bd-name .chip{flex:none;display:block}
+.feed .chip{flex:none;display:block}
+.bd-track{width:100%;min-width:80px;height:12px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden}
+.bd-fill{height:100%;border-radius:0 3px 3px 0;transition:width .5s cubic-bezier(.3,.8,.4,1)}
+.bd-pct{color:var(--mist);font-size:.9rem;width:4.5ch}
+.bd-n{font-weight:700;font-size:1.02rem;width:4ch}
+td.bar{width:52%;padding-left:20px;padding-right:20px}
+
+/* hours */
+.hours{display:flex;align-items:flex-end;gap:5px;height:134px;padding-top:4px}
+.hour{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;min-width:0}
+.hour .stack{width:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:88px}
+.hour .seg{border-radius:2px;min-height:2px}
+.hour i{font-family:var(--mono);font-style:normal;font-size:.66rem;color:var(--mist);font-variant-numeric:tabular-nums}
+.hour b{font-family:var(--mono);font-size:.62rem;font-weight:400;color:var(--mist-dim);white-space:nowrap}
+.hours-empty,.feed-empty{color:var(--mist-dim);font-size:.9rem;padding:18px 0;margin:0}
+
+/* feed */
+.feed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.feed li{display:flex;align-items:center;gap:14px;padding:10px 0;border-top:1px solid var(--line);font-size:.92rem}
+.feed li:first-child{border-top:0}
+.feed .who{flex:1;color:var(--mist)}
+.feed time{font-family:var(--mono);font-size:.82rem;color:var(--mist-dim);font-variant-numeric:tabular-nums}
+
+.foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-top:22px;border-top:1px solid var(--line)}
+.foot p{margin:0;color:var(--mist-dim);font-size:.8rem;max-width:52ch;line-height:1.5}
+.warn{
+  background:rgba(224,116,44,.14);border:1px solid rgba(224,116,44,.4);
+  border-radius:12px;padding:12px 16px;font-size:.86rem;color:#FFCFA8;margin:0 0 20px;
+}
+[hidden]{display:none!important}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .veil .tick circle,.veil .tick path{stroke-dashoffset:0}
+}
+@media (max-width:640px){
+  td.bar{display:none}
+  .bd-name{font-size:.9rem}
+}
+</style>
+
+<!-- ═══════════════════ KIOSK ═══════════════════ -->
+<main class="kiosk" id="kiosk">
+  <div>
+    <h1 class="prompt">How was our <em>booth</em> today?</h1>
+    <p class="prompt-sub">Tap a face — it's anonymous and takes a second.</p>
+  </div>
+
+  <div class="device">
+    <div class="pilot" id="pilot" title="Ready"></div>
+    <div class="faces" id="faces">
+      <div><button class="face" data-r="4" aria-label="Great"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="eye" cx="35" cy="40" r="6.4"/><circle class="eye" cx="65" cy="40" r="6.4"/><path d="M28,56 Q50,90 72,56" fill="none" stroke-width="8" stroke-linecap="round"/></svg></button><span class="face-label">Great</span></div>
+      <div><button class="face" data-r="3" aria-label="Good"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="eye" cx="35" cy="40" r="6.4"/><circle class="eye" cx="65" cy="40" r="6.4"/><path d="M33,64 Q50,77 67,64" fill="none" stroke-width="8" stroke-linecap="round"/></svg></button><span class="face-label">Good</span></div>
+      <div><button class="face" data-r="2" aria-label="Not great"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="eye" cx="35" cy="40" r="6.4"/><circle class="eye" cx="65" cy="40" r="6.4"/><path d="M33,70 Q50,55 67,70" fill="none" stroke-width="8" stroke-linecap="round"/></svg></button><span class="face-label">Not great</span></div>
+      <div><button class="face" data-r="1" aria-label="Bad"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="eye" cx="35" cy="40" r="6.4"/><circle class="eye" cx="65" cy="40" r="6.4"/><path d="M28,75 Q50,44 72,75" fill="none" stroke-width="8" stroke-linecap="round"/></svg></button><span class="face-label">Bad</span></div>
+    </div>
+    <div class="brand">
+      <svg viewBox="0 0 120 120" role="img" aria-label="UBT Sustainability"><g fill="none" stroke="#1B2A63" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="13.5" d="M60.00,13.00L62.75,14.42L65.34,15.95L67.76,17.60L70.01,19.33L72.09,21.14L74.00,23.02L75.75,24.96L77.32,26.94L78.74,28.95L79.99,30.99L81.09,33.03L82.03,35.08"/><path stroke-width="10.5" d="M80.65,32.19L81.55,34.00L82.33,35.80L82.99,37.60L83.54,39.39L83.99,41.16L84.33,42.90L84.58,44.61L84.72,46.30L84.78,47.94L84.75,49.55L84.63,51.11L84.44,52.62"/><path stroke-width="7.2" d="M84.71,50.18L84.59,51.51L84.41,52.82L84.18,54.08L83.89,55.31L83.56,56.49L83.18,57.64L82.76,58.74L82.29,59.79L81.80,60.80L81.26,61.77L80.70,62.69L80.10,63.56"/><path stroke-width="4.2" d="M81.18,61.91L80.70,62.69L80.20,63.43L79.68,64.14L79.14,64.81L78.59,65.45L78.02,66.06L77.44,66.63L76.85,67.17L76.25,67.68L75.65,68.16L75.04,68.60L74.42,69.01"/></g>
+<g fill="none" stroke="#56B848" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="13.5" d="M100.70,36.50L100.85,39.59L100.81,42.60L100.60,45.52L100.23,48.33L99.70,51.04L99.02,53.64L98.22,56.12L97.29,58.47L96.26,60.70L95.12,62.81L93.90,64.78L92.60,66.62"/><path stroke-width="10.5" d="M94.41,63.98L93.29,65.66L92.12,67.24L90.89,68.71L89.62,70.08L88.32,71.35L86.98,72.52L85.61,73.59L84.23,74.56L82.83,75.43L81.43,76.21L80.02,76.89L78.61,77.48"/><path stroke-width="7.2" d="M80.86,76.49L79.64,77.05L78.43,77.55L77.21,77.98L76.01,78.35L74.82,78.65L73.64,78.89L72.47,79.08L71.33,79.20L70.20,79.28L69.10,79.30L68.02,79.27L66.97,79.19"/><path stroke-width="4.2" d="M68.93,79.30L68.02,79.27L67.13,79.20L66.26,79.11L65.40,78.98L64.57,78.82L63.76,78.64L62.98,78.42L62.22,78.18L61.48,77.92L60.76,77.63L60.07,77.32L59.41,76.99"/></g>
+<g fill="none" stroke="#1B2A63" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="13.5" d="M100.70,83.50L98.10,85.18L95.47,86.65L92.84,87.92L90.22,89.00L87.61,89.90L85.02,90.61L82.47,91.16L79.97,91.53L77.52,91.75L75.13,91.82L72.81,91.75L70.56,91.54"/><path stroke-width="10.5" d="M73.76,91.79L71.74,91.66L69.79,91.44L67.90,91.11L66.08,90.70L64.32,90.20L62.64,89.62L61.04,88.98L59.51,88.26L58.05,87.49L56.68,86.66L55.38,85.78L54.17,84.86"/><path stroke-width="7.2" d="M56.15,86.31L55.05,85.54L54.01,84.73L53.03,83.90L52.12,83.04L51.26,82.16L50.46,81.26L49.72,80.34L49.03,79.41L48.41,78.47L47.84,77.53L47.33,76.58L46.87,75.63"/><path stroke-width="4.2" d="M47.76,77.38L47.33,76.58L46.93,75.78L46.58,74.97L46.26,74.17L45.99,73.37L45.74,72.58L45.54,71.79L45.36,71.01L45.22,70.24L45.11,69.47L45.04,68.72L44.99,67.98"/></g>
+<g fill="none" stroke="#56B848" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="13.5" d="M60.00,107.00L57.25,105.58L54.66,104.05L52.24,102.40L49.99,100.67L47.91,98.86L46.00,96.98L44.25,95.04L42.68,93.06L41.26,91.05L40.01,89.01L38.91,86.97L37.97,84.92"/><path stroke-width="10.5" d="M39.35,87.81L38.45,86.00L37.67,84.20L37.01,82.40L36.46,80.61L36.01,78.84L35.67,77.10L35.42,75.39L35.28,73.70L35.22,72.06L35.25,70.45L35.37,68.89L35.56,67.38"/><path stroke-width="7.2" d="M35.29,69.82L35.41,68.49L35.59,67.18L35.82,65.92L36.11,64.69L36.44,63.51L36.82,62.36L37.24,61.26L37.71,60.21L38.20,59.20L38.74,58.23L39.30,57.31L39.90,56.44"/><path stroke-width="4.2" d="M38.82,58.09L39.30,57.31L39.80,56.57L40.32,55.86L40.86,55.19L41.41,54.55L41.98,53.94L42.56,53.37L43.15,52.83L43.75,52.32L44.35,51.84L44.96,51.40L45.58,50.99"/></g>
+<g fill="none" stroke="#1B2A63" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="13.5" d="M19.30,83.50L19.15,80.41L19.19,77.40L19.40,74.48L19.77,71.67L20.30,68.96L20.98,66.36L21.78,63.88L22.71,61.53L23.74,59.30L24.88,57.19L26.10,55.22L27.40,53.38"/><path stroke-width="10.5" d="M25.59,56.02L26.71,54.34L27.88,52.76L29.11,51.29L30.38,49.92L31.68,48.65L33.02,47.48L34.39,46.41L35.77,45.44L37.17,44.57L38.57,43.79L39.98,43.11L41.39,42.52"/><path stroke-width="7.2" d="M39.14,43.51L40.36,42.95L41.57,42.45L42.79,42.02L43.99,41.65L45.18,41.35L46.36,41.11L47.53,40.92L48.67,40.80L49.80,40.72L50.90,40.70L51.98,40.73L53.03,40.81"/><path stroke-width="4.2" d="M51.07,40.70L51.98,40.73L52.87,40.80L53.74,40.89L54.60,41.02L55.43,41.18L56.24,41.36L57.02,41.58L57.78,41.82L58.52,42.08L59.24,42.37L59.93,42.68L60.59,43.01"/></g>
+<g fill="none" stroke="#56B848" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="13.5" d="M19.30,36.50L21.90,34.82L24.53,33.35L27.16,32.08L29.78,31.00L32.39,30.10L34.98,29.39L37.53,28.84L40.03,28.47L42.48,28.25L44.87,28.18L47.19,28.25L49.44,28.46"/><path stroke-width="10.5" d="M46.24,28.21L48.26,28.34L50.21,28.56L52.10,28.89L53.92,29.30L55.68,29.80L57.36,30.38L58.96,31.02L60.49,31.74L61.95,32.51L63.32,33.34L64.62,34.22L65.83,35.14"/><path stroke-width="7.2" d="M63.85,33.69L64.95,34.46L65.99,35.27L66.97,36.10L67.88,36.96L68.74,37.84L69.54,38.74L70.28,39.66L70.97,40.59L71.59,41.53L72.16,42.47L72.67,43.42L73.13,44.37"/><path stroke-width="4.2" d="M72.24,42.62L72.67,43.42L73.07,44.22L73.42,45.03L73.74,45.83L74.01,46.63L74.26,47.42L74.46,48.21L74.64,48.99L74.78,49.76L74.89,50.53L74.96,51.28L75.01,52.02"/></g></svg>
+      <div class="brand-word"><b>UBT</b><span>Sustainability</span></div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════════════════ VEIL ═══════════════════ -->
+<div class="veil" id="veil" role="status" aria-live="polite">
+  <svg class="tick" viewBox="0 0 110 110" aria-hidden="true">
+    <circle cx="55" cy="55" r="48" transform="rotate(-90 55 55)"></circle>
+    <path d="M34 56.5 L48.5 71 L76 42"></path>
+  </svg>
+  <p>Thank you!<small id="veilNote">Your response was recorded.</small></p>
+</div>
+
+<button class="key" id="key" aria-label="Organiser results — press and hold"><i></i></button>
+
+<!-- ═══════════════════ RESULTS ═══════════════════ -->
+<main class="results" id="results" hidden>
+  <div class="res-top">
+    <div>
+      <h1>Booth feedback</h1>
+      <p id="range">All responses</p>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <span class="live" id="liveDot"><i></i><span id="liveTxt">Connecting</span></span>
+      <button class="btn ghost" id="back">← Back to kiosk</button>
+    </div>
+  </div>
+
+  <p class="warn" id="warn" hidden></p>
+
+  <dl class="tiles">
+    <div class="tile lead"><dt>Positive</dt><dd id="kScore">—</dd><span class="note" id="kScoreNote">Great + Good, as a share of all responses</span></div>
+    <div class="tile"><dt>Total responses</dt><dd id="kTotal">0</dd><span class="note" id="kTotalNote">since the booth opened</span></div>
+    <div class="tile"><dt>Today</dt><dd id="kToday">0</dd><span class="note" id="kTodayNote">responses today</span></div>
+  </dl>
+
+  <section class="block">
+    <h2 class="sec">Breakdown</h2>
+    <table class="bd">
+      <thead><tr><th>Rating</th><th class="bar" style="text-align:left" aria-hidden="true"></th><th>Share</th><th>Count</th></tr></thead>
+      <tbody id="bdBody"></tbody>
+    </table>
+  </section>
+
+  <section class="block">
+    <h2 class="sec">Responses by hour <span id="hoursDay" style="text-transform:none;letter-spacing:0;font-weight:500"></span></h2>
+    <div class="hours" id="hours" hidden></div>
+    <p class="hours-empty" id="hoursEmpty">No responses yet today.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="sec">Latest responses</h2>
+    <ul class="feed" id="feed"></ul>
+    <p class="feed-empty" id="feedEmpty">Nothing yet — the first tap will show up here.</p>
+  </section>
+
+  <div class="foot">
+    <p>Responses are anonymous: the kiosk records the rating and the time it was tapped, nothing about the person who tapped it.</p>
+    <button class="btn danger" id="reset">Clear all responses</button>
+  </div>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const SCALE = [
+    {r:4, label:"Great",     color:"var(--r4)", mouth:"M28,56 Q50,90 72,56"},
+    {r:3, label:"Good",      color:"var(--r3)", mouth:"M33,64 Q50,77 67,64"},
+    {r:2, label:"Not great", color:"var(--r2)", mouth:"M33,70 Q50,55 67,70"},
+    {r:1, label:"Bad",       color:"var(--r1)", mouth:"M28,75 Q50,44 72,75"},
+  ];
+  // one face drawing, reused at every size
+  const chip = (s, px) => `<svg class="chip" style="width:${px}px;height:${px}px" viewBox="-6 -6 112 112" aria-hidden="true">`
+    + `<circle cx="50" cy="50" r="55" fill="${s.color}"/>`
+    + `<circle cx="35" cy="40" r="6.4" fill="rgba(12,18,30,.82)"/><circle cx="65" cy="40" r="6.4" fill="rgba(12,18,30,.82)"/>`
+    + `<path d="${s.mouth}" fill="none" stroke="rgba(12,18,30,.82)" stroke-width="8" stroke-linecap="round"/></svg>`;
+  const byR = r => SCALE.find(s => s.r === r) || SCALE[0];
+  const PENDING = "ubt.booth.pending.v1";
+  const $ = id => document.getElementById(id);
+
+  /* ── store ──────────────────────────────────────────────────────── */
+  let db = null, dbReady = false;
+  const readPending = () => { try { return JSON.parse(localStorage.getItem(PENDING) || "[]"); } catch { return []; } };
+  const writePending = v => { try { localStorage.setItem(PENDING, JSON.stringify(v.slice(-500))); } catch {} };
+
+  const setPilot = ok => {
+    const p = $("pilot");
+    p.classList.toggle("on", !!ok);
+    p.title = ok ? "Connected — responses are being saved" : "Saving locally until the connection returns";
+  };
+
+  const makeVote = rating => {
+    const d = new Date();
+    return {
+      rating,
+      ts: d.toISOString(),
+      day: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`,
+      hour: d.getHours(),
+    };
+  };
+
+  async function save(vote) {
+    if (!db) throw new Error("no-db");
+    await db.collection("votes").add(vote);
+  }
+
+  // Anything that could not reach the store waits in the browser and is
+  // pushed up on the next successful write or the next page load.
+  async function flush() {
+    if (!db) return;
+    let queue = readPending();
+    if (!queue.length) return;
+    const left = [];
+    for (const v of queue) {
+      try { await save(v); } catch { left.push(v); }
+    }
+    writePending(left);
+    setPilot(left.length === 0);
+  }
+
+  /* ── kiosk ──────────────────────────────────────────────────────── */
+  let locked = false, veilTimer = 0;
+  const veil = $("veil");
+  const veilNote = t => { $("veilNote").textContent = t; };
+
+  function record(rating, btn) {
+    if (locked) return;
+    locked = true;
+    btn.classList.add("press");
+
+    const vote = makeVote(rating);
+    // The visitor never waits on the network: thank them immediately,
+    // then persist (and queue locally if that fails).
+    veilNote("Your response was recorded.");
+    veil.classList.add("show");
+
+    const finish = ok => { if (!ok) veilNote("Saved on this tablet."); setPilot(ok); };
+    if (db) {
+      save(vote).then(() => { finish(true); flush(); })
+                .catch(() => { const q = readPending(); q.push(vote); writePending(q); finish(false); });
+    } else if (dbReady) {
+      const q = readPending(); q.push(vote); writePending(q); finish(false);
+    } else {
+      // capability still resolving — hold it locally, flush() picks it up
+      const q = readPending(); q.push(vote); writePending(q);
+    }
+
+    clearTimeout(veilTimer);
+    veilTimer = setTimeout(() => {
+      veil.classList.remove("show");
+      btn.classList.remove("press");
+      btn.blur();
+      locked = false;
+    }, 1700);
+  }
+
+  $("faces").addEventListener("click", e => {
+    const btn = e.target.closest(".face");
+    if (btn) record(Number(btn.dataset.r), btn);
+  });
+
+  /* ── corner key: press and hold ─────────────────────────────────── */
+  const key = $("key");
+  let holdTimer = 0;
+  const startHold = e => {
+    if (e.type === "pointerdown" && e.button !== 0) return;
+    key.classList.add("holding");
+    holdTimer = setTimeout(openResults, 900);
+  };
+  const endHold = () => { clearTimeout(holdTimer); key.classList.remove("holding"); };
+  key.addEventListener("pointerdown", startHold);
+  key.addEventListener("pointerup", endHold);
+  key.addEventListener("pointerleave", endHold);
+  key.addEventListener("pointercancel", endHold);
+  key.addEventListener("contextmenu", e => e.preventDefault());
+  key.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openResults(); }
+  });
+
+  /* ── results ────────────────────────────────────────────────────── */
+  let resultsOpen = false, unsub = null, votes = [];
+
+  function openResults() {
+    endHold();
+    resultsOpen = true;
+    $("kiosk").hidden = true; key.hidden = true; $("results").hidden = false;
+    window.scrollTo(0, 0);
+    render();
+    if (db) subscribe(); else if (dbReady) setLive(false, "Offline");
+  }
+  function closeResults() {
+    resultsOpen = false;
+    if (unsub) { unsub(); unsub = null; }
+    $("results").hidden = true; $("kiosk").hidden = false; key.hidden = false;
+  }
+  $("back").addEventListener("click", closeResults);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && resultsOpen) closeResults(); });
+
+  const setLive = (on, text) => {
+    const el = $("liveDot");
+    el.classList.toggle("on", on); el.classList.toggle("off", !on);
+    $("liveTxt").textContent = text;
+  };
+
+  function subscribe() {
+    if (unsub || !db) return;
+    setLive(false, "Connecting");
+    unsub = db.collection("votes").orderBy("ts", "desc").limit(1000).onSnapshot(
+      snap => {
+        votes = snap.docs.map(d => ({ id: d.id, ...(d.data() || {}) }));
+        setLive(true, snap.metadata.fromCache ? "Syncing" : "Live");
+        render();
+      },
+      err => {
+        unsub = null;
+        setLive(false, err.code === "revoked" ? "Disconnected" : "Offline");
+      }
+    );
+  }
+
+  const todayKey = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  };
+  const fmtTime = iso => {
+    const d = new Date(iso);
+    return isNaN(d) ? "—" : d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  };
+
+  function render() {
+    const pending = readPending();
+    const all = votes.concat(pending.map(v => ({ ...v, id: "pending-" + v.ts, pending: true })))
+                     .sort((a, b) => String(b.ts).localeCompare(String(a.ts)));
+    const total = all.length;
+    const counts = {};
+    for (const s of SCALE) counts[s.r] = 0;
+    for (const v of all) if (counts[v.rating] !== undefined) counts[v.rating]++;
+
+    const positive = counts[4] + counts[3];
+    $("kScore").textContent = total ? Math.round((positive / total) * 100) + "%" : "—";
+    $("kScoreNote").textContent = total
+      ? `${positive} of ${total} tapped Great or Good`
+      : "No responses yet";
+    $("kTotal").textContent = total;
+
+    const tk = todayKey();
+    const today = all.filter(v => v.day === tk);
+    $("kToday").textContent = today.length;
+    $("range").textContent = total
+      ? `${total} response${total === 1 ? "" : "s"}${pending.length ? ` · ${pending.length} waiting to sync` : ""}`
+      : "Waiting for the first response";
+
+    // capacity + sync notices
+    const notes = [];
+    if (pending.length) notes.push(`${pending.length} response${pending.length === 1 ? "" : "s"} are saved on this tablet and will sync when the connection returns.`);
+    if (votes.length >= 4500) notes.push("This kiosk is close to its 5,000-response limit — clear old responses after exporting them.");
+    $("warn").hidden = notes.length === 0;
+    $("warn").textContent = notes.join(" ");
+
+    // breakdown
+    const max = Math.max(1, ...SCALE.map(s => counts[s.r]));
+    $("bdBody").innerHTML = SCALE.map(s => {
+      const n = counts[s.r];
+      const pct = total ? Math.round((n / total) * 100) : 0;
+      return `<tr>
+        <td><div class="bd-name">${chip(s,26)}${s.label}</div></td>
+        <td class="bar"><div class="bd-track"><div class="bd-fill" style="width:${(n / max) * 100}%;background:${s.color}"></div></div></td>
+        <td class="num bd-pct">${total ? pct + "%" : "—"}</td>
+        <td class="num bd-n">${n}</td>
+      </tr>`;
+    }).join("");
+
+    // by hour, today only — stacked by rating so mood over the day reads
+    const hoursWrap = $("hours");
+    $("hoursDay").textContent = today.length ? "· today" : "";
+    if (!today.length) {
+      hoursWrap.hidden = true; $("hoursEmpty").hidden = false;
+    } else {
+      $("hoursEmpty").hidden = true; hoursWrap.hidden = false;
+      const hrs = today.map(v => (typeof v.hour === "number" ? v.hour : new Date(v.ts).getHours()));
+      const lo = Math.min(...hrs), hi = Math.max(...hrs);
+      const buckets = [];
+      for (let h = lo; h <= hi; h++) {
+        const inHour = today.filter((v, i) => hrs[i] === h);
+        buckets.push({ h, n: inHour.length, byR: SCALE.map(s => inHour.filter(v => v.rating === s.r).length) });
+      }
+      const peak = Math.max(1, ...buckets.map(b => b.n));
+      hoursWrap.innerHTML = buckets.map(b => {
+        const label = ((b.h % 12) || 12) + (b.h < 12 ? "am" : "pm");
+        const segs = SCALE.map((s, i) => b.byR[i]
+          ? `<div class="seg" style="flex:${b.byR[i]};background:${s.color}" title="${b.byR[i]} × ${s.label}"></div>` : "").join("");
+        return `<div class="hour" title="${b.n} response${b.n === 1 ? "" : "s"} at ${label}">
+          <i>${b.n}</i><div class="stack" style="height:${(b.n / peak) * 88}px">${segs}</div><b>${label}</b></div>`;
+      }).join("");
+    }
+
+    // latest
+    const recent = all.slice(0, 12);
+    $("feedEmpty").hidden = recent.length > 0;
+    $("feed").innerHTML = recent.map(v => {
+      const s = byR(v.rating);
+      return `<li>${chip(s,22)}<span class="who">${s.label}${v.pending ? " · not synced yet" : ""}</span><time datetime="${v.ts}">${fmtTime(v.ts)}</time></li>`;
+    }).join("");
+  }
+
+  /* ── clear ──────────────────────────────────────────────────────── */
+  $("reset").addEventListener("click", async e => {
+    const btn = e.currentTarget;
+    if (btn.dataset.armed !== "1") {
+      btn.dataset.armed = "1";
+      btn.textContent = `Really clear ${votes.length + readPending().length} responses?`;
+      setTimeout(() => { btn.dataset.armed = "0"; btn.textContent = "Clear all responses"; }, 5000);
+      return;
+    }
+    btn.dataset.armed = "0"; btn.textContent = "Clearing…"; btn.disabled = true;
+    writePending([]);
+    if (db) {
+      try {
+        let snap = await db.collection("votes").limit(500).get();
+        while (snap.docs.length) {
+          await Promise.all(snap.docs.map(d => db.collection("votes").doc(d.id).delete()));
+          snap = await db.collection("votes").limit(500).get();
+        }
+      } catch { /* whatever survived shows up on the next snapshot */ }
+    }
+    votes = []; render();
+    btn.disabled = false; btn.textContent = "Clear all responses";
+  });
+
+  render();
+
+  // Last: reach for the store. Absent (a saved copy of this file, or a
+  // viewer that withholds it) the kiosk still collects, into the queue.
+  Promise.resolve(window.claude && window.claude.use ? window.claude.use("db") : null)
+    .catch(() => null)
+    .then(async handle => {
+      db = handle || null; dbReady = true;
+      setPilot(!!db);
+      if (db) { await flush(); if (resultsOpen) subscribe(); }
+      render();
+    });
+})();
+</script>
