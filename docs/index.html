@@ -193,7 +193,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .btn:hover{background:var(--surface-2);border-color:rgba(255,255,255,.28)}
 .btn.ghost{background:none}
-a.btn{text-decoration:none;display:inline-block}
+.btn.danger{color:#FF9B96;border-color:rgba(255,155,150,.32)}
+.btn.danger:hover{background:rgba(192,39,45,.2)}
+.foot-actions{display:flex;gap:10px;flex-wrap:wrap}
 
 .live{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mist-dim)}
 .live i{width:7px;height:7px;border-radius:50%;background:var(--mist-dim);flex:none}
@@ -352,8 +354,11 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
   </section>
 
   <div class="foot">
-    <p>Responses are anonymous: the kiosk records the rating and the time it was tapped, nothing about the person who tapped it. Every response is a row in your Google Sheet.</p>
-    <a class="btn" id="sheet" href="#" target="_blank" rel="noopener">Open the Google Sheet ↗</a>
+    <p>Responses are anonymous: the kiosk records the rating and the time it was tapped, nothing about the person who tapped it. Everything stays in this browser on this tablet — it is never sent anywhere.</p>
+    <div class="foot-actions">
+      <button class="btn" id="csv">Download CSV</button>
+      <button class="btn danger" id="reset">Clear all responses</button>
+    </div>
   </div>
 </main>
 
@@ -362,21 +367,18 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
   "use strict";
 
   /* ══════════════════════════════════════════════════════════════════
-     PASTE YOUR APPS SCRIPT URL BETWEEN THE QUOTES ON THE NEXT LINE.
-     It looks like: https://script.google.com/macros/s/AKfycb.../exec
+     Responses live in this browser, on this tablet, and go nowhere else.
+     No account, no server, no network. Closing and reopening the page
+     keeps them; clearing the browser's site data does not.
      ══════════════════════════════════════════════════════════════════ */
-  const API = "https://script.google.com/macros/s/AKfycbyWAyRal6ltpkZKLxjYzIGiIlvci8uODr1HrQIgRvWuVHAwZJrxec4fBYUYXyOBD7kwlw/exec";
-
-  /* Optional: your Google Sheet link, for the button on the results page. */
-  const SHEET_URL = "";
-
-  const READY = /^https:\/\/script\.google\.com\//.test(API);
+  const STORE = "ubt.booth.votes.v1";
+  const CAP = 20000;
 
   const SCALE = [
-    {r:4, label:"Great",     color:"var(--r4)", mouth:"M28,56 Q50,90 72,56"},
-    {r:3, label:"Good",      color:"var(--r3)", mouth:"M33,64 Q50,77 67,64"},
-    {r:2, label:"Not great", color:"var(--r2)", mouth:"M33,70 Q50,55 67,70"},
-    {r:1, label:"Bad",       color:"var(--r1)", mouth:"M28,75 Q50,44 72,75"},
+    {r:4, label:"Great",     color:"var(--r4)", csv:"Great",     mouth:"M28,56 Q50,90 72,56"},
+    {r:3, label:"Good",      color:"var(--r3)", csv:"Good",      mouth:"M33,64 Q50,77 67,64"},
+    {r:2, label:"Not great", color:"var(--r2)", csv:"Not great", mouth:"M33,70 Q50,55 67,70"},
+    {r:1, label:"Bad",       color:"var(--r1)", csv:"Bad",       mouth:"M28,75 Q50,44 72,75"},
   ];
   const byR = r => SCALE.find(s => s.r === Number(r)) || SCALE[0];
   const chip = (s, px) => `<svg class="chip" style="width:${px}px;height:${px}px" viewBox="-6 -6 112 112" aria-hidden="true">`
@@ -384,85 +386,57 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     + `<circle cx="35" cy="40" r="6.4" fill="rgba(12,18,30,.82)"/><circle cx="65" cy="40" r="6.4" fill="rgba(12,18,30,.82)"/>`
     + `<path d="${s.mouth}" fill="none" stroke="rgba(12,18,30,.82)" stroke-width="8" stroke-linecap="round"/></svg>`;
 
-  const PENDING = "ubt.booth.pending.v1";
   const $ = id => document.getElementById(id);
   const pad = n => String(n).padStart(2, "0");
   const dayOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 
-  const readPending = () => { try { return JSON.parse(localStorage.getItem(PENDING) || "[]"); } catch { return []; } };
-  const writePending = v => { try { localStorage.setItem(PENDING, JSON.stringify(v.slice(-800))); } catch {} };
-  const queue = v => { const q = readPending(); q.push(v); writePending(q); };
+  /* ── storage ──────────────────────────────────────────────────────
+     A private window, or a browser set to block site data, throws on
+     every localStorage call. The booth still has to work, so responses
+     fall back to memory for the life of the page and the results view
+     says so plainly rather than pretending they are saved.            */
+  let memory = [], persists = true;
+
+  function readVotes() {
+    if (!persists) return memory.slice();
+    try {
+      const raw = localStorage.getItem(STORE);
+      return raw ? JSON.parse(raw) : [];
+    } catch { persists = false; return memory.slice(); }
+  }
+
+  function writeVotes(list) {
+    memory = list;
+    if (!persists) return false;
+    try { localStorage.setItem(STORE, JSON.stringify(list.slice(-CAP))); return true; }
+    catch { persists = false; return false; }
+  }
 
   const setPilot = ok => {
     const p = $("pilot");
     p.classList.toggle("on", !!ok);
-    p.title = ok ? "Connected — responses are saving to the sheet"
-                 : "Saving on this tablet until the connection returns";
+    p.title = ok ? "Responses are being saved on this tablet"
+                 : "This browser is not saving — responses will be lost when the page closes";
   };
-
-  /* ── the sheet ───────────────────────────────────────────────────
-     Both calls are deliberately "simple" CORS requests — a text/plain
-     POST and a bare GET — so the browser never sends a preflight that
-     Apps Script cannot answer.                                        */
-  async function send(votes) {
-    if (!READY) throw new Error("not-configured");
-    const res = await fetch(API, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(votes),
-      redirect: "follow",
-    });
-    if (!res.ok) throw new Error("http-" + res.status);
-    const out = await res.json();
-    if (!out || out.ok !== true) throw new Error("rejected");
-    return out;
-  }
-
-  async function fetchResults() {
-    if (!READY) throw new Error("not-configured");
-    const res = await fetch(API + "?action=results&t=" + Date.now(), { redirect: "follow" });
-    if (!res.ok) throw new Error("http-" + res.status);
-    return res.json();
-  }
-
-  // Anything that could not reach the sheet waits here and goes up on
-  // the next tap, the next poll, or the next time the page is opened.
-  let flushing = false;
-  async function flush() {
-    if (flushing || !READY) return;
-    const q = readPending();
-    if (!q.length) return;
-    flushing = true;
-    try {
-      await send(q);
-      const after = readPending().slice(q.length);   // taps made mid-flight
-      writePending(after);
-      setPilot(true);
-    } catch {
-      setPilot(false);
-    } finally { flushing = false; }
-  }
 
   /* ── kiosk ───────────────────────────────────────────────────────── */
   let locked = false, veilTimer = 0;
   const veil = $("veil");
-  const veilNote = t => { $("veilNote").textContent = t; };
 
   function record(rating, btn) {
     if (locked) return;
     locked = true;
     btn.classList.add("press");
 
-    const now = new Date();
-    const vote = { rating, ts: now.toISOString() };
+    const list = readVotes();
+    list.push({ rating, ts: new Date().toISOString() });
+    const saved = writeVotes(list);
 
-    // The visitor never waits on the network: thank them at once, then
-    // persist. A failed write is queued, not lost.
-    veilNote("Your response was recorded.");
+    $("veilNote").textContent = saved
+      ? "Your response was recorded."
+      : "Your response was counted.";
     veil.classList.add("show");
-
-    queue(vote);
-    flush().then(() => { if (readPending().length) veilNote("Saved on this tablet."); });
+    setPilot(saved);
 
     clearTimeout(veilTimer);
     veilTimer = setTimeout(() => {
@@ -497,7 +471,7 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
   });
 
   /* ── results ─────────────────────────────────────────────────────── */
-  let resultsOpen = false, poll = 0, remote = null;
+  let resultsOpen = false;
 
   function openResults() {
     endHold();
@@ -505,55 +479,29 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     $("kiosk").hidden = true; key.hidden = true; $("results").hidden = false;
     window.scrollTo(0, 0);
     render();
-    refresh();
-    // 30s, and never while the tab is in the background — Apps Script
-    // accounts have a daily runtime budget worth not burning.
-    poll = setInterval(() => { if (!document.hidden) refresh(); }, 30000);
   }
   function closeResults() {
     resultsOpen = false;
-    clearInterval(poll); poll = 0;
     $("results").hidden = true; $("kiosk").hidden = false; key.hidden = false;
   }
   $("back").addEventListener("click", closeResults);
   document.addEventListener("keydown", e => { if (e.key === "Escape" && resultsOpen) closeResults(); });
 
-  const setLive = (on, text) => {
-    const el = $("liveDot");
-    el.classList.toggle("on", on); el.classList.toggle("off", !on);
-    $("liveTxt").textContent = text;
-  };
-
-  async function refresh() {
-    if (!READY) { setLive(false, "Not set up"); render(); return; }
-    setLive(!!remote, remote ? "Live" : "Connecting");
-    await flush();
-    try {
-      const data = await fetchResults();
-      remote = data;
-      setPilot(true);
-      setLive(true, "Live");
-    } catch {
-      setLive(false, "Offline");
-      setPilot(false);
-    }
-    render();
-  }
-
   function render() {
-    const pending = readPending().map(v => ({ ...v, pending: true }));
-    const rows = ((remote && remote.rows) || []).map(v => ({ rating: Number(v.rating), ts: v.ts }));
-
-    const all = rows.concat(pending)
-      .map(v => { const d = new Date(v.ts); return { ...v, d, day: dayOf(d), hour: d.getHours() }; })
+    const all = readVotes()
+      .map(v => { const d = new Date(v.ts); return { rating: Number(v.rating), ts: v.ts, d, day: dayOf(d), hour: d.getHours() }; })
+      .filter(v => !isNaN(v.d))
       .sort((a, b) => b.d - a.d);
 
-    // The sheet reports its own total; the fetched rows are only the
-    // recent window, so never recount them as the total.
-    const total = (remote ? Number(remote.total) || 0 : 0) + pending.length;
+    const total = all.length;
     const counts = {};
-    for (const s of SCALE) counts[s.r] = (remote && remote.counts ? Number(remote.counts[s.r]) || 0 : 0);
-    for (const v of pending) if (counts[v.rating] !== undefined) counts[v.rating]++;
+    for (const s of SCALE) counts[s.r] = 0;
+    for (const v of all) if (counts[v.rating] !== undefined) counts[v.rating]++;
+
+    const live = $("liveDot");
+    live.classList.toggle("on", persists);
+    live.classList.toggle("off", !persists);
+    $("liveTxt").textContent = persists ? "On this tablet" : "Not saving";
 
     const positive = counts[4] + counts[3];
     $("kScore").textContent = total ? Math.round((positive / total) * 100) + "%" : "—";
@@ -562,17 +510,14 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
 
     const tk = dayOf(new Date());
     const today = all.filter(v => v.day === tk);
-    const todayTotal = remote && remote.today !== undefined
-      ? Number(remote.today) + pending.filter(v => dayOf(new Date(v.ts)) === tk).length
-      : today.length;
-    $("kToday").textContent = todayTotal;
+    $("kToday").textContent = today.length;
     $("range").textContent = total
-      ? `${total} response${total === 1 ? "" : "s"}${pending.length ? ` · ${pending.length} waiting to sync` : ""}`
+      ? `${total} response${total === 1 ? "" : "s"} on this tablet`
       : "Waiting for the first response";
 
     const notes = [];
-    if (!READY) notes.push("This kiosk has no sheet connected yet: taps are being saved on this tablet only. Paste your Apps Script URL into the API line at the top of this page's code.");
-    if (pending.length) notes.push(`${pending.length} response${pending.length === 1 ? "" : "s"} saved on this tablet, syncing when the connection returns.`);
+    if (!persists) notes.push("This browser is not saving anything — responses are only held while this page stays open. Private/incognito windows do this. Open the kiosk in a normal window before the booth starts.");
+    else if (total >= CAP - 500) notes.push("This tablet is close to its storage limit — download the CSV, then clear the responses.");
     $("warn").hidden = notes.length === 0;
     $("warn").textContent = notes.join(" ");
 
@@ -614,17 +559,53 @@ td.bar{width:52%;padding-left:20px;padding-right:20px}
     $("feedEmpty").hidden = recent.length > 0;
     $("feed").innerHTML = recent.map(v => {
       const s = byR(v.rating);
-      const t = isNaN(v.d) ? "—" : v.d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-      return `<li>${chip(s, 22)}<span class="who">${s.label}${v.pending ? " · not synced yet" : ""}</span><time datetime="${v.ts}">${t}</time></li>`;
+      const t = v.d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      return `<li>${chip(s, 22)}<span class="who">${s.label}</span><time datetime="${v.ts}">${t}</time></li>`;
     }).join("");
 
-    const sheetBtn = $("sheet");
-    if (SHEET_URL) sheetBtn.href = SHEET_URL; else sheetBtn.hidden = true;
+    $("csv").disabled = total === 0;
   }
 
-  setPilot(false);
+  /* ── export ───────────────────────────────────────────────────────
+     The only copy of the data is on this tablet, so getting it off has
+     to be one button.                                                 */
+  $("csv").addEventListener("click", () => {
+    const rows = readVotes()
+      .map(v => ({ d: new Date(v.ts), r: byR(v.rating) , ts: v.ts }))
+      .filter(v => !isNaN(v.d))
+      .sort((a, b) => a.d - b.d);
+    const lines = ["Date,Time,Rating,Score"];
+    for (const v of rows) {
+      lines.push([dayOf(v.d), v.d.toLocaleTimeString([], { hour12: false }), v.r.csv, v.r.r].join(","));
+    }
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `booth-feedback-${dayOf(new Date())}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+  });
+
+  /* ── clear ────────────────────────────────────────────────────────
+     Two presses, because there is no copy anywhere else.              */
+  $("reset").addEventListener("click", e => {
+    const btn = e.currentTarget;
+    if (btn.dataset.armed !== "1") {
+      btn.dataset.armed = "1";
+      btn.textContent = `Really clear ${readVotes().length}? Download the CSV first`;
+      setTimeout(() => { btn.dataset.armed = "0"; btn.textContent = "Clear all responses"; }, 6000);
+      return;
+    }
+    btn.dataset.armed = "0"; btn.textContent = "Clear all responses";
+    memory = [];
+    try { localStorage.removeItem(STORE); } catch {}
+    render();
+  });
+
+  // Touch storage once up front, so the pilot light tells the truth
+  // before anybody taps.
+  (() => { const v = readVotes(); setPilot(writeVotes(v)); })();
   render();
-  if (READY) { flush().then(() => setPilot(!readPending().length)); }
-  window.addEventListener("online", flush);
 })();
 </script>

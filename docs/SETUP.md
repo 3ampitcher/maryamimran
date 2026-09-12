@@ -1,41 +1,12 @@
 # Booth feedback kiosk — setup
 
-Two things: a **Google Sheet** that collects the taps, and this **page**,
-which anyone can open with no login. Takes about five minutes.
+One page. Responses are saved **in the browser on the tablet you run it on**
+and are never sent anywhere — no account, no server, no Google, no network
+needed once the page has loaded.
 
 ---
 
-## 1. Make the Sheet collect responses
-
-1. Open a new Google Sheet — type `sheets.new` in the address bar. Name it
-   something like **Booth feedback**.
-2. In that Sheet: **Extensions ▸ Apps Script**.
-3. Delete whatever code is in the editor, paste in everything from
-   [`apps-script.gs`](apps-script.gs), and click the save icon.
-4. Click **Deploy ▸ New deployment**.
-   - Click the gear next to "Select type" and choose **Web app**.
-   - **Execute as:** Me
-   - **Who has access:** **Anyone** ← this is the one that matters. Not
-     "Anyone with Google account".
-   - Click **Deploy**.
-5. Google asks you to authorise it. Choose your account, then
-   **Advanced ▸ Go to (project name) (unsafe) ▸ Allow**. That warning is
-   normal — the "unverified app" is the script you just pasted.
-6. Copy the **Web app URL**. It ends in `/exec`.
-
-## 2. Connect the page to the Sheet
-
-Open `docs/index.html` and find this near the top of the `<script>`:
-
-```js
-const API = "PASTE_YOUR_WEB_APP_URL_HERE";
-```
-
-Paste your `/exec` URL between the quotes. While you're there you can also
-set `SHEET_URL` to your Sheet's link — that turns on the "Open the Google
-Sheet" button on the results page. Commit and push.
-
-## 3. Put the page online
+## Put it online
 
 On GitHub: **Settings ▸ Pages**.
 
@@ -47,32 +18,54 @@ A minute later the kiosk is live at:
 
 **`https://3ampitcher.github.io/maryamimran/`**
 
-That link opens for anyone, on any device, with no login — and every tablet
-that has it open writes into the same Sheet, so the results page shows the
-combined total.
+Anyone can open that link on any device, with no login. Each device keeps its
+own responses.
 
----
+## On the day
 
-## Using it
+1. Open the link on the tablet **in a normal browser window** — not private /
+   incognito, which throws the responses away.
+2. Put the browser in fullscreen and leave it on the table.
+3. Don't clear the browser's history or site data while the booth is running.
 
-- **Kiosk:** open the link, put the browser in fullscreen, leave it on the table.
-- **Results:** press and hold the small dot in the **bottom-right corner** for
-  about a second. Escape or "← Back to kiosk" returns.
-- **Connection:** the small dot above the buttons is green when taps are
-  reaching the Sheet, grey when they're being held on the tablet. Held taps
-  sync by themselves — nothing is lost if the wifi drops mid-booth.
-- **Clearing responses:** delete the rows in the Sheet. There's deliberately
-  no clear button on the page, because the page is public and anyone with the
-  link could press it.
+## Reading the results
 
-## If you change `apps-script.gs` later
+Press and hold the small dot in the **bottom-right corner** for about a
+second. Escape or "← Back to kiosk" returns you to the faces.
 
-Edits don't go live until you redeploy: **Deploy ▸ Manage deployments ▸**
-pencil icon **▸ Version: New version ▸ Deploy**. The URL stays the same.
+The results page has:
+
+- **Positive** — Great + Good as a share of everything
+- **Total** and **today's** count
+- The breakdown per face, responses by hour, and the latest taps with times
+- **Download CSV** — do this at the end of the day. It's the only copy.
+- **Clear all responses** — two presses, and it only clears this tablet
+
+## The two lights
+
+- The dot **above the buttons** on the kiosk: green means responses are being
+  saved, grey means the browser is refusing to save and they'll vanish when the
+  page closes. If it's grey, you're probably in a private window.
+- The label at the top of the results page says the same thing.
 
 ## Worth knowing
 
-- Responses are anonymous — the rating and the time it was tapped, nothing
+- **Responses are anonymous** — the rating and the time it was tapped, nothing
   about the person. That's stated on the results page.
-- The link is public, so someone who finds it could add junk responses. For a
-  booth that's a fair trade; if it ever matters, delete the rows in the Sheet.
+- **Each device is separate.** Two tablets means two sets of results. Download
+  both CSVs and add them together if you run more than one.
+- **The data lives only in that browser.** Clearing site data, or "reset the
+  tablet", deletes it. Download the CSV before you pack up.
+
+---
+
+## Optional: pooling responses across devices
+
+Not set up, and not needed for a single-tablet booth. `apps-script.gs` in this
+folder is a Google Sheet backend from an earlier version — if you ever want
+every tablet writing into one Sheet, that file plus the git history of
+`docs/index.html` has what's needed. Ask and I'll wire it back in.
+
+If you already deployed that Apps Script, it's worth deleting the deployment
+now (**Deploy ▸ Manage deployments ▸** trash icon). It's a public URL that can
+write to your Sheet, and nothing is using it any more.
